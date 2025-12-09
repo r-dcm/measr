@@ -59,9 +59,10 @@ The cmdstanr package is not yet available on CRAN.
 The beta release can be installed from the *Stan* R package repository:
 
 ```{r stan-repo, eval = FALSE}
-install.packages("cmdstanr",
-                 repos = c("https://mc-stan.org/r-packages/",
-                           getOption("repos")))
+install.packages(
+  "cmdstanr",
+  repos = c("https://stan-dev.r-universe.dev", getOption("repos"))
+)
 ```
 
 Or the development version can be installed from [GitHub](https://github.com/stan-dev/cmdstanr):
@@ -100,11 +101,11 @@ The released version of measr can be installed directly from CRAN:
 install.packages("measr")
 ```
 
-Or, the development version can be installed from [GitHub](https://github.com/wjakethompson/measr):
+Or, the development version can be installed from [GitHub](https://github.com/r-dcm/measr):
 
 ```{r measr-dev, eval = FALSE}
 # install.packages("remotes")
-remotes::install_github("wjakethompson/measr")
+remotes::install_github("r-dcm/measr")
 ```
 
 Once everything has been installed, we're ready to start estimating and evaluating our DCMs.
@@ -146,25 +147,41 @@ For a fully Bayesian estimation, you can change this `method = "mcmc"`.
 The `backend` defines which Stan engine to use for the estimation.
 The default is `"rstan"`, which will then use the [rstan](https://mc-stan.org/rstan) package for estimating the model.
 Alternatively, `backend = "cmdstanr"` will use the [cmdstanr](https://mc-stan.org/cmdstanr) package.
-For more details and options for customizing the model specification and estimation, see the [model estimation article](https://measr.info/articles/model-estimation.html) on the measr website.
+For more details and options for customizing the model specification and estimation, see the [model estimation article](https://measr.r-dcm.org/articles/model-estimation.html) on the measr website.
 
 ```{r est-hide, include = FALSE}
-ecpe_spec <- dcm_specify(ecpe_qmatrix, identifier = "item_id",
-                         measurement_model = lcdm(),
-                         structural_model = unconstrained())
+ecpe_spec <- dcm_specify(
+  ecpe_qmatrix,
+  identifier = "item_id",
+  measurement_model = lcdm(),
+  structural_model = unconstrained()
+)
 
-ecpe_lcdm <- dcm_estimate(ecpe_spec, data = ecpe_data, identifier = "resp_id",
-                          method = "optim", backend = "rstan",
-                          file = "fits/ecpe-optim-lcdm")
+ecpe_lcdm <- dcm_estimate(
+  ecpe_spec,
+  data = ecpe_data,
+  identifier = "resp_id",
+  method = "optim",
+  backend = "rstan",
+  file = "fits/ecpe-optim-lcdm"
+)
 ```
 
 ```{r est-show, eval = FALSE}
-ecpe_spec <- dcm_specify(ecpe_qmatrix, identifier = "item_id",
-                         measurement_model = lcdm(),
-                         structural_model = unconstrained())
+ecpe_spec <- dcm_specify(
+  ecpe_qmatrix,
+  identifier = "item_id",
+  measurement_model = lcdm(),
+  structural_model = unconstrained()
+)
 
-ecpe_lcdm <- dcm_estimate(ecpe_spec, data = ecpe_data, identifier = "resp_id",
-                          method = "optim", backend = "rstan")
+ecpe_lcdm <- dcm_estimate(
+  ecpe_spec,
+  data = ecpe_data,
+  identifier = "resp_id",
+  method = "optim",
+  backend = "rstan"
+)
 ```
 
 Once the model as estimated, we can use `measr_extract()` to pull out the probability that each respondent is proficient on each of the attributes.

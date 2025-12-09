@@ -14,8 +14,10 @@ vignette: >
 library(wjake)
 library(showtext)
 
-set_theme(base_family = "Open Sans",
-          plot_margin = ggplot2::margin(10, 10, 10, 10))
+set_theme(
+  base_family = "Open Sans",
+  plot_margin = ggplot2::margin(10, 10, 10, 10)
+)
 
 font_add_google("Open Sans")
 showtext_auto()
@@ -29,8 +31,7 @@ knitr::opts_chunk$set(
   out.width = "90%"
 )
 
-options(mc.cores = 4,
-        tidyverse.quiet = TRUE)
+options(mc.cores = 4, tidyverse.quiet = TRUE)
 ```
 
 In this article, we will walk you through the steps for estimating diagnostic classification models (DCMs; also known as cognitive diagnostic models [CDMs]) using measr.
@@ -74,9 +75,12 @@ We can then specify the type of DCM we want to estimate.
 Here, we'll choose the LCDM for our measurement model, and we'll use an unconstrained structural model.^[For more details on the modeling options, see [Estimating Other DCM Sub-Types](#subtype) below.]
 
 ```{r specify-dcm}
-model_spec <- dcm_specify(qmatrix = sim_data$q_matrix, identifier = "item_id",
-                          measurement_model = lcdm(),
-                          structural_model = unconstrained())
+model_spec <- dcm_specify(
+  qmatrix = sim_data$q_matrix,
+  identifier = "item_id",
+  measurement_model = lcdm(),
+  structural_model = unconstrained()
+)
 
 model_spec
 ```
@@ -96,11 +100,18 @@ If a file is specified, an R object of the fitted model will be automatically sa
 If the specified `file` already exists, then the fitted model will be read back into R, eliminating the need to re-estimate the model.
 
 ```{r estimate-dcm}
-lcdm <- dcm_estimate(model_spec, data = sim_data$data, identifier = "resp_id",
-                     method = "mcmc", backend = "cmdstanr",
-                     iter_warmup = 1000, iter_sampling = 500,
-                     chains = 4, parallel_chains = 4,
-                     file = "fits/sim-lcdm")
+lcdm <- dcm_estimate(
+  model_spec,
+  data = sim_data$data,
+  identifier = "resp_id",
+  method = "mcmc",
+  backend = "cmdstanr",
+  iter_warmup = 1000,
+  iter_sampling = 500,
+  chains = 4,
+  parallel_chains = 4,
+  file = "fits/sim-lcdm"
+)
 ```
 
 ### Examining Parameter Estimates
@@ -134,16 +145,20 @@ library(tidyverse)
 library(glue)
 
 param_compare <- item_parameters |>
-  left_join(sim_data$true_items,
-            by = c("item_id", "type" = "class", "attributes",
-                   "coefficient" = "coef"),
-            relationship = "one-to-one") |>
-  mutate(measr_est = map_dbl(estimate, mean),
-         type = case_when(str_detect(coefficient, "_0") ~ "Intercept",
-                          str_detect(coefficient, "_1") ~ "Main Effect",
-                          str_detect(coefficient, "_2") ~ "Interaction"),
-         type = factor(type, levels = c("Intercept", "Main Effect",
-                                        "Interaction")))
+  left_join(
+    sim_data$true_items,
+    by = c("item_id", "type" = "class", "attributes", "coefficient" = "coef"),
+    relationship = "one-to-one"
+  ) |>
+  mutate(
+    measr_est = map_dbl(estimate, mean),
+    type = case_when(
+      str_detect(coefficient, "_0") ~ "Intercept",
+      str_detect(coefficient, "_1") ~ "Main Effect",
+      str_detect(coefficient, "_2") ~ "Interaction"
+    ),
+    type = factor(type, levels = c("Intercept", "Main Effect", "Interaction"))
+  )
 
 example_item <- filter(param_compare, item_id == "A15")
 example_measr <- deframe(select(example_item, attributes, measr_est))
@@ -156,8 +171,12 @@ param_compare |>
   geom_abline(intercept = 0, slope = 1, linetype = "dashed") +
   geom_point(aes(color = type, shape = type), size = 3) +
   scale_color_manual(values = msr_colors) +
-  labs(x = "measr", y = "True Value",
-       color = "Parameter Type", shape = "Parameter Type")
+  labs(
+    x = "measr",
+    y = "True Value",
+    color = "Parameter Type",
+    shape = "Parameter Type"
+  )
 ```
 
 We can also examine the structural parameters, which represent the overall proportion of respondents in each class.
@@ -177,8 +196,7 @@ true_strc <- create_profiles(4) |>
   mutate(value = sim_data$true_strc)
 
 strc_compare <- measr_extract(lcdm, "strc_param") |>
-  left_join(true_strc, join_by(class == label),
-            relationship = "one-to-one") |>
+  left_join(true_strc, join_by(class == label), relationship = "one-to-one") |>
   mutate(measr_est = map_dbl(estimate, mean))
 
 strc_compare |>
@@ -214,8 +232,10 @@ For example, here we specify a &chi;^2^ distribution with 2 degrees of freedom a
 To see all parameters (including `type` and `coefficient`) that can be specified, we can pass our model specification to `get_parameters()`.
 
 ```{r multi-prior}
-c(prior(chi_square(2), type = "maineffect"),
-  prior(exponential(2), type = "maineffect", coefficient = "l7_11"))
+c(
+  prior(chi_square(2), type = "maineffect"),
+  prior(exponential(2), type = "maineffect", coefficient = "l7_11")
+)
 
 get_parameters(model_spec)
 ```
@@ -234,21 +254,31 @@ Note that the prior still influences the model when using `method = "optim"`, ju
 ```{r new-prior}
 new_prior <- prior(normal(0, 15), type = "maineffect", lower_bound = 0)
 
-new_spec <- dcm_specify(qmatrix = sim_data$q_matrix, identifier = "item_id",
-                        measurement_model = lcdm(),
-                        structural_model = unconstrained(),
-                        priors = new_prior)
+new_spec <- dcm_specify(
+  qmatrix = sim_data$q_matrix,
+  identifier = "item_id",
+  measurement_model = lcdm(),
+  structural_model = unconstrained(),
+  priors = new_prior
+)
 
-new_spec <- dcm_specify(qmatrix = sim_data$q_matrix, identifier = "item_id",
-                        measurement_model = lcdm(),
-                        structural_model = unconstrained(),
-                        priors = prior(normal(0, 15), type = "maineffect",
-                                       lower_bound = 0))
+new_spec <- dcm_specify(
+  qmatrix = sim_data$q_matrix,
+  identifier = "item_id",
+  measurement_model = lcdm(),
+  structural_model = unconstrained(),
+  priors = prior(normal(0, 15), type = "maineffect", lower_bound = 0)
+)
 
 # Estimate the updated model
-new_lcdm <- dcm_estimate(new_spec, data = sim_data$data, identifier = "resp_id",
-                         method = "optim", backend = "cmdstanr",
-                         file = "fits/sim-lcdm-optim")
+new_lcdm <- dcm_estimate(
+  new_spec,
+  data = sim_data$data,
+  identifier = "resp_id",
+  method = "optim",
+  backend = "cmdstanr",
+  file = "fits/sim-lcdm-optim"
+)
 ```
 
 The priors used to estimate the model are saved in the returned model object, so we can always go back and see which priors were used if we are unsure.
@@ -265,6 +295,6 @@ For example, we can estimate the deterministic inputs, noisy "and" gate [DINA, @
 For a complete list of currently supported measurement and structural models, see `` ?dcmstan::`measurement-model` `` and `` ?dcmstan::`structural-model` ``, respectively.
 
 Future development work will continue to add functionality for more DCM subtypes.
-If there is a specific subtype you are interested in, or would like to see supported, please open an issue on the [GitHub repository](https://github.com/wjakethompson/measr/issues).
+If there is a specific subtype you are interested in, or would like to see supported, please open an issue on the [GitHub repository](https://github.com/r-dcm/measr/issues).
 
 ## References

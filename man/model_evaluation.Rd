@@ -123,7 +123,7 @@ respectively. This function wraps \code{\link[=reliability]{reliability()}}. Arg
 \code{...} are passed to \code{\link[=reliability]{reliability()}}.
 }
 \examples{
-\dontshow{if (measr_examples()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (measr_examples()) withAutoprint(\{ # examplesIf}
 cmds_mdm_dina <- dcm_estimate(
   dcm_specify(dcmdata::mdm_qmatrix, identifier = "item",
               measurement_model = dina(),

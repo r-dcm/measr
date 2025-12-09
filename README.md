@@ -14,10 +14,9 @@ version](https://www.r-pkg.org/badges/version/measr)](https://cran.r-project.org
 [![Package
 downloads](https://cranlogs.r-pkg.org/badges/grand-total/measr)](https://cran.r-project.org/package=measr)
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.05742/status.svg)](https://doi.org/10.21105/joss.05742)</br>
-[![R-CMD-check](https://github.com/wjakethompson/measr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/wjakethompson/measr/actions/workflows/R-CMD-check.yaml)
-[![codecov](https://codecov.io/gh/wjakethompson/measr/branch/main/graph/badge.svg?token=JtF3xtGt6g)](https://app.codecov.io/gh/wjakethompson/measr)
-[![Netlify
-Status](https://api.netlify.com/api/v1/badges/b82caf01-0611-4f8b-bbca-5b89b5a80791/deploy-status)](https://app.netlify.com/sites/measr/deploys)</br>
+[![R-CMD-check](https://github.com/r-dcm/measr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-dcm/measr/actions/workflows/R-CMD-check.yaml)
+[![codecov](https://codecov.io/gh/r-dcm/measr/graph/badge.svg?token=vCKHSEn66n)](https://app.codecov.io/gh/r-dcm/measr)
+[![pages-build-deployment](https://github.com/r-dcm/measr/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/r-dcm/measr/actions/workflows/pages/pages-build-deployment)</br>
 [![Signed
 by](https://img.shields.io/badge/Keybase-Verified-brightgreen.svg)](https://keybase.io/wjakethompson)
 ![License](https://img.shields.io/badge/License-GPL_v3-blue.svg)
@@ -49,11 +48,11 @@ install.packages("measr")
 ```
 
 To install the development version of measr from
-[GitHub](https://github.com/wjakethompson/measr) use:
+[GitHub](https://github.com/r-dcm/measr) use:
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("wjakethompson/measr")
+remotes::install_github("r-dcm/measr")
 ```
 
 Because measr is based on Stan, a C++ compiler is required. For Windows,
@@ -93,9 +92,15 @@ library(measr)
 
 model_spec <- dcm_specify(dcmdata::ecpe_qmatrix, identifier = "item_id")
 
-model <- dcm_estimate(dcm_spec = model_spec,
-                      data = dcmdata::ecpe_data, identifier = "resp_id",
-                      iter = 1000, warmup = 200, chains = 2, cores = 2)
+model <- dcm_estimate(
+  dcm_spec = model_spec,
+  data = dcmdata::ecpe_data,
+  identifier = "resp_id",
+  iter = 1000,
+  warmup = 200,
+  chains = 2,
+  cores = 2
+)
 ```
 
 Once a model has been estimated, we can then add and evaluate model fit.
@@ -119,7 +124,7 @@ measr_extract(model, "m2")
 ------------------------------------------------------------------------
 
 Contributions are welcome. To ensure a smooth process, please review the
-[Contributing Guide](https://measr.info/dev/CONTRIBUTING.html). Please
+[Contributing Guide](https://measr.r-dcm.org/CONTRIBUTING.html). Please
 note that the measr project is released with a [Contributor Code of
-Conduct](https://measr.info/CODE_OF_CONDUCT.html). By contributing to
-this project, you agree to abide by its terms.
+Conduct](https://measr.r-dcm.org/CODE_OF_CONDUCT.html). By contributing
+to this project, you agree to abide by its terms.

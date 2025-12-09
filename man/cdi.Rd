@@ -48,7 +48,7 @@ is defined by the prevalence of each profile (i.e.,
 \code{\link[=measr_extract]{measr_extract(model, what = "strc_param")}}).
 }
 \examples{
-\dontshow{if (measr_examples()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (measr_examples()) withAutoprint(\{ # examplesIf}
 rstn_ecpe_lcdm <- dcm_estimate(
   dcm_specify(dcmdata::ecpe_qmatrix, identifier = "item_id"),
   data = dcmdata::ecpe_data, missing = NA, identifier = "resp_id",

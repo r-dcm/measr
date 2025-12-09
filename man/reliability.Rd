@@ -58,7 +58,7 @@ the mastery or proficiency probabilities; \code{eap_reliability}) are described 
 Johnson & Sinharay (2019).
 }
 \examples{
-\dontshow{if (measr_examples()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (measr_examples()) withAutoprint(\{ # examplesIf}
 rstn_mdm_lcdm <- dcm_estimate(
   dcm_specify(dcmdata::mdm_qmatrix, identifier = "item"),
   data = dcmdata::mdm_data, missing = NA, identifier = "respondent",

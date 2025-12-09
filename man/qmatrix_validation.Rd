@@ -61,7 +61,7 @@ the highest PVAF.
 }
 }
 \examples{
-\dontshow{if (measr_examples()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (measr_examples()) withAutoprint(\{ # examplesIf}
 mod_spec <- dcm_specify(
   qmatrix = dcmdata::ecpe_qmatrix,
   identifier = "item_id",

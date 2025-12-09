@@ -117,7 +117,7 @@ A \code{measrdcm} object.
 \code{\link[=dcm_estimate]{dcm_estimate()}}, as \code{measr_dcm()} will be removed in a future release.
 }
 \examples{
-\dontshow{if (measr_examples()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (measr_examples()) withAutoprint(\{ # examplesIf}
 rstn_mdm_lcdm <- measr_dcm(
   data = mdm_data, missing = NA, qmatrix = mdm_qmatrix,
   resp_id = "respondent", item_id = "item", type = "lcdm",

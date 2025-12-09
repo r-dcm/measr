@@ -101,7 +101,7 @@ each pair of items (\code{item_fit = "odds_ratio"}) as described by Park et al.
 (2015) and Sinharay et al. (2006).
 }
 \examples{
-\dontshow{if (measr_examples()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (measr_examples()) withAutoprint(\{ # examplesIf}
 mdm_dina <- dcm_estimate(
   dcm_specify(dcmdata::mdm_qmatrix, identifier = "item",
               measurement_model = dina()),

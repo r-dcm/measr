@@ -25,8 +25,8 @@ Description: Estimate diagnostic classification models (also called cognitive
     estimate the model evaluate the model's performance using model fit indices,
     information criteria, and reliability metrics.
 License: GPL (>= 3)
-URL: https://measr.info, https://github.com/wjakethompson/measr
-BugReports: https://github.com/wjakethompson/measr/issues
+URL: https://measr.r-dcm.org, https://github.com/r-dcm/measr
+BugReports: https://github.com/r-dcm/measr/issues
 Depends:
     R (>= 4.1.0)
 Imports:
@@ -78,7 +78,7 @@ Encoding: UTF-8
 Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c("namespace", "rd", "roxylint::roxylint"))
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Biarch: true
 SystemRequirements: GNU make
 VignetteBuilder: knitr
