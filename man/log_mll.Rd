@@ -30,7 +30,7 @@ for models estimated with \code{{rstan}} using MCMC.
 model_spec <- dcm_specify(qmatrix = dcmdata::mdm_qmatrix,
                           identifier = "item")
 model <- dcm_estimate(dcm_spec = model_spec, data = dcmdata::mdm_data,
-                      identifier = "respondent", method = "mcmc",
+                      identifier = "respondent", method = "variational",
                       seed = 63277)
 
 log_mll(model)

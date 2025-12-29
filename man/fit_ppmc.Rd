@@ -77,9 +77,10 @@ between the fitted model and the observed data.
 }
 }
 \description{
-For models estimated with \code{method = "mcmc"}, use the posterior distributions
-to compute expected distributions for fit statistics and compare to values
-in the observed data.
+For models estimated with a method that results in posterior distributions
+(e.g., "mcmc", "variational"), use the posterior distributions to compute
+expected distributions for fit statistics and compare to values in the
+observed data.
 }
 \details{
 Posterior predictive model checks (PPMCs) use the posterior distribution of

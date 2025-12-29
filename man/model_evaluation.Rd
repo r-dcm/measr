@@ -82,8 +82,9 @@ object.}
 \item{ci}{The confidence interval for the RMSEA, computed from the M2}
 
 \item{probs}{The percentiles to be computed by the \code{\link[stats:quantile]{stats::quantile()}}
-function. Only relevant if the model was estimated with \code{method = "mcmc"}.
-Only used if \code{summary} is \code{TRUE}.}
+function. Only relevant if the model was estimated with a method that
+results in posterior distributions (e.g., "mcmc", "variational"). Only used
+if \code{summary} is \code{TRUE}.}
 }
 \value{
 A modified \link[=dcm_estimate]{measrdcm} object with the corresponding

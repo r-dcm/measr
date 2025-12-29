@@ -32,12 +32,14 @@ identifiers. If \code{newdata} is not specified and the data used to estimate
 the model is scored, the \code{resp_id} is taken from the original data.}
 
 \item{summary}{Should summary statistics be returned instead of the raw
-posterior draws? Only relevant if the model was estimated with
-\code{method = "mcmc"}. Default is \code{FALSE}.}
+posterior draws? Only relevant if the model was estimated with a method
+that results in posterior distributions (e.g., "mcmc", "variational").
+Default is \code{FALSE}.}
 
 \item{probs}{The percentiles to be computed by the \code{\link[stats:quantile]{stats::quantile()}}
-function. Only relevant if the model was estimated with \code{method = "mcmc"}.
-Only used if \code{summary} is \code{TRUE}.}
+function. Only relevant if the model was estimated with a method that
+results in posterior distributions (e.g., "mcmc", "variational"). Only used
+if \code{summary} is \code{TRUE}.}
 
 \item{force}{If respondent estimates have already been added to the model
 object with \code{\link[=add_respondent_estimates]{add_respondent_estimates()}}, should they be recalculated.

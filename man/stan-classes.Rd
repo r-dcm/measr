@@ -6,6 +6,7 @@
 \alias{cmdstanr}
 \alias{mcmc}
 \alias{optim}
+\alias{variational}
 \alias{gqs}
 \title{S7 classes for estimation specifications}
 \usage{
@@ -16,6 +17,8 @@ cmdstanr()
 mcmc()
 
 optim()
+
+variational()
 
 gqs()
 }

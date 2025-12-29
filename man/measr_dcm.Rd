@@ -13,7 +13,7 @@ measr_dcm(
   type = c("lcdm", "dina", "dino", "crum"),
   max_interaction = Inf,
   attribute_structure = c("unconstrained", "independent"),
-  method = c("mcmc", "optim"),
+  method = c("variational", "mcmc", "optim"),
   prior = NULL,
   backend = getOption("measr.backend", "rstan"),
   file = NULL,
@@ -62,8 +62,9 @@ way interactions.}
 attributes, whereas \code{"independent"} assumes that proficiency statuses on
 attributes are independent of each other.}
 
-\item{method}{Estimation method. Options are \code{"mcmc"}, which uses Stan's
-sampling method, or \code{"optim"}, which uses Stan's optimizer.}
+\item{method}{Estimation method. Options are \code{"variational"}, which uses
+Stan's variational algorithm; \code{"mcmc"}, which uses Stan's sampling method;
+or \code{"optim"}, which uses Stan's optimizer.}
 
 \item{prior}{A \link[dcmstan:prior]{prior} object. If \code{NULL}, default priors
 are used, as specified by \code{\link[dcmstan:default_dcm_priors]{dcmstan::default_dcm_priors()}}.}

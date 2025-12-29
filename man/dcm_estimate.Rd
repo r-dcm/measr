@@ -9,7 +9,7 @@ dcm_estimate(
   data,
   missing = NA,
   identifier = NULL,
-  method = c("mcmc", "optim"),
+  method = c("variational", "mcmc", "optim"),
   backend = getOption("measr.backend", "rstan"),
   file = NULL,
   file_refit = getOption("measr.file_refit", "never"),
@@ -30,8 +30,9 @@ contains respondent identifiers. \code{NULL} (the default) indicates that no
 identifiers are present in the data, and row numbers will be used as
 identifiers.}
 
-\item{method}{Estimation method. Options are \code{"mcmc"}, which uses Stan's
-sampling method, or \code{"optim"}, which uses Stan's optimizer.}
+\item{method}{Estimation method. Options are \code{"variational"}, which uses
+Stan's variational algorithm; \code{"mcmc"}, which uses Stan's sampling method;
+or \code{"optim"}, which uses Stan's optimizer.}
 
 \item{backend}{Character string naming the package to use as the backend for
 fitting the Stan model. Options are \code{"rstan"} (the default) or
