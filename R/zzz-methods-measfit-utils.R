@@ -16,12 +16,12 @@ S7::method(get_algorithm, list(cmdstanr, mcmc)) <-
     model$metadata()$algorithm
   }
 
-S7::method(get_algorithm, list(rstan, vb)) <-
+S7::method(get_algorithm, list(rstan, variational)) <-
   function(backend, method, ..., model) {
     model@stan_args[[1]][["algorithm"]]
   }
 
-S7::method(get_algorithm, list(cmdstanr, vb)) <-
+S7::method(get_algorithm, list(cmdstanr, variational)) <-
   function(backend, method, ..., model) {
     model$metadata()$algorithm
   }

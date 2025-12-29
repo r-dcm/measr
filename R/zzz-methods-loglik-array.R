@@ -60,7 +60,7 @@ S7::method(calc_loglik, list(stanbackend, mcmc)) <-
     sum(apply(log_lik, c(3), mean))
   }
 
-S7::method(calc_loglik, list(stanbackend, vb)) <-
+S7::method(calc_loglik, list(stanbackend, variational)) <-
   function(backend, method, model) {
     log_lik <- loglik_array(model)
     sum(apply(log_lik, c(3), mean))

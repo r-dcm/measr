@@ -50,12 +50,12 @@ S7::method(default_stan_args, list(cmdstanr, optim)) <-
     list(algorithm = "lbfgs")
   }
 
-S7::method(default_stan_args, list(rstan, vb)) <-
+S7::method(default_stan_args, list(rstan, variational)) <-
   function(backend, method, ...) {
     list(tol_rel_obj = 0.001, iter = 10000, output_samples = 2000)
   }
 
-S7::method(default_stan_args, list(cmdstanr, vb)) <-
+S7::method(default_stan_args, list(cmdstanr, variational)) <-
   function(backend, method, ...) {
     list(tol_rel_obj = 0.001, iter = 10000, draws = 2000)
   }

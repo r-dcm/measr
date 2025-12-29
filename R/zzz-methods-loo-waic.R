@@ -47,9 +47,9 @@ loo::loo_compare
   if (S7::S7_inherits(x@method, optim)) {
     cli::cli_abort(
       glue::glue(
-        "{{.arg {rlang::caller_arg(x)}}} must not be estimated with ",
+        "{{.arg {rlang::caller_arg(x)}}} must be estimated with ",
         "a method that supports posterior distributions ",
-        "(e.g., \"mcmc\", \"vb\") to estimate the LOO"
+        "(e.g., \"mcmc\", \"variational\") to estimate the LOO"
       )
     )
   }
@@ -68,9 +68,9 @@ loo::loo_compare
   if (S7::S7_inherits(x@method, optim)) {
     cli::cli_abort(
       glue::glue(
-        "{{.arg {rlang::caller_arg(x)}}} must not be estimated with ",
+        "{{.arg {rlang::caller_arg(x)}}} must be estimated with ",
         "a method that supports posterior distributions ",
-        "(e.g., \"mcmc\", \"vb\") to estimate the WAIC"
+        "(e.g., \"mcmc\", \"variational\") to estimate the WAIC"
       )
     )
   }

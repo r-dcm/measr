@@ -68,7 +68,11 @@ optim <- S7::new_class("optim", parent = stanmethod, package = "measr")
 
 #' @export
 #' @rdname stan-classes
-vb <- S7::new_class("vb", parent = stanmethod, package = "measr")
+variational <- S7::new_class(
+  "variational",
+  parent = stanmethod,
+  package = "measr"
+)
 
 #' @export
 #' @rdname stan-classes

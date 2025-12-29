@@ -60,7 +60,7 @@ S7::method(extract_stan_draws, list(rstan, optim)) <-
       posterior::subset_draws(variable = vars)
   }
 
-S7::method(extract_stan_draws, list(rstan, vb)) <-
+S7::method(extract_stan_draws, list(rstan, variational)) <-
   function(backend, method, model, vars) {
     posterior::as_draws_array(model@model) |>
       posterior::subset_draws(variable = vars)

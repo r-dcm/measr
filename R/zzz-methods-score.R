@@ -18,12 +18,12 @@
 #'   the model is scored, the `resp_id` is taken from the original data.
 #' @param summary Should summary statistics be returned instead of the raw
 #'   posterior draws? Only relevant if the model was estimated with a method
-#'   that results in posterior distributions (e.g., "mcmc", "vb"). Default is
-#'   `FALSE`.
+#'   that results in posterior distributions (e.g., "mcmc", "variational").
+#'   Default is `FALSE`.
 #' @param probs The percentiles to be computed by the [stats::quantile()]
 #'   function. Only relevant if the model was estimated with a method that
-#'   results in posterior distributions (e.g., "mcmc", "vb"). Only used if
-#'   `summary` is `TRUE`.
+#'   results in posterior distributions (e.g., "mcmc", "variational"). Only used
+#'   if `summary` is `TRUE`.
 #' @param force If respondent estimates have already been added to the model
 #'   object with [add_respondent_estimates()], should they be recalculated.
 #'   Default is `FALSE`.

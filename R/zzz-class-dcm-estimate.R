@@ -13,9 +13,9 @@
 #'   contains respondent identifiers. `NULL` (the default) indicates that no
 #'   identifiers are present in the data, and row numbers will be used as
 #'   identifiers.
-#' @param method Estimation method. Options are `"vb"`, which uses Stan's
-#'   variational algorithm; `"mcmc"`, which uses Stan's sampling method; or
-#'   `"optim"`, which uses Stan's optimizer.
+#' @param method Estimation method. Options are `"variational"`, which uses
+#'   Stan's variational algorithm; `"mcmc"`, which uses Stan's sampling method;
+#'   or `"optim"`, which uses Stan's optimizer.
 #' @param backend Character string naming the package to use as the backend for
 #'   fitting the Stan model. Options are `"rstan"` (the default) or
 #'   `"cmdstanr"`. Can be set globally for the current `R` session via the
@@ -66,7 +66,7 @@ dcm_estimate <- function(
   data,
   missing = NA,
   identifier = NULL,
-  method = c("vb", "mcmc", "optim"),
+  method = c("variational", "mcmc", "optim"),
   backend = getOption("measr.backend", "rstan"),
   file = NULL,
   file_refit = getOption("measr.file_refit", "never"),
@@ -87,7 +87,7 @@ dcm_estimate <- function(
     ),
     arg_qmatrix = "dcm_spec"
   )
-  method <- rlang::arg_match(method, values = c("vb", "mcmc", "optim"))
+  method <- rlang::arg_match(method, values = c("variational", "mcmc", "optim"))
   backend <- rlang::arg_match(backend, values = c("rstan", "cmdstanr"))
   file <- check_file(
     file,

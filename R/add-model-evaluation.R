@@ -211,8 +211,8 @@ add_fit <- function(
     rdcmchecks::abort_bad_argument(
       arg = rlang::caller_arg(x),
       must = cli::format_message(paste(
-        "use {.code method = \"mcmc\"} or",
-        "{.code method = \"vb\"} for PPMC"
+        "be estimated with a method that supports posterior distributions",
+        "(e.g., \"mcmc\", \"variational\") for PPMC"
       ))
     )
   }
