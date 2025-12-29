@@ -210,7 +210,10 @@ add_fit <- function(
   if (S7::S7_inherits(x@method, optim) && "ppmc" %in% method) {
     rdcmchecks::abort_bad_argument(
       arg = rlang::caller_arg(x),
-      must = cli::format_message("use {.code method = \"mcmc\"} for PPMC")
+      must = cli::format_message(paste(
+        "use {.code method = \"mcmc\"} or",
+        "{.code method = \"vb\"} for PPMC"
+      ))
     )
   }
 

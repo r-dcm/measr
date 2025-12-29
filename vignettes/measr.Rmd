@@ -142,7 +142,7 @@ Once we have created the specification, we can estimate the model using `dcm_est
 We provide our model specification, along with the data set and the column name of the respondent identifiers.
 We can also add arguments to control the estimation process.
 The `method` defines how the model should be estimated.
-For computational efficiency, I've selected `"optim"`, which uses Stan's optimizer to estimate the model.
+By default, for computational efficiency, measr uses `"vb"`, which uses Stan's variational algorithm to estimate the model.
 For a fully Bayesian estimation, you can change this `method = "mcmc"`.
 The `backend` defines which Stan engine to use for the estimation.
 The default is `"rstan"`, which will then use the [rstan](https://mc-stan.org/rstan) package for estimating the model.
@@ -161,7 +161,7 @@ ecpe_lcdm <- dcm_estimate(
   ecpe_spec,
   data = ecpe_data,
   identifier = "resp_id",
-  method = "optim",
+  method = "vb",
   backend = "rstan",
   file = "fits/ecpe-optim-lcdm"
 )
@@ -179,7 +179,7 @@ ecpe_lcdm <- dcm_estimate(
   ecpe_spec,
   data = ecpe_data,
   identifier = "resp_id",
-  method = "optim",
+  method = "vb",
   backend = "rstan"
 )
 ```

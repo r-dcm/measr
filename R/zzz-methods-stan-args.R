@@ -50,6 +50,16 @@ S7::method(default_stan_args, list(cmdstanr, optim)) <-
     list(algorithm = "lbfgs")
   }
 
+S7::method(default_stan_args, list(rstan, vb)) <-
+  function(backend, method, ...) {
+    list(tol_rel_obj = 0.001, iter = 10000, output_samples = 2000)
+  }
+
+S7::method(default_stan_args, list(cmdstanr, vb)) <-
+  function(backend, method, ...) {
+    list(tol_rel_obj = 0.001, iter = 10000, draws = 2000)
+  }
+
 S7::method(default_stan_args, list(rstan, gqs)) <-
   function(backend, method, ..., draws = NULL) {
     list(draws = posterior::as_draws_matrix(draws))

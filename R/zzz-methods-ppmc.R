@@ -1,8 +1,8 @@
 #' Posterior predictive model checks for assessing model fit
 #'
-#' For models estimated with `method = "mcmc"`, use the posterior distributions
-#' to compute expected distributions for fit statistics and compare to values
-#' in the observed data.
+#' For models estimated with a method that results in posterior distributions
+#' (e.g., "mcmc", "vb"), use the posterior distributions to compute expected
+#' distributions for fit statistics and compare to values in the observed data.
 #'
 #' @param x An estimated model object (e.g., from [dcm_estimate()]).
 #' @param model_fit The posterior predictive model checks to compute for an

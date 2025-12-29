@@ -68,4 +68,8 @@ optim <- S7::new_class("optim", parent = stanmethod, package = "measr")
 
 #' @export
 #' @rdname stan-classes
+vb <- S7::new_class("vb", parent = stanmethod, package = "measr")
+
+#' @export
+#' @rdname stan-classes
 gqs <- S7::new_class("gqs", parent = stanmethod, package = "measr")

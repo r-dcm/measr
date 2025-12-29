@@ -24,7 +24,7 @@
 #' model_spec <- dcm_specify(qmatrix = dcmdata::mdm_qmatrix,
 #'                           identifier = "item")
 #' model <- dcm_estimate(dcm_spec = model_spec, data = dcmdata::mdm_data,
-#'                       identifier = "respondent", method = "mcmc",
+#'                       identifier = "respondent", method = "vb",
 #'                       seed = 63277)
 #'
 #' log_mll(model)
@@ -41,12 +41,12 @@ S7::method(log_mll, measrdcm) <- function(x, force = FALSE) {
     return(x@criteria$log_mll)
   }
 
-  if (!(S7::S7_inherits(x@method, mcmc) && S7::S7_inherits(x@backend, rstan))) {
+  if (!S7::S7_inherits(x@backend, rstan) || S7::S7_inherits(x@method, optim)) {
     cli::cli_abort(
       glue::glue(
         "{{.arg {rlang::caller_arg(x)}}} must be a model estimated with ",
-        "{{.code method = \"mcmc\"}} and {{.code backend = \"rstan\"}} to ",
-        "calculate the marginal likelihood"
+        "{{.code method = \"mcmc\"}} or {{.code method = \"vb\"}} using ",
+        "{{.code backend = \"rstan\"}} to calculate the marginal likelihood"
       )
     )
   }

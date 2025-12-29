@@ -16,6 +16,15 @@ S7::method(get_algorithm, list(cmdstanr, mcmc)) <-
     model$metadata()$algorithm
   }
 
+S7::method(get_algorithm, list(rstan, vb)) <-
+  function(backend, method, ..., model) {
+    model@stan_args[[1]][["algorithm"]]
+  }
+
+S7::method(get_algorithm, list(cmdstanr, vb)) <-
+  function(backend, method, ..., model) {
+    model$metadata()$algorithm
+  }
 
 # version info -----------------------------------------------------------------
 get_version_info <- S7::new_generic("get_version_info", "backend")
