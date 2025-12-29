@@ -27,11 +27,17 @@ test_that("model evaluation works", {
 
   err <- rlang::catch_cnd(add_criterion(dina_mod, criterion = "loo"))
   expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "must be a model estimated with.*\"mcmc\"")
+  expect_match(
+    err$message,
+    "must be estimated with a method that supports posterior distributions"
+  )
 
   err <- rlang::catch_cnd(add_criterion(dina_mod, criterion = "waic"))
   expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "must be a model estimated with.*\"mcmc\"")
+  expect_match(
+    err$message,
+    "must be estimated with a method that supports posterior distributions"
+  )
 
   dina_mod <- add_criterion(dina_mod, criterion = "aic")
   expect_false(rlang::is_empty(dina_mod@criteria$aic))
@@ -45,7 +51,10 @@ test_that("model evaluation works", {
     model_fit = "raw_score"
   ))
   expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "use `method = \"mcmc\"` for PPMC")
+  expect_match(
+    err$message,
+    "must be estimated with a method that supports posterior distributions"
+  )
 
   dina_mod <- add_fit(dina_mod, method = "m2")
   expect_false(rlang::is_empty(dina_mod@fit$m2))

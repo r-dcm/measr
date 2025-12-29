@@ -190,11 +190,11 @@ test_that("loo and waic work", {
 
   err <- rlang::catch_cnd(loo(rstn_dina))
   expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "`method = \"mcmc\"`")
+  expect_match(err$message, "supports posterior distributions")
 
   err <- rlang::catch_cnd(waic(rstn_dino))
   expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "`method = \"mcmc\"`")
+  expect_match(err$message, "supports posterior distributions")
 
   check_loo <- loo(cmds_mdm_lcdm)
   expect_s3_class(check_loo, "psis_loo")
@@ -216,7 +216,7 @@ test_that("loo and waic can be added to model", {
 
   err <- rlang::catch_cnd(add_criterion(rstn_dino))
   expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "`method = \"mcmc\"`")
+  expect_match(err$message, "supports posterior distributions")
 
   loo_model <- add_criterion(cmds_mdm_lcdm, criterion = "loo")
   expect_equal(names(loo_model@criteria), "loo")

@@ -410,11 +410,11 @@ test_that("mcmc requirements error", {
 
   err <- rlang::catch_cnd(add_fit(cmds_ecpe_lcdm, method = "ppmc"))
   expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "`method = \"mcmc\"`")
+  expect_match(err$message, "supports posterior distributions")
 
   err <- rlang::catch_cnd(add_criterion(cmds_ecpe_lcdm))
   expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "`method = \"mcmc\"`")
+  expect_match(err$message, "supports posterior distributions")
 })
 
 test_that("read/write with cmdstanr", {
