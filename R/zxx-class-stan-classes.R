@@ -76,4 +76,12 @@ variational <- S7::new_class(
 
 #' @export
 #' @rdname stan-classes
+pathfinder <- S7::new_class(
+  "pathfinder",
+  parent = stanmethod,
+  package = "measr"
+)
+
+#' @export
+#' @rdname stan-classes
 gqs <- S7::new_class("gqs", parent = stanmethod, package = "measr")

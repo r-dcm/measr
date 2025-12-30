@@ -60,6 +60,16 @@ S7::method(default_stan_args, list(cmdstanr, variational)) <-
     list(tol_rel_obj = 0.001, iter = 10000, draws = 2000)
   }
 
+S7::method(default_stan_args, list(cmdstanr, pathfinder)) <-
+  function(backend, method, ...) {
+    list(
+      tol_rel_obj = 0.001,
+      single_path_draws = 1000,
+      num_paths = 4,
+      draws = 2000
+    )
+  }
+
 S7::method(default_stan_args, list(rstan, gqs)) <-
   function(backend, method, ..., draws = NULL) {
     list(draws = posterior::as_draws_matrix(draws))

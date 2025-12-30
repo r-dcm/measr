@@ -71,6 +71,10 @@ S7::method(stan_function, list(cmdstanr, variational)) <-
   function(backend, method, ..., compiled_model = NULL) {
     compiled_model$variational
   }
+S7::method(stan_function, list(cmdstanr, pathfinder)) <-
+  function(backend, method, ..., compiled_model = NULL) {
+    compiled_model$pathfinder
+  }
 S7::method(stan_function, list(cmdstanr, gqs)) <-
   function(backend, method, ..., compiled_model = NULL) {
     compiled_model$generate_quantities

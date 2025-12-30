@@ -15,7 +15,9 @@
 #'   identifiers.
 #' @param method Estimation method. Options are `"variational"`, which uses
 #'   Stan's variational algorithm; `"mcmc"`, which uses Stan's sampling method;
-#'   or `"optim"`, which uses Stan's optimizer.
+#'   `"optim"`, which uses Stan's optimizer; or `"pathfinder"` which uses Stan's
+#'   Pathfinder variational inference algorithm (only available if
+#'   `backend = "cmdstanr"`).
 #' @param backend Character string naming the package to use as the backend for
 #'   fitting the Stan model. Options are `"rstan"` (the default) or
 #'   `"cmdstanr"`. Can be set globally for the current `R` session via the
@@ -66,7 +68,7 @@ dcm_estimate <- function(
   data,
   missing = NA,
   identifier = NULL,
-  method = c("variational", "mcmc", "optim"),
+  method = c("variational", "mcmc", "optim", "pathfinder"),
   backend = getOption("measr.backend", "rstan"),
   file = NULL,
   file_refit = getOption("measr.file_refit", "never"),
@@ -87,8 +89,19 @@ dcm_estimate <- function(
     ),
     arg_qmatrix = "dcm_spec"
   )
-  method <- rlang::arg_match(method, values = c("variational", "mcmc", "optim"))
+  method <- rlang::arg_match(
+    method,
+    values = c("variational", "mcmc", "optim", "pathfinder")
+  )
   backend <- rlang::arg_match(backend, values = c("rstan", "cmdstanr"))
+  if (method == "pathfinder" && backend == "rstan") {
+    rdcmchecks::abort_bad_argument(
+      arg = "backend",
+      must = cli::format_message(
+        "be cmdstanr when {.arg method} is {.val pathfinder}"
+      )
+    )
+  }
   file <- check_file(
     file,
     create_dir = FALSE,
