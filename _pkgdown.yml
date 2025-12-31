@@ -97,11 +97,6 @@ articles:
   - articles/model-estimation
   - articles/model-evaluation
 
-- title: Case Studies
-  navbar: Case Studies
-  contents:
-  - articles/ecpe
-
 news:
   releases:
   - text: "Version 1.0.0"
