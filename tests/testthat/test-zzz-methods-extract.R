@@ -53,7 +53,7 @@ test_that("extract structural parameters", {
 })
 
 test_that("extract base rates", {
-  dino_param <- measr_extract(rstn_dino, "base_rate")
+  dino_param <- measr_extract(rstn_dino, "attribute_base_rate")
   expect_equal(nrow(dino_param), 1)
   expect_equal(ncol(dino_param), ncol(q_matrix[, -1]))
   expect_equal(colnames(dino_param), names(q_matrix[, -1]))

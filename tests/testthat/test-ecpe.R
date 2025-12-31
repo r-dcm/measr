@@ -137,7 +137,7 @@ test_that("extract ecpe", {
   expect_true(is.double(lcdm_param$estimate))
   expect_true(all(!is.na(lcdm_param$estimate)))
 
-  lcdm_param <- measr_extract(cmds_ecpe_lcdm, "base_rate")
+  lcdm_param <- measr_extract(cmds_ecpe_lcdm, "attribute_base_rate")
   expect_equal(nrow(lcdm_param), 1)
   expect_equal(ncol(lcdm_param), ncol(dcmdata::ecpe_qmatrix[, -1]))
   expect_equal(colnames(lcdm_param), names(dcmdata::ecpe_qmatrix[, -1]))

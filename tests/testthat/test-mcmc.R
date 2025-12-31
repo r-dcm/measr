@@ -173,7 +173,7 @@ test_that("extract model p-values", {
 })
 
 test_that("extract base rates", {
-  lcdm_br <- measr_extract(cmds_mdm_lcdm, "base_rate")
+  lcdm_br <- measr_extract(cmds_mdm_lcdm, "attribute_base_rate")
   expect_equal(nrow(lcdm_br), 1)
   expect_equal(ncol(lcdm_br), ncol(dcmdata::mdm_qmatrix[, -1]))
   expect_equal(colnames(lcdm_br), names(dcmdata::mdm_qmatrix[, -1]))

@@ -61,7 +61,9 @@ measr_extract <- S7::new_generic(
 #'     of membership in each class. This shows the class pattern, the attributes
 #'     present in each class, and the estimated proportion of respondents in
 #'     each class.
-#'   * `base_rate`:
+#'   * `attribute_base_rate`: The estimated base rate of attribute proficiency.
+#'     Calculated from the structural parameters of the classes where each
+#'     attribute is present.
 #'   * `pi_matrix`: The model estimated probability that a respondent in the
 #'     given class provides a correct response to the item. The output shows the
 #'     the item (rows), class (columns), and estimated *p*-values.
@@ -167,7 +169,7 @@ S7::method(measr_extract, measrdcm) <- function(model, what, ...) {
     # model parameters ---------------------------------------------------------
     item_param = dcm_extract_item_param(model, call = call),
     strc_param = dcm_extract_strc_param(model, call = call),
-    base_rate = dcm_extract_attr_base_rate(model, call = call),
+    attribute_base_rate = dcm_extract_attr_base_rate(model, call = call),
     pi_matrix = dcm_extract_pi_matrix(model, call = call),
     exp_pvalues = dcm_extract_model_pvalues(model, call = call),
 
@@ -209,11 +211,19 @@ S7::method(measr_extract, measrdcm) <- function(model, what, ...) {
     pattern_reliability = dcm_extract_patt_reli(model, call = call),
     classification_reliability = dcm_extract_map_reli(model, ..., call = call),
     probability_reliability = dcm_extract_eap_reli(model, ..., call = call),
+
+    # error on unknown ---------------------------------------------------------
     cli::cli_abort(
-      message = cli::format_message("Cannot extract element {.val {what}}"),
+      message = cli::format_message(
+        paste(
+          "Cannot extract element {.val {what}}.",
+          "For allowed values of {.arg what}, see",
+          "{.help [{.fun ?measr_extract}](measr::measr_extract)}."
+        )
+      ),
       call = call
     )
-  )
+  ) # close switch()
 
   return(out)
 }
