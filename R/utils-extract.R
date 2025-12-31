@@ -145,7 +145,42 @@ dcm_extract_strc_param <- function(model, call) {
       dplyr::mutate(dplyr::across(dplyr::where(posterior::is_rvar), E))
   }
 
-  draws
+  dplyr::full_join(
+    dcm_extract_classes(model),
+    draws,
+    dplyr::join_by("class")
+  )
+}
+
+dcm_extract_attr_base_rate <- function(model, call) {
+  draws <- measr_extract(model, "strc_param") |>
+    tidyr::pivot_longer(
+      cols = -c("class", "estimate"),
+      names_to = "attribute",
+      values_to = "present"
+    ) |>
+    dplyr::filter(.data$present == 1L)
+
+  if (S7::S7_inherits(model@method, optim)) {
+    draws <- draws |>
+      dplyr::summarize(estimate = sum(.data$estimate), .by = "attribute")
+  } else {
+    draws <- draws |>
+      dplyr::summarize(estimate = rvar_sum(.data$estimate), .by = "attribute")
+  }
+
+  draws |>
+    dplyr::mutate(
+      attribute = factor(
+        .data$attribute,
+        levels = names(model@model_spec@qmatrix_meta$attribute_names)
+      )
+    ) |>
+    tidyr::pivot_wider(
+      names_from = "attribute",
+      values_from = "estimate",
+      names_sort = TRUE
+    )
 }
 
 dcm_extract_model_pvalues <- function(model, call) {

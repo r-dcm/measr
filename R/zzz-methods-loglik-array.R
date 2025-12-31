@@ -11,6 +11,18 @@
 #' @return A "[`draws_array`][posterior::draws_array()]" object containing the
 #'   log-likelihood estimates for the model.
 #' @export
+#' @examplesIf measr_examples()
+#' rstn_mdm_lcdm <- dcm_estimate(
+#'   dcm_specify(dcmdata::mdm_qmatrix, identifier = "item"),
+#'   data = dcmdata::mdm_data,
+#'   missing = NA,
+#'   identifier = "respondent",
+#'   method = "optim",
+#'   seed = 63277,
+#'   backend = "rstan"
+#' )
+#'
+#' loglik_array(rstn_mdm_lcdm)
 loglik_array <- S7::new_generic("loglik_array", "model")
 
 

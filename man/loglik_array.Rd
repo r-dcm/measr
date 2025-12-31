@@ -21,3 +21,18 @@ calculates the log-likelihood for an estimated model via the generated
 quantities functionality in \emph{Stan} and returns the draws of the \code{log_lik}
 parameter.
 }
+\examples{
+\dontshow{if (measr_examples()) withAutoprint(\{ # examplesIf}
+rstn_mdm_lcdm <- dcm_estimate(
+  dcm_specify(dcmdata::mdm_qmatrix, identifier = "item"),
+  data = dcmdata::mdm_data,
+  missing = NA,
+  identifier = "respondent",
+  method = "optim",
+  seed = 63277,
+  backend = "rstan"
+)
+
+loglik_array(rstn_mdm_lcdm)
+\dontshow{\}) # examplesIf}
+}

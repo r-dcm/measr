@@ -65,13 +65,17 @@ included in each class.
 \item \code{item_param}: The estimated item parameters. This shows the name of the
 parameter, the class of the parameter, and the estimated value.
 \item \code{strc_param}: The estimated structural parameters. This is the base rate
-of membership in each class. This shows the class pattern and the
-estimated proportion of respondents in each class.
+of membership in each class. This shows the class pattern, the attributes
+present in each class, and the estimated proportion of respondents in
+each class.
+\item \code{attribute_base_rate}: The estimated base rate of attribute proficiency.
+Calculated from the structural parameters of the classes where each
+attribute is present.
 \item \code{pi_matrix}: The model estimated probability that a respondent in the
 given class provides a correct response to the item. The output shows the
 the item (rows), class (columns), and estimated \emph{p}-values.
 \item \code{exp_pvalues}: Model expected \emph{p}-values for each item. This is
-equivalent to the \code{pi_matrix}, but also includes and "overall" variable,
+equivalent to the \code{pi_matrix}, but also includes an "overall" field,
 which represents the expected \emph{p}-value for each item (i.e., an average
 of the class-specific \emph{p}-values, weighted by the prevalence of each
 class).
@@ -146,8 +150,12 @@ proficiency on each attribute, as described by Johnson & Sinharay (2020).
 \dontshow{if (measr_examples()) withAutoprint(\{ # examplesIf}
 rstn_mdm_lcdm <- dcm_estimate(
   dcm_specify(dcmdata::mdm_qmatrix, identifier = "item"),
-  data = dcmdata::mdm_data, missing = NA, identifier = "respondent",
-  method = "optim", seed = 63277, backend = "rstan"
+  data = dcmdata::mdm_data,
+  missing = NA,
+  identifier = "respondent",
+  method = "optim",
+  seed = 63277,
+  backend = "rstan"
 )
 
 measr_extract(rstn_mdm_lcdm, "strc_param")

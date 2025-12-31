@@ -30,11 +30,17 @@ the Bayesian information criterion (BIC; Schwarz, 1978).
 }
 \examples{
 \dontshow{if (measr_examples()) withAutoprint(\{ # examplesIf}
-model_spec <- dcm_specify(qmatrix = dcmdata::mdm_qmatrix,
-                          identifier = "item")
-model <- dcm_estimate(dcm_spec = model_spec, data = dcmdata::mdm_data,
-                      identifier = "respondent", method = "optim",
-                      seed = 63277)
+model_spec <- dcm_specify(
+  qmatrix = dcmdata::mdm_qmatrix,
+  identifier = "item"
+)
+model <- dcm_estimate(
+  dcm_spec = model_spec,
+  data = dcmdata::mdm_data,
+  identifier = "respondent",
+  method = "optim",
+  seed = 63277
+)
 
 aic(model)
 

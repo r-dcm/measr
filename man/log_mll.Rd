@@ -27,11 +27,17 @@ for models estimated with \code{{rstan}} using MCMC.
 }
 \examples{
 \dontshow{if (measr_examples()) withAutoprint(\{ # examplesIf}
-model_spec <- dcm_specify(qmatrix = dcmdata::mdm_qmatrix,
-                          identifier = "item")
-model <- dcm_estimate(dcm_spec = model_spec, data = dcmdata::mdm_data,
-                      identifier = "respondent", method = "variational",
-                      seed = 63277)
+model_spec <- dcm_specify(
+  qmatrix = dcmdata::mdm_qmatrix,
+  identifier = "item"
+)
+model <- dcm_estimate(
+  dcm_spec = model_spec,
+  data = dcmdata::mdm_data,
+  identifier = "respondent",
+  method = "variational",
+  seed = 63277
+)
 
 log_mll(model)
 \dontshow{\}) # examplesIf}

@@ -64,3 +64,18 @@ Calculate posterior draws of respondent proficiency. Optionally retain all
 posterior draws or return only summaries of the distribution for each
 respondent.
 }
+\examples{
+\dontshow{if (measr_examples()) withAutoprint(\{ # examplesIf}
+rstn_mdm_lcdm <- dcm_estimate(
+  dcm_specify(dcmdata::mdm_qmatrix, identifier = "item"),
+  data = dcmdata::mdm_data,
+  missing = NA,
+  identifier = "respondent",
+  method = "optim",
+  seed = 63277,
+  backend = "rstan"
+)
+
+score(rstn_mdm_lcdm, summary = FALSE)
+\dontshow{\}) # examplesIf}
+}

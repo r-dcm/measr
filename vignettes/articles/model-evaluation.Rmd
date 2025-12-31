@@ -15,8 +15,10 @@ library(wjake)
 library(showtext)
 library(glue)
 
-set_theme(base_family = "Open Sans",
-          plot_margin = ggplot2::margin(10, 10, 10, 10))
+set_theme(
+  base_family = "Open Sans",
+  plot_margin = ggplot2::margin(10, 10, 10, 10)
+)
 
 font_add_google("Open Sans")
 showtext_auto()
@@ -30,8 +32,7 @@ knitr::opts_chunk$set(
   out.width = "90%"
 )
 
-options(mc.cores = 4,
-        tidyverse.quiet = TRUE)
+options(mc.cores = 4, tidyverse.quiet = TRUE)
 ```
 
 In this article, we will describe the different options for evaluating diagnostic classification models (DCMs; also known as cognitive diagnostic models [CDMs]) using measr.
@@ -59,20 +60,36 @@ library(tidyverse)
 sim_data <- read_rds("data/simulated-data.rds")
 
 lcdm <- dcm_estimate(
-  dcm_spec = dcm_specify(qmatrix = sim_data$q_matrix, identifier = "item_id",
-                         measurement_model = lcdm()),
-  data = sim_data$data, identifier = "resp_id",
-  method = "mcmc", backend = "cmdstanr",
-  iter_warmup = 1000, iter_sampling = 500, chains = 4, parallel_chains = 4,
+  dcm_spec = dcm_specify(
+    qmatrix = sim_data$q_matrix,
+    identifier = "item_id",
+    measurement_model = lcdm()
+  ),
+  data = sim_data$data,
+  identifier = "resp_id",
+  method = "mcmc",
+  backend = "cmdstanr",
+  iter_warmup = 1000,
+  iter_sampling = 500,
+  chains = 4,
+  parallel_chains = 4,
   file = "fits/sim-lcdm"
 )
 
 dina <- dcm_estimate(
-  dcm_spec = dcm_specify(qmatrix = sim_data$q_matrix, identifier = "item_id",
-                         measurement_model = dina()),
-  data = sim_data$data, identifier = "resp_id",
-  method = "mcmc", backend = "cmdstanr",
-  iter_warmup = 1000, iter_sampling = 500, chains = 4, parallel_chains = 4,
+  dcm_spec = dcm_specify(
+    qmatrix = sim_data$q_matrix,
+    identifier = "item_id",
+    measurement_model = dina()
+  ),
+  data = sim_data$data,
+  identifier = "resp_id",
+  method = "mcmc",
+  backend = "cmdstanr",
+  iter_warmup = 1000,
+  iter_sampling = 500,
+  chains = 4,
+  parallel_chains = 4,
   file = "fits/sim-dina"
 )
 ```
@@ -144,8 +161,7 @@ We can also specify the posterior quantiles that are returned.
 For example, we can calculate the item-level odds ratios and request quantiles that will result in a 90% credible interval.
 
 ```{r odds-ratio-ppmc}
-fit_ppmc(lcdm, model_fit = NULL, item_fit = "odds_ratio",
-         probs = c(0.05, 0.95))
+fit_ppmc(lcdm, model_fit = NULL, item_fit = "odds_ratio", probs = c(0.05, 0.95))
 ```
 
 We see similar output for the item-level indices: the observed odds ratio for each item pair (`obs_or`), the mean of the posterior distribution for each item pair (`ppmc_mean`), the quantiles of the posterior that we specified, and the *ppp*.
@@ -250,9 +266,12 @@ Additionally, all three functions have a `...` argument for passing additional a
 For example, if we want to add PPMC absolute model fit indices, we can specify the types of model- and item-level fit indices to calculate, just as we did when using `fit_ppmc()`.
 
 ```{r add-fit}
-lcdm <- add_fit(lcdm, method = "ppmc",
-                model_fit = "raw_score",
-                item_fit = "odds_ratio")
+lcdm <- add_fit(
+  lcdm,
+  method = "ppmc",
+  model_fit = "raw_score",
+  item_fit = "odds_ratio"
+)
 ```
 
 Once components have been added to the model, a helper function, `measr_extract()`, can be used to pull out relevant pieces of output.

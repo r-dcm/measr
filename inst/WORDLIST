@@ -19,7 +19,6 @@ GDINA
 Gabry
 Gelman
 Gierl
-Jeffreys
 Kass
 Kiado
 Kreiner
@@ -32,19 +31,16 @@ Leibler
 Liu
 Makransky
 Marais
-Maydeu
 Meng
 Mesbah
 Metaprogramming
 Mplus
-Netlify
 ORCID
-Olivares
 PPMC
 PPMCs
+PVAF
 Petrov
 Psychometrika
-PVAF
 RMSEA
 RStan
 Raftery
@@ -72,7 +68,6 @@ biserial
 blatent
 cmdstanr
 codecov
-crum
 dcmdata
 dcmstan
 de
@@ -83,12 +78,12 @@ dplyr
 et
 examinee
 extensibility
-frac
 funder
 generalizability
 ggplot
 hmcdm
 lifecycle
+mcmc
 measr's
 measrdcm
 measrfit
@@ -96,7 +91,6 @@ measr’s
 morphosyntactic
 pkgdown
 polytomously
-posteriori
 ppp
 pre
 psychometrics
@@ -112,6 +106,7 @@ toolchain
 tunnelled
 tunnelling
 unnested
+variational
 κ
 λ
 χ

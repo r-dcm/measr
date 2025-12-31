@@ -61,11 +61,17 @@
 #'   \doi{10.1177/014662168400800201}
 #'
 #' @examplesIf measr_examples()
-#' model_spec <- dcm_specify(qmatrix = dcmdata::mdm_qmatrix,
-#'                           identifier = "item")
-#' model <- dcm_estimate(dcm_spec = model_spec, data = dcmdata::mdm_data,
-#'                       identifier = "respondent", method = "optim",
-#'                       seed = 63277)
+#' model_spec <- dcm_specify(
+#'   qmatrix = dcmdata::mdm_qmatrix,
+#'   dentifier = "item"
+#' )
+#' model <- dcm_estimate(
+#'   dcm_spec = model_spec,
+#'   data = dcmdata::mdm_data,
+#'   identifier = "respondent",
+#'   method = "optim",
+#'   seed = 63277
+#' )
 #'
 #' yens_q3(model)
 yens_q3 <- S7::new_generic(

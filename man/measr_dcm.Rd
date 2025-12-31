@@ -120,9 +120,15 @@ A \code{measrdcm} object.
 \examples{
 \dontshow{if (measr_examples()) withAutoprint(\{ # examplesIf}
 rstn_mdm_lcdm <- measr_dcm(
-  data = mdm_data, missing = NA, qmatrix = mdm_qmatrix,
-  resp_id = "respondent", item_id = "item", type = "lcdm",
-  method = "optim", seed = 63277, backend = "rstan"
+  data = mdm_data,
+  missing = NA,
+  qmatrix = mdm_qmatrix,
+  resp_id = "respondent",
+  item_id = "item",
+  type = "lcdm",
+  method = "optim",
+  seed = 63277,
+  backend = "rstan"
 )
 \dontshow{\}) # examplesIf}
 }

@@ -30,8 +30,12 @@ dcm2::fit_m2
 #' @examplesIf measr_examples()
 #' rstn_mdm_lcdm <- dcm_estimate(
 #'   dcm_specify(dcmdata::mdm_qmatrix, identifier = "item"),
-#'   data = dcmdata::mdm_data, missing = NA, identifier = "respondent",
-#'   method = "optim", seed = 63277, backend = "rstan"
+#'   data = dcmdata::mdm_data,
+#'   missing = NA,
+#'   identifier = "respondent",
+#'   method = "optim",
+#'   seed = 63277,
+#'   backend = "rstan"
 #' )
 #'
 #' fit_m2(rstn_mdm_lcdm)

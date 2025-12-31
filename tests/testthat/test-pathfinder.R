@@ -145,6 +145,15 @@ test_that("extract model p-values", {
   expect_true(all(vapply(dina_pimat[, -1], \(x) !any(is.na(x)), logical(1))))
 })
 
+test_that("extract base rates", {
+  lcdm_br <- measr_extract(cmds_dtmr_lcdm, "attribute_base_rate")
+  expect_equal(nrow(lcdm_br), 1)
+  expect_equal(ncol(lcdm_br), ncol(dcmdata::dtmr_qmatrix[, -1]))
+  expect_equal(colnames(lcdm_br), names(dcmdata::dtmr_qmatrix[, -1]))
+  expect_true(all(vapply(lcdm_br, posterior::is_rvar, logical(1))))
+  expect_true(all(!is.na(lcdm_br[1, ])))
+})
+
 # loo/waic ---------------------------------------------------------------------
 test_that("loo and waic work", {
   skip_on_cran()

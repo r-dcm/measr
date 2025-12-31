@@ -130,8 +130,19 @@ test_that("extract ecpe", {
   lcdm_param <- measr_extract(cmds_ecpe_lcdm, "strc_param")
   expect_equal(nrow(lcdm_param), 8)
   expect_equal(lcdm_param$class, dplyr::pull(profile_labels(3), "class"))
+  expect_equal(
+    dplyr::select(lcdm_param, -"class", -"estimate"),
+    create_profiles(ecpe_spec)
+  )
   expect_true(is.double(lcdm_param$estimate))
   expect_true(all(!is.na(lcdm_param$estimate)))
+
+  lcdm_param <- measr_extract(cmds_ecpe_lcdm, "attribute_base_rate")
+  expect_equal(nrow(lcdm_param), 1)
+  expect_equal(ncol(lcdm_param), ncol(dcmdata::ecpe_qmatrix[, -1]))
+  expect_equal(colnames(lcdm_param), names(dcmdata::ecpe_qmatrix[, -1]))
+  expect_true(all(vapply(lcdm_param, is.double, logical(1))))
+  expect_true(all(!is.na(lcdm_param[1, ])))
 
   lcdm_param <- measr_extract(cmds_ecpe_lcdm, "prior")
   expect_equal(
