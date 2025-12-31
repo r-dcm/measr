@@ -44,6 +44,10 @@ test_that("extract structural parameters", {
   dina_param <- measr_extract(rstn_dina, "strc_param")
   expect_equal(nrow(dina_param), 32)
   expect_equal(dina_param$class, dplyr::pull(profile_labels(5), "class"))
+  expect_equal(
+    dplyr::select(dina_param, -c("class", "estimate")),
+    create_profiles(dina_spec)
+  )
   expect_true(is.double(dina_param$estimate))
   expect_true(all(!is.na(dina_param$estimate)))
 })

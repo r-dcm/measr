@@ -65,8 +65,9 @@ included in each class.
 \item \code{item_param}: The estimated item parameters. This shows the name of the
 parameter, the class of the parameter, and the estimated value.
 \item \code{strc_param}: The estimated structural parameters. This is the base rate
-of membership in each class. This shows the class pattern and the
-estimated proportion of respondents in each class.
+of membership in each class. This shows the class pattern, the attributes
+present in each class, and the estimated proportion of respondents in
+each class.
 \item \code{pi_matrix}: The model estimated probability that a respondent in the
 given class provides a correct response to the item. The output shows the
 the item (rows), class (columns), and estimated \emph{p}-values.

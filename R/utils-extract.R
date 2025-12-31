@@ -145,7 +145,11 @@ dcm_extract_strc_param <- function(model, call) {
       dplyr::mutate(dplyr::across(dplyr::where(posterior::is_rvar), E))
   }
 
-  draws
+  dplyr::full_join(
+    dcm_extract_classes(model),
+    draws,
+    dplyr::join_by("class")
+  )
 }
 
 dcm_extract_model_pvalues <- function(model, call) {
