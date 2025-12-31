@@ -9,7 +9,7 @@ dcm_estimate(
   data,
   missing = NA,
   identifier = NULL,
-  method = c("variational", "mcmc", "optim"),
+  method = c("variational", "mcmc", "optim", "pathfinder"),
   backend = getOption("measr.backend", "rstan"),
   file = NULL,
   file_refit = getOption("measr.file_refit", "never"),
@@ -32,7 +32,9 @@ identifiers.}
 
 \item{method}{Estimation method. Options are \code{"variational"}, which uses
 Stan's variational algorithm; \code{"mcmc"}, which uses Stan's sampling method;
-or \code{"optim"}, which uses Stan's optimizer.}
+\code{"optim"}, which uses Stan's optimizer; or \code{"pathfinder"} which uses Stan's
+pathfinder variational inference algorithm (only available if
+\code{backend = "cmdstanr"}).}
 
 \item{backend}{Character string naming the package to use as the backend for
 fitting the Stan model. Options are \code{"rstan"} (the default) or

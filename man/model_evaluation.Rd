@@ -99,16 +99,16 @@ repeated. See Details for specifics.
 }
 \details{
 For \code{add_respondent_estimates()}, estimated person parameters are added to
-the \verb{$respondent_estimates} element of the fitted model.
+the \verb{@respondent_estimates} element of the fitted model.
 
-For \code{add_fit()}, model and item fit information are added to the \verb{$fit}
+For \code{add_fit()}, model and item fit information are added to the \verb{@fit}
 element of the fitted model. This function wraps \code{\link[=fit_m2]{fit_m2()}} to calculate the
 \ifelse{html}{\out{M<sub>2</sub>}}{\eqn{M_2}} statistic (Hansen et al., 2016;
 Liu et al., 2016) and/or \code{\link[=fit_ppmc]{fit_ppmc()}} to calculate posterior predictive model
 checks (Park et al., 2015; Sinharay & Almond, 2007; Sinharay et al., 2006;
 Thompson, 2019), depending on which methods are specified.
 
-For \code{add_criterion()}, relative fit criteria are added to the \verb{$criteria}
+For \code{add_criterion()}, relative fit criteria are added to the \verb{@criteria}
 element of the fitted model. For models estimated with MCMC, this function
 wraps \code{\link[=loo]{loo()}} or \code{\link[=waic]{waic()}} to calculate the LOO-CV (Vehtari et al., 2017) or
 WAIC (Watanabe, 2010), respectively, or \code{\link[=log_mll]{log_mll()}} to calculate the log
@@ -117,7 +117,7 @@ For models estimated with the optimizer, this wraps \code{\link[=aic]{aic()}} or
 to estimate the AIC (Akaike, 1973) or BIC (Schwarz, 1978), respectively.
 
 For \code{add_reliability()}, reliability information is added to the
-\verb{$reliability} element of the fitted model. Pattern level reliability is
+\verb{@reliability} element of the fitted model. Pattern level reliability is
 described by Cui et al. (2012). Classification reliability and posterior
 probability reliability are described by Johnson & Sinharay (2018, 2020),
 respectively. This function wraps \code{\link[=reliability]{reliability()}}. Arguments supplied to

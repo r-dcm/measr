@@ -93,26 +93,20 @@ attribute.
 \subsection{Absolute model fit}{
 \itemize{
 \item \code{m2}: The \ifelse{html}{\out{M<sub>2</sub>}}{\eqn{M_2}} fit statistic.
-See \code{\link[=fit_m2]{fit_m2()}} for details. Model fit information must first be added to
-the model using \code{\link[=add_fit]{add_fit()}}.
+See \code{\link[=fit_m2]{fit_m2()}} for details.
 \item \code{rmsea}: The root mean square error of approximation (RMSEA) fit
 statistic and associated confidence interval. See \code{\link[=fit_m2]{fit_m2()}} for details.
-Model fit information must first be added to the model using \code{\link[=add_fit]{add_fit()}}.
 \item \code{srmsr}: The standardized root mean square residual (SRMSR) fit
-statistic. See \code{\link[=fit_m2]{fit_m2()}} for details. Model fit information must first
-be added to the model using \code{\link[=add_fit]{add_fit()}}.
+statistic. See \code{\link[=fit_m2]{fit_m2()}} for details.
 \item \code{ppmc_raw_score}: The observed and posterior predicted chi-square
 statistic for the raw score distribution. See \code{\link[=fit_ppmc]{fit_ppmc()}} for details.
-Model fit information must first be added to the model using \code{\link[=add_fit]{add_fit()}}.
 \item \code{ppmc_conditional_prob}: The observed and posterior predicted conditional
 probabilities of each class providing a correct response to each item.
 See \code{\link[=fit_ppmc]{fit_ppmc()}} for details.
-Model fit information must first be added to the model using \code{\link[=add_fit]{add_fit()}}.
 \item \code{ppmc_conditional_prob_flags}: A subset of the PPMC conditional
 probabilities where the \emph{ppp} is outside the specified \code{ppmc_interval}.
 \item \code{ppmc_odds_ratio}: The observed and posterior predicted odds ratios of
 each item pair. See \code{\link[=fit_ppmc]{fit_ppmc()}} for details.
-Model fit information must first be added to the model using \code{\link[=add_fit]{add_fit()}}.
 \item \code{ppmc_odds_ratio_flags}: A subset of the PPMC odds ratios where the \emph{ppp}
 is outside the specified \code{ppmc_interval}.
 \item \code{ppmc_pvalue}: The observed and posterior predicted proportion of correct
@@ -125,17 +119,12 @@ the \emph{ppp} is outside the specified \code{ppmc_interval}.
 \subsection{Relative model fit}{
 \itemize{
 \item \code{loo}: The leave-one-out cross validation results. See \code{\link[loo:loo]{loo::loo()}} for
-details. The information criterion must first be added to the model using
-\code{\link[=add_criterion]{add_criterion()}}.
+details.
 \item \code{waic}: The widely applicable information criterion results. See
-\code{\link[loo:waic]{loo::waic()}} for details. The information criterion must first be added
-to the model using \code{\link[=add_criterion]{add_criterion()}}.
+\code{\link[loo:waic]{loo::waic()}} for details.
 \item \code{aic}: The Akaike information criterion results. See \code{\link[=aic]{aic()}} for details.
-The information criterion must first be added to the model using
-\code{\link[=add_criterion]{add_criterion()}}.
 \item \code{bic}: The Bayesian information criterion results. See \code{\link[=bic]{bic()}} for
-details. The information criterion must first be added to the model using
-\code{\link[=add_criterion]{add_criterion()}}.
+details.
 }
 }
 
@@ -145,16 +134,11 @@ details. The information criterion must first be added to the model using
 \itemize{
 \item \code{pattern_reliability}: The accuracy and consistency of the overall
 attribute profile classification, as described by Cui et al. (2012).
-Reliability information must first be added to the model using
-\code{\link[=add_reliability]{add_reliability()}}.
 \item \code{classification_reliability}: The classification accuracy and consistency
 for each attribute, using the metrics described by Johnson & Sinharay
-(2018). Reliability information must first be added to the model using
-\code{\link[=add_reliability]{add_reliability()}}.
+(2018).
 \item \code{probability_reliability}: Reliability estimates for the probability of
 proficiency on each attribute, as described by Johnson & Sinharay (2020).
-Reliability information must first be added to the model using
-\code{\link[=add_reliability]{add_reliability()}}.
 }
 }
 }
