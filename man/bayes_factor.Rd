@@ -81,19 +81,39 @@ alternative model).
 \examples{
 \dontshow{if (measr_examples()) withAutoprint(\{ # examplesIf}
 mdm_dina <- dcm_estimate(
-  dcm_specify(dcmdata::mdm_qmatrix, identifier = "item",
-              measurement_model = dina()),
-  data = dcmdata::mdm_data, missing = NA, identifier = "respondent",
-  method = "mcmc", seed = 63277, backend = "rstan",
-  iter = 700, warmup = 500, chains = 2, refresh = 0
+  dcm_specify(
+    qmatrix = dcmdata::mdm_qmatrix,
+    identifier = "item",
+    measurement_model = dina()
+  ),
+  data = dcmdata::mdm_data,
+  missing = NA,
+  identifier = "respondent",
+  method = "mcmc",
+  seed = 63277,
+  backend = "rstan",
+  iter = 700,
+  warmup = 500,
+  chains = 2,
+  refresh = 0
 )
 
 mdm_dino <- dcm_estimate(
-  dcm_specify(dcmdata::mdm_qmatrix, identifier = "item",
-              measurement_model = dino()),
-  data = dcmdata::mdm_data, missing = NA, identifier = "respondent",
-  method = "mcmc", seed = 63277, backend = "rstan",
-  iter = 700, warmup = 500, chains = 2, refresh = 0
+  dcm_specify(
+    qmatrix = dcmdata::mdm_qmatrix,
+    identifier = "item",
+    measurement_model = dino()
+  ),
+  data = dcmdata::mdm_data,
+  missing = NA,
+  identifier = "respondent",
+  method = "mcmc",
+  seed = 63277,
+  backend = "rstan",
+  iter = 700,
+  warmup = 500,
+  chains = 2,
+  refresh = 0
 )
 
 bf <- bayes_factor(mdm_dina, mdm_dino)

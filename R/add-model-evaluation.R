@@ -109,12 +109,21 @@
 #' @name model_evaluation
 #' @examplesIf measr_examples()
 #' cmds_mdm_dina <- dcm_estimate(
-#'   dcm_specify(dcmdata::mdm_qmatrix, identifier = "item",
-#'               measurement_model = dina(),
-#'               priors = c(prior(beta(5, 17), type = "slip"),
-#'                          prior(beta(5, 17), type = "guess"))),
-#'   data = dcmdata::mdm_data, missing = NA, identifier = "respondent",
-#'   method = "optim", seed = 63277, backend = "rstan"
+#'   dcm_specify(
+#'     dcmdata::mdm_qmatrix,
+#'     identifier = "item",
+#'     measurement_model = dina(),
+#'     priors = c(
+#'       prior(beta(5, 17), type = "slip"),
+#'       prior(beta(5, 17), type = "guess")
+#'     )
+#'   ),
+#'   data = dcmdata::mdm_data,
+#'   missing = NA,
+#'   identifier = "respondent",
+#'   method = "optim",
+#'   seed = 63277,
+#'   backend = "rstan"
 #' )
 #'
 #' cmds_mdm_dina <- add_reliability(cmds_mdm_dina)

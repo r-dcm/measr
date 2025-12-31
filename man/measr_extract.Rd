@@ -150,8 +150,12 @@ proficiency on each attribute, as described by Johnson & Sinharay (2020).
 \dontshow{if (measr_examples()) withAutoprint(\{ # examplesIf}
 rstn_mdm_lcdm <- dcm_estimate(
   dcm_specify(dcmdata::mdm_qmatrix, identifier = "item"),
-  data = dcmdata::mdm_data, missing = NA, identifier = "respondent",
-  method = "optim", seed = 63277, backend = "rstan"
+  data = dcmdata::mdm_data,
+  missing = NA,
+  identifier = "respondent",
+  method = "optim",
+  seed = 63277,
+  backend = "rstan"
 )
 
 measr_extract(rstn_mdm_lcdm, "strc_param")

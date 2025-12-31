@@ -46,8 +46,12 @@
 #' @examplesIf measr_examples()
 #' rstn_ecpe_lcdm <- dcm_estimate(
 #'   dcm_specify(dcmdata::ecpe_qmatrix, identifier = "item_id"),
-#'   data = dcmdata::ecpe_data, missing = NA, identifier = "resp_id",
-#'   method = "optim", seed = 63277, backend = "rstan"
+#'   data = dcmdata::ecpe_data,
+#'   missing = NA,
+#'   identifier = "resp_id",
+#'   method = "optim",
+#'   seed = 63277,
+#'   backend = "rstan"
 #' )
 #'
 #' cdi(rstn_ecpe_lcdm)

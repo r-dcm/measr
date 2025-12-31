@@ -41,6 +41,18 @@
 #'   `class` or `attribute`, `mean`, and one column for every value specified in
 #'   `probs`.
 #' @export
+#' @examplesIf measr_examples()
+#' rstn_mdm_lcdm <- dcm_estimate(
+#'   dcm_specify(dcmdata::mdm_qmatrix, identifier = "item"),
+#'   data = dcmdata::mdm_data,
+#'   missing = NA,
+#'   identifier = "respondent",
+#'   method = "optim",
+#'   seed = 63277,
+#'   backend = "rstan"
+#' )
+#'
+#' score(rstn_mdm_lcdm, summary = FALSE)
 score <- S7::new_generic(
   "score",
   "x",

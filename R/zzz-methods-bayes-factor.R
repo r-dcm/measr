@@ -21,11 +21,17 @@
 #'   <https://www.jstor.org/stable/24306045>
 #'
 #' @examplesIf measr_examples()
-#' model_spec <- dcm_specify(qmatrix = dcmdata::mdm_qmatrix,
-#'                           identifier = "item")
-#' model <- dcm_estimate(dcm_spec = model_spec, data = dcmdata::mdm_data,
-#'                       identifier = "respondent", method = "variational",
-#'                       seed = 63277)
+#' model_spec <- dcm_specify(
+#'   qmatrix = dcmdata::mdm_qmatrix,
+#'   identifier = "item"
+#' )
+#' model <- dcm_estimate(
+#'   dcm_spec = model_spec,
+#'   data = dcmdata::mdm_data,
+#'   identifier = "respondent",
+#'   method = "variational",
+#'   seed = 63277
+#' )
 #'
 #' log_mll(model)
 log_mll <- S7::new_generic(
@@ -129,19 +135,39 @@ S7::method(log_mll, measrdcm) <- function(x, force = FALSE) {
 #'
 #' @examplesIf measr_examples()
 #' mdm_dina <- dcm_estimate(
-#'   dcm_specify(dcmdata::mdm_qmatrix, identifier = "item",
-#'               measurement_model = dina()),
-#'   data = dcmdata::mdm_data, missing = NA, identifier = "respondent",
-#'   method = "mcmc", seed = 63277, backend = "rstan",
-#'   iter = 700, warmup = 500, chains = 2, refresh = 0
+#'   dcm_specify(
+#'     qmatrix = dcmdata::mdm_qmatrix,
+#'     identifier = "item",
+#'     measurement_model = dina()
+#'   ),
+#'   data = dcmdata::mdm_data,
+#'   missing = NA,
+#'   identifier = "respondent",
+#'   method = "mcmc",
+#'   seed = 63277,
+#'   backend = "rstan",
+#'   iter = 700,
+#'   warmup = 500,
+#'   chains = 2,
+#'   refresh = 0
 #' )
 #'
 #' mdm_dino <- dcm_estimate(
-#'   dcm_specify(dcmdata::mdm_qmatrix, identifier = "item",
-#'               measurement_model = dino()),
-#'   data = dcmdata::mdm_data, missing = NA, identifier = "respondent",
-#'   method = "mcmc", seed = 63277, backend = "rstan",
-#'   iter = 700, warmup = 500, chains = 2, refresh = 0
+#'   dcm_specify(
+#'     qmatrix = dcmdata::mdm_qmatrix,
+#'     identifier = "item",
+#'     measurement_model = dino()
+#'   ),
+#'   data = dcmdata::mdm_data,
+#'   missing = NA,
+#'   identifier = "respondent",
+#'   method = "mcmc",
+#'   seed = 63277,
+#'   backend = "rstan",
+#'   iter = 700,
+#'   warmup = 500,
+#'   chains = 2,
+#'   refresh = 0
 #' )
 #'
 #' bf <- bayes_factor(mdm_dina, mdm_dino)

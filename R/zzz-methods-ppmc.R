@@ -85,11 +85,21 @@
 #' @export
 #' @examplesIf measr_examples()
 #' mdm_dina <- dcm_estimate(
-#'   dcm_specify(dcmdata::mdm_qmatrix, identifier = "item",
-#'               measurement_model = dina()),
-#'   data = dcmdata::mdm_data, missing = NA, identifier = "respondent",
-#'   method = "mcmc", seed = 63277, backend = "rstan",
-#'   iter = 700, warmup = 500, chains = 2, refresh = 0
+#'   dcm_specify(
+#'     dcmdata::mdm_qmatrix,
+#'     identifier = "item",
+#'     measurement_model = dina()
+#'   ),
+#'   data = dcmdata::mdm_data,
+#'   missing = NA,
+#'   identifier = "respondent",
+#'   method = "mcmc",
+#'   seed = 63277,
+#'   backend = "rstan",
+#'   iter = 700,
+#'   warmup = 500,
+#'   chains = 2,
+#'   refresh = 0
 #' )
 #'
 #' fit_ppmc(mdm_dina, model_fit = "raw_score")
