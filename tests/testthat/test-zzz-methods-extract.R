@@ -52,6 +52,15 @@ test_that("extract structural parameters", {
   expect_true(all(!is.na(dina_param$estimate)))
 })
 
+test_that("extract base rates", {
+  dino_param <- measr_extract(rstn_dino, "base_rate")
+  expect_equal(nrow(dino_param), 1)
+  expect_equal(ncol(dino_param), ncol(q_matrix[, -1]))
+  expect_equal(colnames(dino_param), names(q_matrix[, -1]))
+  expect_true(all(vapply(dino_param, is.double, logical(1))))
+  expect_true(all(!is.na(dino_param[1, ])))
+})
+
 test_that("extract pi matrix", {
   dina_pimat <- measr_extract(rstn_dina, "pi_matrix")
   expect_equal(nrow(dina_pimat), 35)
