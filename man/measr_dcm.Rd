@@ -13,7 +13,7 @@ measr_dcm(
   type = c("lcdm", "dina", "dino", "crum"),
   max_interaction = Inf,
   attribute_structure = c("unconstrained", "independent"),
-  method = c("mcmc", "optim"),
+  method = c("variational", "mcmc", "optim"),
   prior = NULL,
   backend = getOption("measr.backend", "rstan"),
   file = NULL,
@@ -62,8 +62,9 @@ way interactions.}
 attributes, whereas \code{"independent"} assumes that proficiency statuses on
 attributes are independent of each other.}
 
-\item{method}{Estimation method. Options are \code{"mcmc"}, which uses Stan's
-sampling method, or \code{"optim"}, which uses Stan's optimizer.}
+\item{method}{Estimation method. Options are \code{"variational"}, which uses
+Stan's variational algorithm; \code{"mcmc"}, which uses Stan's sampling method;
+or \code{"optim"}, which uses Stan's optimizer.}
 
 \item{prior}{A \link[dcmstan:prior]{prior} object. If \code{NULL}, default priors
 are used, as specified by \code{\link[dcmstan:default_dcm_priors]{dcmstan::default_dcm_priors()}}.}
@@ -117,7 +118,7 @@ A \code{measrdcm} object.
 \code{\link[=dcm_estimate]{dcm_estimate()}}, as \code{measr_dcm()} will be removed in a future release.
 }
 \examples{
-\dontshow{if (measr_examples()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (measr_examples()) withAutoprint(\{ # examplesIf}
 rstn_mdm_lcdm <- measr_dcm(
   data = mdm_data, missing = NA, qmatrix = mdm_qmatrix,
   resp_id = "respondent", item_id = "item", type = "lcdm",

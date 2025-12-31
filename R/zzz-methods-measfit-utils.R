@@ -1,21 +1,30 @@
 # algorithm --------------------------------------------------------------------
 get_algorithm <- S7::new_generic("get_algorithm", c("backend", "method"))
 
-S7::method(get_algorithm, list(stanbackend, optim)) <-
+S7::method(get_algorithm, list(rstan, optim)) <-
   function(backend, method, ..., args) {
     args$algorithm
   }
 
-S7::method(get_algorithm, list(rstan, mcmc)) <-
+S7::method(get_algorithm, list(cmdstanr, optim)) <-
+  function(backend, method, ..., args) {
+    args$algorithm
+  }
+
+S7::method(get_algorithm, list(cmdstanr, pathfinder)) <-
+  function(backend, method, ..., model) {
+    model$metadata()$method
+  }
+
+S7::method(get_algorithm, list(rstan, stanmethod)) <-
   function(backend, method, ..., model) {
     model@stan_args[[1]][["algorithm"]]
   }
 
-S7::method(get_algorithm, list(cmdstanr, mcmc)) <-
+S7::method(get_algorithm, list(cmdstanr, stanmethod)) <-
   function(backend, method, ..., model) {
     model$metadata()$algorithm
   }
-
 
 # version info -----------------------------------------------------------------
 get_version_info <- S7::new_generic("get_version_info", "backend")

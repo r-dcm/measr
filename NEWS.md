@@ -20,7 +20,7 @@
 
 ## New documentation
 
-* A new article on model evaluation has been added to the project website (https://measr.info).
+* A new article on model evaluation has been added to the project website (https://measr.r-dcm.org).
 
 * The model estimation article has been updated to use the same (simulated) data set as the model evaluation article.
 

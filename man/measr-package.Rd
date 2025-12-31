@@ -13,19 +13,25 @@ Estimate diagnostic classification models (also called cognitive diagnostic mode
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://measr.info}
-  \item \url{https://github.com/wjakethompson/measr}
-  \item Report bugs at \url{https://github.com/wjakethompson/measr/issues}
+  \item \url{https://measr.r-dcm.org}
+  \item \url{https://github.com/r-dcm/measr}
+  \item Report bugs at \url{https://github.com/r-dcm/measr/issues}
 }
 
 }
 \author{
 \strong{Maintainer}: W. Jake Thompson \email{wjakethompson@gmail.com} (\href{https://orcid.org/0000-0001-7339-0300}{ORCID})
 
+Authors:
+\itemize{
+  \item Jeffrey Hoover \email{jeffrey.c.hoover@gmail.com} (\href{https://orcid.org/0000-0002-0276-0308}{ORCID})
+}
+
 Other contributors:
 \itemize{
+  \item Auburn Jimenez \email{auburn.jimenez34@gmail.com} (\href{https://orcid.org/0000-0002-7072-2960}{ORCID}) [contributor]
   \item Nathan Jones \email{jonesnateb@gmail.com} (\href{https://orcid.org/0000-0001-6177-7161}{ORCID}) [contributor]
-  \item Matthew Johnson (Provided code adapted for reliability.measrdcm()) [copyright holder]
+  \item Matthew Johnson (Authored code adapted for measrdcm method for `reliability()`) [copyright holder]
   \item University of Kansas [copyright holder]
   \item Institute of Education Sciences [funder]
 }

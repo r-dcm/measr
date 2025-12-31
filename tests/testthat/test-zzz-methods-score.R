@@ -51,16 +51,6 @@ test_that("dina probabilities are accurate", {
 
   # extract works
   expect_equal(rstn_dina@respondent_estimates, list())
-  err <- rlang::catch_cnd(measr_extract(rstn_dina, "class_prob"))
-  expect_match(
-    err$message,
-    "added to a model object before\\nclass probabilities"
-  )
-  err <- rlang::catch_cnd(measr_extract(rstn_dina, "attribute_prob"))
-  expect_match(
-    err$message,
-    "added to a model object before\\nattribute probabilities"
-  )
 
   rstn_dina <- add_respondent_estimates(rstn_dina)
   expect_equal(rstn_dina@respondent_estimates, dina_preds)

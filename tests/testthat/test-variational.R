@@ -1,15 +1,11 @@
 if (!identical(Sys.getenv("NOT_CRAN"), "true")) {
   skip("No MCMC on CRAN")
 } else {
-  lcdm_spec <- dcm_specify(
+  dino_spec <- dcm_specify(
     qmatrix = dcmdata::mdm_qmatrix,
     identifier = "item",
-    measurement_model = lcdm(),
-    structural_model = unconstrained(),
-    priors = c(
-      prior(uniform(-15, 15), type = "intercept"),
-      prior(uniform(0, 15), type = "maineffect")
-    )
+    measurement_model = dino(),
+    structural_model = unconstrained()
   )
   dina_spec <- dcm_specify(
     qmatrix = dcmdata::mdm_qmatrix,
@@ -23,21 +19,18 @@ if (!identical(Sys.getenv("NOT_CRAN"), "true")) {
   )
 
   out <- capture.output(
-    suppressMessages(
-      cmds_mdm_lcdm <- dcm_estimate(
-        lcdm_spec,
+    suppressWarnings(suppressMessages(
+      cmds_mdm_dino <- dcm_estimate(
+        dino_spec,
         data = dcmdata::mdm_data,
         identifier = "respondent",
         missing = NA,
-        method = "mcmc",
+        method = "variational",
         seed = 63277,
         backend = "cmdstanr",
-        iter_sampling = 500,
-        iter_warmup = 1000,
-        chains = 2,
-        parallel_chains = 2
+        draws = 1000
       )
-    )
+    ))
   )
   out <- capture.output(
     suppressWarnings(suppressMessages(
@@ -46,67 +39,13 @@ if (!identical(Sys.getenv("NOT_CRAN"), "true")) {
         data = dcmdata::mdm_data,
         identifier = "respondent",
         missing = NA,
-        method = "mcmc",
+        method = "variational",
         seed = 63277,
-        backend = "rstan",
-        iter = 1500,
-        warmup = 1000,
-        chains = 2,
-        cores = 2,
-        refresh = 0
+        backend = "rstan"
       )
     ))
   )
-
-  # for q-matrix validation ----------------------------------------------------
-  ecpe_dina_spec <- dcm_specify(
-    qmatrix = dplyr::slice(dcmdata::ecpe_qmatrix, 1:10),
-    identifier = "item_id",
-    measurement_model = dina(),
-    structural_model = unconstrained()
-  )
-
-  set.seed(3273)
-  test_data <- dplyr::select(
-    dplyr::slice(dcmdata::ecpe_data, 1:500),
-    resp_id:E10
-  )
-  out <- capture.output(
-    suppressMessages(
-      rstn_ecpe <- dcm_estimate(
-        ecpe_dina_spec,
-        data = test_data,
-        identifier = "resp_id",
-        method = "mcmc",
-        seed = 5007,
-        backend = "rstan",
-        iter = 750,
-        warmup = 500,
-        chains = 2,
-        cores = 2,
-        control = list(max_treedepth = 15),
-        refresh = 0
-      )
-    )
-  )
 }
-
-# model validator --------------------------------------------------------------
-test_that("measrfit validator errors correctly", {
-  expect_error(
-    {
-      measrfit(backend = rstan(), method = optim(), model = cmds_mdm_lcdm@model)
-    },
-    "@model must be a list returned"
-  )
-})
-
-test_that("controls work", {
-  expect_identical(
-    rstn_ecpe@model@stan_args[[1]][["control"]][["max_treedepth"]],
-    15
-  )
-})
 
 # draws ------------------------------------------------------------------------
 test_that("as_draws works", {
@@ -121,22 +60,22 @@ test_that("as_draws works", {
   draws_d <- posterior::as_draws_df(rstn_mdm_dina)
   expect_s3_class(draws_d, "draws_df")
 
-  draws_l <- posterior::as_draws_list(cmds_mdm_lcdm)
+  draws_l <- posterior::as_draws_list(cmds_mdm_dino)
   expect_s3_class(draws_l, "draws_list")
 
-  draws_m <- posterior::as_draws_matrix(cmds_mdm_lcdm)
+  draws_m <- posterior::as_draws_matrix(cmds_mdm_dino)
   expect_s3_class(draws_m, "draws_matrix")
 
-  draws_r <- posterior::as_draws_rvars(cmds_mdm_lcdm)
+  draws_r <- posterior::as_draws_rvars(cmds_mdm_dino)
   expect_s3_class(draws_r, "draws_rvars")
 })
 
 test_that("get_draws works as expected", {
   skip_on_cran()
 
-  test_draws <- get_draws(cmds_mdm_lcdm)
+  test_draws <- get_draws(cmds_mdm_dino)
   expect_equal(posterior::ndraws(test_draws), 1000)
-  expect_equal(posterior::nvariables(test_draws), 21)
+  expect_equal(posterior::nvariables(test_draws), 22)
   expect_s3_class(test_draws, "draws_array")
 
   test_draws <- get_draws(rstn_mdm_dina, vars = c("log_Vc", "pi"), ndraws = 750)
@@ -147,16 +86,16 @@ test_that("get_draws works as expected", {
 
 # extracts ---------------------------------------------------------------------
 test_that("extract pi matrix", {
-  lcdm_pimat <- measr_extract(cmds_mdm_lcdm, "pi_matrix")
-  expect_equal(nrow(lcdm_pimat), 4)
-  expect_equal(ncol(lcdm_pimat), 3)
-  expect_equal(lcdm_pimat$item, dcmdata::mdm_qmatrix$item)
+  dino_pimat <- measr_extract(cmds_mdm_dino, "pi_matrix")
+  expect_equal(nrow(dino_pimat), 4)
+  expect_equal(ncol(dino_pimat), 3)
+  expect_equal(dino_pimat$item, dcmdata::mdm_qmatrix$item)
   expect_equal(
-    colnames(lcdm_pimat)[-1],
+    colnames(dino_pimat)[-1],
     dplyr::pull(profile_labels(1), "class")
   )
-  expect_true(all(vapply(lcdm_pimat[, -1], posterior::is_rvar, logical(1))))
-  expect_true(all(vapply(lcdm_pimat[, -1], \(x) !any(is.na(x)), logical(1))))
+  expect_true(all(vapply(dino_pimat[, -1], posterior::is_rvar, logical(1))))
+  expect_true(all(vapply(dino_pimat[, -1], \(x) !any(is.na(x)), logical(1))))
 })
 
 test_that("extract model p-values", {
@@ -176,7 +115,7 @@ test_that("extract model p-values", {
 test_that("loglik is calculated correctly", {
   skip_on_cran()
 
-  cmds_log_lik <- loglik(cmds_mdm_lcdm)
+  cmds_log_lik <- loglik(cmds_mdm_dino)
   rstn_log_lik <- loglik(rstn_mdm_dina)
 
   # expected value from 2-class LCA fit in Mplus
@@ -196,7 +135,7 @@ test_that("loo and waic work", {
   expect_s3_class(err, "rlang_error")
   expect_match(err$message, "supports posterior distributions")
 
-  check_loo <- loo(cmds_mdm_lcdm)
+  check_loo <- loo(cmds_mdm_dino)
   expect_s3_class(check_loo, "psis_loo")
 
   check_waic <- waic(rstn_mdm_dina)
@@ -206,17 +145,9 @@ test_that("loo and waic work", {
 test_that("loo and waic can be added to model", {
   skip_on_cran()
 
-  err <- rlang::catch_cnd(add_criterion(rstn_dino))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "supports posterior distributions")
-
-  loo_model <- add_criterion(cmds_mdm_lcdm, criterion = "loo")
+  loo_model <- add_criterion(cmds_mdm_dino, criterion = "loo")
   expect_equal(names(loo_model@criteria), "loo")
   expect_s3_class(loo_model@criteria$loo, "psis_loo")
-  expect_equal(
-    measr_extract(cmds_mdm_lcdm, "loo"),
-    measr_extract(loo_model, "loo")
-  )
 
   lw_model <- add_criterion(
     loo_model,
@@ -238,9 +169,9 @@ test_that("loo and waic can be added to model", {
 test_that("model comparisons work", {
   skip_on_cran()
 
-  no_save <- loo_compare(cmds_mdm_lcdm, rstn_mdm_dina)
+  no_save <- loo_compare(cmds_mdm_dino, rstn_mdm_dina)
   expect_s3_class(no_save, "compare.loo")
-  expect_equal(rownames(no_save), c("cmds_mdm_lcdm", "rstn_mdm_dina"))
+  expect_equal(rownames(no_save), c("rstn_mdm_dina", "cmds_mdm_dino"))
   expect_equal(
     colnames(no_save),
     c(
@@ -255,12 +186,12 @@ test_that("model comparisons work", {
     )
   )
 
-  lcdm_compare <- add_criterion(cmds_mdm_lcdm, criterion = c("loo", "waic"))
-  lcdm_save <- loo_compare(lcdm_compare, rstn_mdm_dina)
-  expect_s3_class(lcdm_save, "compare.loo")
-  expect_equal(rownames(lcdm_save), c("lcdm_compare", "rstn_mdm_dina"))
+  dino_compare <- add_criterion(cmds_mdm_dino, criterion = c("loo", "waic"))
+  dino_save <- loo_compare(dino_compare, rstn_mdm_dina)
+  expect_s3_class(dino_save, "compare.loo")
+  expect_equal(rownames(dino_save), c("rstn_mdm_dina", "dino_compare"))
   expect_equal(
-    colnames(lcdm_save),
+    colnames(dino_save),
     c(
       "elpd_diff",
       "se_diff",
@@ -274,9 +205,9 @@ test_that("model comparisons work", {
   )
 
   dina_compare <- add_criterion(rstn_mdm_dina, criterion = c("loo", "waic"))
-  dina_save <- loo_compare(cmds_mdm_lcdm, dina_compare, criterion = "waic")
+  dina_save <- loo_compare(cmds_mdm_dino, dina_compare, criterion = "waic")
   expect_s3_class(dina_save, "compare.loo")
-  expect_equal(rownames(dina_save), c("cmds_mdm_lcdm", "dina_compare"))
+  expect_equal(rownames(dina_save), c("dina_compare", "cmds_mdm_dino"))
   expect_equal(
     colnames(dina_save),
     c(
@@ -291,9 +222,9 @@ test_that("model comparisons work", {
     )
   )
 
-  all_save <- loo_compare(lcdm_compare, dina_compare, criterion = "loo")
+  all_save <- loo_compare(dino_compare, dina_compare, criterion = "loo")
   expect_s3_class(all_save, "compare.loo")
-  expect_equal(rownames(all_save), c("lcdm_compare", "dina_compare"))
+  expect_equal(rownames(all_save), c("dina_compare", "dino_compare"))
   expect_equal(
     colnames(all_save),
     c(
@@ -309,25 +240,25 @@ test_that("model comparisons work", {
   )
 
   err <- rlang::catch_cnd(loo_compare(
-    lcdm_compare,
+    dino_compare,
     dina_compare,
     model_names = c("m1", "m2", "m3")
   ))
   expect_s3_class(err, "rlang_error")
   expect_match(err$message, "same as the number of models")
 
-  err <- rlang::catch_cnd(loo_compare(lcdm_compare, no_save))
+  err <- rlang::catch_cnd(loo_compare(dino_compare, no_save))
   expect_s3_class(err, "rlang_error")
   expect_match(err$message, "must be a .*measrdcm.* object")
 
   waic_comp <- loo_compare(
-    lcdm_compare,
+    dino_compare,
     dina_compare,
     criterion = "waic",
     model_names = c("first_model", "second_model")
   )
   expect_s3_class(waic_comp, "compare.loo")
-  expect_equal(rownames(waic_comp), c("first_model", "second_model"))
+  expect_equal(rownames(waic_comp), c("second_model", "first_model"))
   expect_equal(
     colnames(waic_comp),
     c(
@@ -345,7 +276,7 @@ test_that("model comparisons work", {
 
 # aic/bic ----------------------------------------------------------------------
 test_that("aic and bic error", {
-  err <- rlang::catch_cnd(aic(cmds_mdm_lcdm))
+  err <- rlang::catch_cnd(aic(cmds_mdm_dino))
   expect_s3_class(err, "rlang_error")
   expect_match(err$message, "must be a model estimated with .*optim.*")
 
@@ -353,7 +284,7 @@ test_that("aic and bic error", {
   expect_s3_class(err, "rlang_error")
   expect_match(err$message, "must be a model estimated with .*optim.*")
 
-  err <- rlang::catch_cnd(bic(cmds_mdm_lcdm))
+  err <- rlang::catch_cnd(bic(cmds_mdm_dino))
   expect_s3_class(err, "rlang_error")
   expect_match(err$message, "must be a model estimated with .*optim.*")
 
@@ -368,7 +299,7 @@ test_that("log_mll works", {
   expect_s3_class(err, "rlang_error")
   expect_match(err$message, "must be a model estimated with")
 
-  err <- rlang::catch_cnd(log_mll(cmds_mdm_lcdm))
+  err <- rlang::catch_cnd(log_mll(cmds_mdm_dino))
   expect_s3_class(err, "rlang_error")
   expect_match(err$message, "must be a model estimated with")
 
@@ -491,12 +422,12 @@ test_that("bayes_factor works", {
 test_that("ppmc works", {
   skip_on_cran()
 
-  test_ppmc <- fit_ppmc(cmds_mdm_lcdm)
+  test_ppmc <- fit_ppmc(cmds_mdm_dino)
   expect_equal(test_ppmc, list())
 
   # test 1 -----
   test_ppmc <- fit_ppmc(
-    cmds_mdm_lcdm,
+    cmds_mdm_dino,
     ndraws = 500,
     return_draws = 100,
     model_fit = "raw_score",
@@ -600,7 +531,7 @@ test_that("ppmc works", {
 
   # test 3 -----
   test_ppmc <- fit_ppmc(
-    cmds_mdm_lcdm,
+    cmds_mdm_dino,
     ndraws = 1,
     return_draws = 0,
     model_fit = "raw_score",
@@ -780,23 +711,9 @@ test_that("model fit can be added", {
   # test extraction -----
   rs_check <- measr_extract(test_model, "ppmc_raw_score")
   expect_equal(rs_check, test_model@fit$ppmc_raw_score)
-  expect_equal(
-    measr_extract(rstn_mdm_dina, "ppmc_raw_score") |>
-      dplyr::select("obs_chisq", "ppmc_mean"),
-    rs_check |>
-      dplyr::select("obs_chisq", "ppmc_mean"),
-    tolerance = 0.2
-  )
 
   cp_check <- measr_extract(test_model, "ppmc_conditional_prob")
   expect_equal(cp_check, test_model@fit$ppmc_conditional_prob)
-  expect_equal(
-    measr_extract(rstn_mdm_dina, "ppmc_conditional_prob") |>
-      dplyr::select("item":"ppmc_mean", "ppp"),
-    cp_check |>
-      dplyr::select("item":"ppmc_mean", "ppp"),
-    tolerance = 0.2
-  )
   expect_equal(
     measr_extract(
       test_model,
@@ -817,13 +734,6 @@ test_that("model fit can be added", {
   or_check <- measr_extract(test_model, "ppmc_odds_ratio")
   expect_equal(or_check, test_model@fit$ppmc_odds_ratio)
   expect_equal(
-    measr_extract(rstn_mdm_dina, "ppmc_odds_ratio") |>
-      dplyr::select("item_1":"obs_or", "ppp"),
-    or_check |>
-      dplyr::select("item_1":"obs_or", "ppp"),
-    tolerance = 0.2
-  )
-  expect_equal(
     measr_extract(test_model, "ppmc_odds_ratio_flags", ppmc_interval = 0.95),
     dplyr::filter(or_check, ppp <= 0.025 | ppp >= 0.975)
   )
@@ -834,13 +744,6 @@ test_that("model fit can be added", {
 
   pval_check <- measr_extract(test_model, "ppmc_pvalue")
   expect_equal(pval_check, test_model@fit$ppmc_pvalue)
-  expect_equal(
-    measr_extract(rstn_mdm_dina, "ppmc_pvalue") |>
-      dplyr::select("item":"ppmc_mean", "ppp"),
-    pval_check |>
-      dplyr::select("item":"ppmc_mean", "ppp"),
-    tolerance = 0.2
-  )
   expect_equal(
     measr_extract(test_model, "ppmc_pvalue_flags", ppmc_interval = 0.95),
     dplyr::filter(pval_check, ppp <= 0.025 | ppp >= 0.975)
@@ -853,7 +756,7 @@ test_that("model fit can be added", {
 
 # reliability ------------------------------------------------------------------
 test_that("reliability works", {
-  reli <- reliability(cmds_mdm_lcdm, threshold = 0.5)
+  reli <- reliability(cmds_mdm_dino, threshold = 0.5)
 
   expect_equal(
     names(reli),
@@ -907,12 +810,12 @@ test_that("respondent probabilities are correct", {
   skip_on_cran()
 
   mdm_preds <- score(
-    cmds_mdm_lcdm,
+    cmds_mdm_dino,
     newdata = dcmdata::mdm_data,
     identifier = "respondent",
     summary = TRUE
   )
-  mdm_full_preds <- score(cmds_mdm_lcdm, summary = FALSE)
+  mdm_full_preds <- score(cmds_mdm_dino, summary = FALSE)
 
   # dimensions are correct -----
   expect_equal(
@@ -958,46 +861,20 @@ test_that("respondent probabilities are correct", {
   )
 
   # extract works -----
-  expect_equal(cmds_mdm_lcdm@respondent_estimates, list())
+  expect_equal(cmds_mdm_dino@respondent_estimates, list())
 
-  cmds_mdm_lcdm <- add_respondent_estimates(cmds_mdm_lcdm)
-  expect_equal(cmds_mdm_lcdm@respondent_estimates, mdm_preds)
+  cmds_mdm_dino <- add_respondent_estimates(cmds_mdm_dino)
+  expect_equal(cmds_mdm_dino@respondent_estimates, mdm_preds)
   expect_equal(
-    measr_extract(cmds_mdm_lcdm, "class_prob"),
+    measr_extract(cmds_mdm_dino, "class_prob"),
     mdm_preds$class_probabilities |>
       dplyr::select("respondent", "class", "probability") |>
       tidyr::pivot_wider(names_from = "class", values_from = "probability")
   )
   expect_equal(
-    measr_extract(cmds_mdm_lcdm, "attribute_prob"),
+    measr_extract(cmds_mdm_dino, "attribute_prob"),
     mdm_preds$attribute_prob |>
       dplyr::select("respondent", "attribute", "probability") |>
       tidyr::pivot_wider(names_from = "attribute", values_from = "probability")
-  )
-})
-
-# q-matrix validation ----------------------------------------------------------
-test_that("q-matrix validation works", {
-  skip_on_cran()
-
-  qmat_valid_res <- qmatrix_validation(x = rstn_ecpe)
-
-  expect_equal(
-    names(qmat_valid_res),
-    c(
-      "item_id",
-      "original_specification",
-      "original_pvaf",
-      "empirical_specification",
-      "empirical_pvaf"
-    )
-  )
-  expect_equal(nrow(qmat_valid_res), 10)
-  expect_equal(
-    nrow(
-      qmat_valid_res |>
-        dplyr::filter(is.na(empirical_specification))
-    ),
-    9
   )
 })

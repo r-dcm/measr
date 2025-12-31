@@ -9,7 +9,7 @@ dcm_estimate(
   data,
   missing = NA,
   identifier = NULL,
-  method = c("mcmc", "optim"),
+  method = c("variational", "mcmc", "optim", "pathfinder"),
   backend = getOption("measr.backend", "rstan"),
   file = NULL,
   file_refit = getOption("measr.file_refit", "never"),
@@ -30,8 +30,11 @@ contains respondent identifiers. \code{NULL} (the default) indicates that no
 identifiers are present in the data, and row numbers will be used as
 identifiers.}
 
-\item{method}{Estimation method. Options are \code{"mcmc"}, which uses Stan's
-sampling method, or \code{"optim"}, which uses Stan's optimizer.}
+\item{method}{Estimation method. Options are \code{"variational"}, which uses
+Stan's variational algorithm; \code{"mcmc"}, which uses Stan's sampling method;
+\code{"optim"}, which uses Stan's optimizer; or \code{"pathfinder"} which uses Stan's
+pathfinder variational inference algorithm (only available if
+\code{backend = "cmdstanr"}).}
 
 \item{backend}{Character string naming the package to use as the backend for
 fitting the Stan model. Options are \code{"rstan"} (the default) or
@@ -79,7 +82,7 @@ cognitive diagnostic models) using 'Stan'. Models can be estimated using
 Stan's optimizer, or full Markov chain Monte Carlo (\acronym{MCMC}).
 }
 \examples{
-\dontshow{if (measr_examples()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (measr_examples()) withAutoprint(\{ # examplesIf}
 model_spec <- dcm_specify(qmatrix = dcmdata::mdm_qmatrix,
                           identifier = "item")
 model <- dcm_estimate(dcm_spec = model_spec, data = dcmdata::mdm_data,

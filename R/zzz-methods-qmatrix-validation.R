@@ -106,7 +106,7 @@ S7::method(qmatrix_validation, measrdcm) <- function(
 
   # posterior probabilities of each class
   strc_param <- measr_extract(x, "strc_param")
-  if (S7::S7_inherits(x@method, mcmc)) {
+  if (!S7::S7_inherits(x@method, optim)) {
     strc_param <- strc_param |>
       dplyr::mutate(estimate = E(.data$estimate))
   }

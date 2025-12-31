@@ -75,22 +75,6 @@ test_that("reliability can be added to model object", {
   dina_mod <- rstn_dina
   expect_equal(dina_mod@reliability, list())
 
-  err <- rlang::catch_cnd(measr_extract(dina_mod, "pattern_reliability"))
-  expect_match(
-    err$message,
-    "Reliability information must be\\nadded to a model"
-  )
-  err <- rlang::catch_cnd(measr_extract(dina_mod, "classification_reliability"))
-  expect_match(
-    err$message,
-    "Reliability information must be\\nadded to a model"
-  )
-  err <- rlang::catch_cnd(measr_extract(dina_mod, "probability_reliability"))
-  expect_match(
-    err$message,
-    "Reliability information must be\\nadded to a model"
-  )
-
   dina_mod <- add_reliability(dina_mod, threshold = rep(0.5, 5))
   expect_equal(
     names(dina_mod@reliability),
@@ -103,6 +87,10 @@ test_that("reliability can be added to model object", {
       accuracy = dina_mod@reliability$pattern_reliability[["p_a"]],
       consistency = dina_mod@reliability$pattern_reliability[["p_c"]]
     )
+  )
+  expect_equal(
+    measr_extract(rstn_dina, "pattern_reliability"),
+    measr_extract(dina_mod, "pattern_reliability")
   )
 
   expect_equal(
@@ -120,6 +108,10 @@ test_that("reliability can be added to model object", {
       ),
       by = "attribute"
     )
+  )
+  expect_equal(
+    measr_extract(rstn_dina, "classification_reliability"),
+    measr_extract(dina_mod, "classification_reliability")
   )
 
   expect_equal(
@@ -154,6 +146,10 @@ test_that("reliability can be added to model object", {
       "attribute",
       informational = "rho_i"
     )
+  )
+  expect_equal(
+    measr_extract(rstn_dina, "probability_reliability"),
+    measr_extract(dina_mod, "probability_reliability")
   )
 
   expect_equal(

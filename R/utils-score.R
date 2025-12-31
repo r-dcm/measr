@@ -1,5 +1,5 @@
 profile_labels <- function(model_spec) {
-  dcmstan::create_profiles(model_spec) |>
+  create_profiles(model_spec) |>
     tibble::rowid_to_column(var = "class_id") |>
     tidyr::pivot_longer(cols = -"class_id") |>
     dplyr::summarize(

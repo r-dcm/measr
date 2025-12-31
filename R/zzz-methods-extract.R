@@ -79,26 +79,20 @@ measr_extract <- S7::new_generic(
 #'
 #' ### Absolute model fit
 #'   * `m2`: The \ifelse{html}{\out{M<sub>2</sub>}}{\eqn{M_2}} fit statistic.
-#'     See [fit_m2()] for details. Model fit information must first be added to
-#'     the model using [add_fit()].
+#'     See [fit_m2()] for details.
 #'   * `rmsea`: The root mean square error of approximation (RMSEA) fit
 #'     statistic and associated confidence interval. See [fit_m2()] for details.
-#'     Model fit information must first be added to the model using [add_fit()].
 #'   * `srmsr`: The standardized root mean square residual (SRMSR) fit
-#'     statistic. See [fit_m2()] for details. Model fit information must first
-#'     be added to the model using [add_fit()].
+#'     statistic. See [fit_m2()] for details.
 #'   * `ppmc_raw_score`: The observed and posterior predicted chi-square
 #'     statistic for the raw score distribution. See [fit_ppmc()] for details.
-#'     Model fit information must first be added to the model using [add_fit()].
 #'   * `ppmc_conditional_prob`: The observed and posterior predicted conditional
 #'     probabilities of each class providing a correct response to each item.
 #'     See [fit_ppmc()] for details.
-#'     Model fit information must first be added to the model using [add_fit()].
 #'   * `ppmc_conditional_prob_flags`: A subset of the PPMC conditional
 #'     probabilities where the _ppp_ is outside the specified `ppmc_interval`.
 #'   * `ppmc_odds_ratio`: The observed and posterior predicted odds ratios of
 #'     each item pair. See [fit_ppmc()] for details.
-#'     Model fit information must first be added to the model using [add_fit()].
 #'   * `ppmc_odds_ratio_flags`: A subset of the PPMC odds ratios where the _ppp_
 #'     is outside the specified `ppmc_interval`.
 #'   * `ppmc_pvalue`: The observed and posterior predicted proportion of correct
@@ -108,31 +102,21 @@ measr_extract <- S7::new_generic(
 #'
 #' ### Relative model fit
 #'   * `loo`: The leave-one-out cross validation results. See [loo::loo()] for
-#'     details. The information criterion must first be added to the model using
-#'     [add_criterion()].
+#'     details.
 #'   * `waic`: The widely applicable information criterion results. See
-#'     [loo::waic()] for details. The information criterion must first be added
-#'     to the model using [add_criterion()].
+#'     [loo::waic()] for details.
 #'   * `aic`: The Akaike information criterion results. See [aic()] for details.
-#'     The information criterion must first be added to the model using
-#'     [add_criterion()].
 #'   * `bic`: The Bayesian information criterion results. See [bic()] for
-#'     details. The information criterion must first be added to the model using
-#'     [add_criterion()].
+#'     details.
 #'
 #' ## Reliability
 #'   * `pattern_reliability`: The accuracy and consistency of the overall
 #'     attribute profile classification, as described by Cui et al. (2012).
-#'     Reliability information must first be added to the model using
-#'     [add_reliability()].
 #'   * `classification_reliability`: The classification accuracy and consistency
 #'     for each attribute, using the metrics described by Johnson & Sinharay
-#'     (2018). Reliability information must first be added to the model using
-#'     [add_reliability()].
+#'     (2018).
 #'   * `probability_reliability`: Reliability estimates for the probability of
 #'     proficiency on each attribute, as described by Johnson & Sinharay (2020).
-#'     Reliability information must first be added to the model using
-#'     [add_reliability()].
 #'
 #' @concept Sinharay
 #' @concept Goodman

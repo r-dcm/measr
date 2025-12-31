@@ -55,9 +55,17 @@ dcmstan::unconstrained
 #' @export
 dcmstan::independent
 
+#' @importFrom dcmstan loglinear
+#' @export
+dcmstan::loglinear
+
 #' @importFrom dcmstan hdcm
 #' @export
 dcmstan::hdcm
+
+#' @importFrom dcmstan bayesnet
+#' @export
+dcmstan::bayesnet
 
 # posterior --------------------------------------------------------------------
 #' @importFrom posterior E

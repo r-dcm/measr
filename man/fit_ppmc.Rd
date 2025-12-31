@@ -77,9 +77,10 @@ between the fitted model and the observed data.
 }
 }
 \description{
-For models estimated with \code{method = "mcmc"}, use the posterior distributions
-to compute expected distributions for fit statistics and compare to values
-in the observed data.
+For models estimated with a method that results in posterior distributions
+(e.g., "mcmc", "variational"), use the posterior distributions to compute
+expected distributions for fit statistics and compare to values in the
+observed data.
 }
 \details{
 Posterior predictive model checks (PPMCs) use the posterior distribution of
@@ -101,7 +102,7 @@ each pair of items (\code{item_fit = "odds_ratio"}) as described by Park et al.
 (2015) and Sinharay et al. (2006).
 }
 \examples{
-\dontshow{if (measr_examples()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (measr_examples()) withAutoprint(\{ # examplesIf}
 mdm_dina <- dcm_estimate(
   dcm_specify(dcmdata::mdm_qmatrix, identifier = "item",
               measurement_model = dina()),

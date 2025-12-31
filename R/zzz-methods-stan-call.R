@@ -50,6 +50,10 @@ S7::method(stan_function, list(rstan, optim)) <-
   function(backend, method, ...) {
     rstan::optimizing
   }
+S7::method(stan_function, list(rstan, variational)) <-
+  function(backend, method, ...) {
+    rstan::vb
+  }
 S7::method(stan_function, list(rstan, gqs)) <-
   function(backend, method, ...) {
     rstan::gqs
@@ -62,6 +66,14 @@ S7::method(stan_function, list(cmdstanr, mcmc)) <-
 S7::method(stan_function, list(cmdstanr, optim)) <-
   function(backend, method, ..., compiled_model = NULL) {
     compiled_model$optimize
+  }
+S7::method(stan_function, list(cmdstanr, variational)) <-
+  function(backend, method, ..., compiled_model = NULL) {
+    compiled_model$variational
+  }
+S7::method(stan_function, list(cmdstanr, pathfinder)) <-
+  function(backend, method, ..., compiled_model = NULL) {
+    compiled_model$pathfinder
   }
 S7::method(stan_function, list(cmdstanr, gqs)) <-
   function(backend, method, ..., compiled_model = NULL) {

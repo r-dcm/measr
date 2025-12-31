@@ -44,11 +44,12 @@ loo::loo_compare
     return(x@criteria$loo)
   }
 
-  if (!S7::S7_inherits(x@method, mcmc)) {
+  if (S7::S7_inherits(x@method, optim)) {
     cli::cli_abort(
       glue::glue(
-        "{{.arg {rlang::caller_arg(x)}}} must be a model estimated ",
-        "with {{.code method = \"mcmc\"}} to estimate the LOO"
+        "{{.arg {rlang::caller_arg(x)}}} must be estimated with ",
+        "a method that supports posterior distributions ",
+        "(e.g., \"mcmc\", \"variational\") to estimate the LOO"
       )
     )
   }
@@ -64,11 +65,12 @@ loo::loo_compare
     return(x@criteria$waic)
   }
 
-  if (!S7::S7_inherits(x@method, mcmc)) {
+  if (S7::S7_inherits(x@method, optim)) {
     cli::cli_abort(
       glue::glue(
-        "{{.arg {rlang::caller_arg(x)}}} must be a model estimated ",
-        "with {{.code method = \"mcmc\"}} to estimate the WAIC"
+        "{{.arg {rlang::caller_arg(x)}}} must be estimated with ",
+        "a method that supports posterior distributions ",
+        "(e.g., \"mcmc\", \"variational\") to estimate the WAIC"
       )
     )
   }

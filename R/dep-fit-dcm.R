@@ -38,8 +38,9 @@
 #'   `"unconstrained"` makes no assumptions about the relationships between
 #'   attributes, whereas `"independent"` assumes that proficiency statuses on
 #'   attributes are independent of each other.
-#' @param method Estimation method. Options are `"mcmc"`, which uses Stan's
-#'   sampling method, or `"optim"`, which uses Stan's optimizer.
+#' @param method Estimation method. Options are `"variational"`, which uses
+#'   Stan's variational algorithm; `"mcmc"`, which uses Stan's sampling method;
+#'   or `"optim"`, which uses Stan's optimizer.
 #' @param prior A [prior][dcmstan::prior()] object. If `NULL`, default priors
 #'   are used, as specified by [dcmstan::default_dcm_priors()].
 #' @param backend Character string naming the package to use as the backend for
@@ -96,7 +97,7 @@ measr_dcm <- function(
   type = c("lcdm", "dina", "dino", "crum"),
   max_interaction = Inf,
   attribute_structure = c("unconstrained", "independent"),
-  method = c("mcmc", "optim"),
+  method = c("variational", "mcmc", "optim"),
   prior = NULL,
   backend = getOption("measr.backend", "rstan"),
   file = NULL,

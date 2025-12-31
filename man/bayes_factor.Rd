@@ -79,7 +79,7 @@ then the posterior is \{\code{posterior_prob_null}\}" (or 1 minus for the
 alternative model).
 }
 \examples{
-\dontshow{if (measr_examples()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (measr_examples()) withAutoprint(\{ # examplesIf}
 mdm_dina <- dcm_estimate(
   dcm_specify(dcmdata::mdm_qmatrix, identifier = "item",
               measurement_model = dina()),
