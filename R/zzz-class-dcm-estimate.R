@@ -376,6 +376,13 @@ measrfit <- S7::new_class(
         "@model must be a {.cls CmdStanMCMC} object returned by the ",
         "{.help [{.fun $sample}](cmdstanr::CmdStanMCMC)} method"
       ))
+    } else if (
+      inherits(self@backend, "measr::rstan") &&
+        inherits(self@method, "measr::pathfinder")
+    ) {
+      cli::cli_fmt(cli::cli_text(
+        "@backend must be {.val cmdstanr} when @method is {.val pathfinder}"
+      ))
     } else {
       NULL
     }

@@ -50,6 +50,30 @@ if (!identical(Sys.getenv("NOT_CRAN"), "true")) {
   )
 }
 
+# model validator --------------------------------------------------------------
+test_that("measrfit validator errors correctly", {
+  expect_error(
+    {
+      dcm_estimate(
+        lcdm_spec,
+        data = dcmdata::dtmr_data,
+        identifier = "id",
+        missing = NA,
+        method = "pathfinder",
+        seed = 63277,
+        backend = "rstan",
+        draws = 1000
+      )
+    },
+    "`backend` must be cmdstanr"
+  )
+
+  expect_error(
+    measrfit(backend = rstan(), method = pathfinder()),
+    "@backend must be .*cmdstanr.* when @method is .*pathfinder.*"
+  )
+})
+
 # draws ------------------------------------------------------------------------
 test_that("as_draws works", {
   skip_on_cran()
