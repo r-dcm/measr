@@ -23,7 +23,7 @@ score(
 - x:
 
   An estimated model (e.g., from
-  [`dcm_estimate()`](https://measr.info/dev/reference/dcm_estimate.md).
+  [`dcm_estimate()`](https://measr.r-dcm.org/dev/reference/dcm_estimate.md).
 
 - newdata:
 
@@ -49,21 +49,23 @@ score(
 - summary:
 
   Should summary statistics be returned instead of the raw posterior
-  draws? Only relevant if the model was estimated with
-  `method = "mcmc"`. Default is `FALSE`.
+  draws? Only relevant if the model was estimated with a method that
+  results in posterior distributions (e.g., "mcmc", "variational").
+  Default is `FALSE`.
 
 - probs:
 
   The percentiles to be computed by the
   [`stats::quantile()`](https://rdrr.io/r/stats/quantile.html) function.
-  Only relevant if the model was estimated with `method = "mcmc"`. Only
-  used if `summary` is `TRUE`.
+  Only relevant if the model was estimated with a method that results in
+  posterior distributions (e.g., "mcmc", "variational"). Only used if
+  `summary` is `TRUE`.
 
 - force:
 
   If respondent estimates have already been added to the model object
   with
-  [`add_respondent_estimates()`](https://measr.info/dev/reference/model_evaluation.md),
+  [`add_respondent_estimates()`](https://measr.r-dcm.org/dev/reference/model_evaluation.md),
   should they be recalculated. Default is `FALSE`.
 
 ## Value

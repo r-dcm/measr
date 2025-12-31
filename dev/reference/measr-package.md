@@ -16,24 +16,32 @@ reliability metrics.
 
 Useful links:
 
-- <https://measr.info>
+- <https://measr.r-dcm.org>
 
-- <https://github.com/wjakethompson/measr>
+- <https://github.com/r-dcm/measr>
 
-- Report bugs at <https://github.com/wjakethompson/measr/issues>
+- Report bugs at <https://github.com/r-dcm/measr/issues>
 
 ## Author
 
 **Maintainer**: W. Jake Thompson <wjakethompson@gmail.com>
 ([ORCID](https://orcid.org/0000-0001-7339-0300))
 
+Authors:
+
+- Jeffrey Hoover <jeffrey.c.hoover@gmail.com>
+  ([ORCID](https://orcid.org/0000-0002-0276-0308))
+
 Other contributors:
+
+- Auburn Jimenez <auburn.jimenez34@gmail.com>
+  ([ORCID](https://orcid.org/0000-0002-7072-2960)) \[contributor\]
 
 - Nathan Jones <jonesnateb@gmail.com>
   ([ORCID](https://orcid.org/0000-0001-6177-7161)) \[contributor\]
 
-- Matthew Johnson (Provided code adapted for reliability.measrdcm())
-  \[copyright holder\]
+- Matthew Johnson (Authored code adapted for measrdcm method for
+  \`reliability()\`) \[copyright holder\]
 
 - University of Kansas \[copyright holder\]
 

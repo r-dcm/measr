@@ -14,7 +14,8 @@ qmatrix_validation(x, ..., pvaf_threshold = 0.95)
 
 - x:
 
-  A [measrdcm](https://measr.info/dev/reference/dcm_estimate.md) object.
+  A [measrdcm](https://measr.r-dcm.org/dev/reference/dcm_estimate.md)
+  object.
 
 - ...:
 

@@ -106,33 +106,25 @@ information:
 
 - `m2`: The M₂ fit statistic. See
   [`fit_m2()`](https://rdrr.io/pkg/dcm2/man/fit_m2.html) for details.
-  Model fit information must first be added to the model using
-  [`add_fit()`](https://measr.info/dev/reference/model_evaluation.md).
 
 - `rmsea`: The root mean square error of approximation (RMSEA) fit
   statistic and associated confidence interval. See
   [`fit_m2()`](https://rdrr.io/pkg/dcm2/man/fit_m2.html) for details.
-  Model fit information must first be added to the model using
-  [`add_fit()`](https://measr.info/dev/reference/model_evaluation.md).
 
 - `srmsr`: The standardized root mean square residual (SRMSR) fit
   statistic. See [`fit_m2()`](https://rdrr.io/pkg/dcm2/man/fit_m2.html)
-  for details. Model fit information must first be added to the model
-  using
-  [`add_fit()`](https://measr.info/dev/reference/model_evaluation.md).
+  for details.
 
 - `ppmc_raw_score`: The observed and posterior predicted chi-square
   statistic for the raw score distribution. See
-  [`fit_ppmc()`](https://measr.info/dev/reference/fit_ppmc.md) for
-  details. Model fit information must first be added to the model using
-  [`add_fit()`](https://measr.info/dev/reference/model_evaluation.md).
+  [`fit_ppmc()`](https://measr.r-dcm.org/dev/reference/fit_ppmc.md) for
+  details.
 
 - `ppmc_conditional_prob`: The observed and posterior predicted
   conditional probabilities of each class providing a correct response
   to each item. See
-  [`fit_ppmc()`](https://measr.info/dev/reference/fit_ppmc.md) for
-  details. Model fit information must first be added to the model using
-  [`add_fit()`](https://measr.info/dev/reference/model_evaluation.md).
+  [`fit_ppmc()`](https://measr.r-dcm.org/dev/reference/fit_ppmc.md) for
+  details.
 
 - `ppmc_conditional_prob_flags`: A subset of the PPMC conditional
   probabilities where the *ppp* is outside the specified
@@ -140,16 +132,15 @@ information:
 
 - `ppmc_odds_ratio`: The observed and posterior predicted odds ratios of
   each item pair. See
-  [`fit_ppmc()`](https://measr.info/dev/reference/fit_ppmc.md) for
-  details. Model fit information must first be added to the model using
-  [`add_fit()`](https://measr.info/dev/reference/model_evaluation.md).
+  [`fit_ppmc()`](https://measr.r-dcm.org/dev/reference/fit_ppmc.md) for
+  details.
 
 - `ppmc_odds_ratio_flags`: A subset of the PPMC odds ratios where the
   *ppp* is outside the specified `ppmc_interval`.
 
 - `ppmc_pvalue`: The observed and posterior predicted proportion of
   correct responses to each item. See
-  [`fit_ppmc()`](https://measr.info/dev/reference/fit_ppmc.md) for
+  [`fit_ppmc()`](https://measr.r-dcm.org/dev/reference/fit_ppmc.md) for
   details.
 
 - `ppmc_pvalue_flags`: A subset of the PPMC proportion correct values
@@ -159,43 +150,32 @@ information:
 
 - `loo`: The leave-one-out cross validation results. See
   [`loo::loo()`](https://mc-stan.org/loo/reference/loo.html) for
-  details. The information criterion must first be added to the model
-  using
-  [`add_criterion()`](https://measr.info/dev/reference/model_evaluation.md).
+  details.
 
 - `waic`: The widely applicable information criterion results. See
   [`loo::waic()`](https://mc-stan.org/loo/reference/waic.html) for
-  details. The information criterion must first be added to the model
-  using
-  [`add_criterion()`](https://measr.info/dev/reference/model_evaluation.md).
+  details.
 
 - `aic`: The Akaike information criterion results. See
-  [`aic()`](https://measr.info/dev/reference/aic-bic.md) for details.
-  The information criterion must first be added to the model using
-  [`add_criterion()`](https://measr.info/dev/reference/model_evaluation.md).
+  [`aic()`](https://measr.r-dcm.org/dev/reference/aic-bic.md) for
+  details.
 
 - `bic`: The Bayesian information criterion results. See
-  [`bic()`](https://measr.info/dev/reference/aic-bic.md) for details.
-  The information criterion must first be added to the model using
-  [`add_criterion()`](https://measr.info/dev/reference/model_evaluation.md).
+  [`bic()`](https://measr.r-dcm.org/dev/reference/aic-bic.md) for
+  details.
 
 ### Reliability
 
 - `pattern_reliability`: The accuracy and consistency of the overall
   attribute profile classification, as described by Cui et al. (2012).
-  Reliability information must first be added to the model using
-  [`add_reliability()`](https://measr.info/dev/reference/model_evaluation.md).
 
 - `classification_reliability`: The classification accuracy and
   consistency for each attribute, using the metrics described by Johnson
-  & Sinharay (2018). Reliability information must first be added to the
-  model using
-  [`add_reliability()`](https://measr.info/dev/reference/model_evaluation.md).
+  & Sinharay (2018).
 
 - `probability_reliability`: Reliability estimates for the probability
   of proficiency on each attribute, as described by Johnson & Sinharay
-  (2020). Reliability information must first be added to the model using
-  [`add_reliability()`](https://measr.info/dev/reference/model_evaluation.md).
+  (2020).
 
 ## References
 

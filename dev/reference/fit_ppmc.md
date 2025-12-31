@@ -1,6 +1,7 @@
 # Posterior predictive model checks for assessing model fit
 
-For models estimated with `method = "mcmc"`, use the posterior
+For models estimated with a method that results in posterior
+distributions (e.g., "mcmc", "variational"), use the posterior
 distributions to compute expected distributions for fit statistics and
 compare to values in the observed data.
 
@@ -24,7 +25,7 @@ fit_ppmc(
 - x:
 
   An estimated model object (e.g., from
-  [`dcm_estimate()`](https://measr.info/dev/reference/dcm_estimate.md)).
+  [`dcm_estimate()`](https://measr.r-dcm.org/dev/reference/dcm_estimate.md)).
 
 - ...:
 
@@ -68,7 +69,7 @@ fit_ppmc(
 
   If all requested PPMCs have already been added to the model object
   using
-  [`add_fit()`](https://measr.info/dev/reference/model_evaluation.md),
+  [`add_fit()`](https://measr.r-dcm.org/dev/reference/model_evaluation.md),
   should they be recalculated. Default is `FALSE`.
 
 ## Value
@@ -170,6 +171,6 @@ fit_ppmc(mdm_dina, model_fit = "raw_score")
 #> # A tibble: 1 × 5
 #>   obs_chisq ppmc_mean `2.5%` `97.5%`   ppp
 #>       <dbl>     <dbl>  <dbl>   <dbl> <dbl>
-#> 1      5.80      6.15  0.974    15.8 0.405
+#> 1      6.00      5.67  0.656    14.7 0.372
 #> 
 ```

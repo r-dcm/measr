@@ -82,7 +82,8 @@ sim_data$q_matrix
 
 In measr, DCMs are specified and estimated using the
 [`dcm_specify()`](https://dcmstan.r-dcm.org/reference/dcm_specify.html)
-and [`dcm_estimate()`](https://measr.info/dev/reference/dcm_estimate.md)
+and
+[`dcm_estimate()`](https://measr.r-dcm.org/dev/reference/dcm_estimate.md)
 functions, respectively. We’ll start by estimating a loglinear cognitive
 diagnostic model (LCDM). The LCDM is a general DCM that subsumes many
 other DCM subtypes ([Henson et al., 2009](#ref-lcdm)).
@@ -101,9 +102,12 @@ measurement model, and we’ll use an unconstrained structural
 model.[¹](#fn1)
 
 ``` r
-model_spec <- dcm_specify(qmatrix = sim_data$q_matrix, identifier = "item_id",
-                          measurement_model = lcdm(),
-                          structural_model = unconstrained())
+model_spec <- dcm_specify(
+  qmatrix = sim_data$q_matrix,
+  identifier = "item_id",
+  measurement_model = lcdm(),
+  structural_model = unconstrained()
+)
 
 model_spec
 #> A loglinear cognitive diagnostic model (LCDM) measuring 4 attributes with
@@ -126,7 +130,7 @@ model_spec
 ```
 
 We can then pass this model specification to
-[`dcm_estimate()`](https://measr.info/dev/reference/dcm_estimate.md),
+[`dcm_estimate()`](https://measr.r-dcm.org/dev/reference/dcm_estimate.md),
 along with our data (`data`). As with the model specification, we can
 specify which column, if any, contains respondent identifiers in the
 `data` object. For the model estimation, we have the option to choose
@@ -153,11 +157,18 @@ specified `file` already exists, then the fitted model will be read back
 into R, eliminating the need to re-estimate the model.
 
 ``` r
-lcdm <- dcm_estimate(model_spec, data = sim_data$data, identifier = "resp_id",
-                     method = "mcmc", backend = "cmdstanr",
-                     iter_warmup = 1000, iter_sampling = 500,
-                     chains = 4, parallel_chains = 4,
-                     file = "fits/sim-lcdm")
+lcdm <- dcm_estimate(
+  model_spec,
+  data = sim_data$data,
+  identifier = "resp_id",
+  method = "mcmc",
+  backend = "cmdstanr",
+  iter_warmup = 1000,
+  iter_sampling = 500,
+  chains = 4,
+  parallel_chains = 4,
+  file = "fits/sim-lcdm"
+)
 ```
 
 ### Examining Parameter Estimates
@@ -165,7 +176,7 @@ lcdm <- dcm_estimate(model_spec, data = sim_data$data, identifier = "resp_id",
 Now that we’ve estimated a model, let’s compare our parameter estimates
 to the true values used to generate the data. We can start be looking at
 our estimates using
-[`measr_extract()`](https://measr.info/dev/reference/measr_extract.md).
+[`measr_extract()`](https://measr.r-dcm.org/dev/reference/measr_extract.md).
 This function extracts different aspects of a model estimated with
 measr. Here, the `estimate` column reports estimated value for each
 parameter and a measure of the associated error (i.e., the standard
@@ -265,8 +276,10 @@ can be specified, we can pass our model specification to
 [`get_parameters()`](https://dcmstan.r-dcm.org/reference/get_parameters.html).
 
 ``` r
-c(prior(chi_square(2), type = "maineffect"),
-  prior(exponential(2), type = "maineffect", coefficient = "l7_11"))
+c(
+  prior(chi_square(2), type = "maineffect"),
+  prior(exponential(2), type = "maineffect", coefficient = "l7_11")
+)
 #> # A tibble: 2 × 3
 #>   type       coefficient prior         
 #>   <chr>      <chr>       <chr>         
@@ -309,21 +322,31 @@ default).
 ``` r
 new_prior <- prior(normal(0, 15), type = "maineffect", lower_bound = 0)
 
-new_spec <- dcm_specify(qmatrix = sim_data$q_matrix, identifier = "item_id",
-                        measurement_model = lcdm(),
-                        structural_model = unconstrained(),
-                        priors = new_prior)
+new_spec <- dcm_specify(
+  qmatrix = sim_data$q_matrix,
+  identifier = "item_id",
+  measurement_model = lcdm(),
+  structural_model = unconstrained(),
+  priors = new_prior
+)
 
-new_spec <- dcm_specify(qmatrix = sim_data$q_matrix, identifier = "item_id",
-                        measurement_model = lcdm(),
-                        structural_model = unconstrained(),
-                        priors = prior(normal(0, 15), type = "maineffect",
-                                       lower_bound = 0))
+new_spec <- dcm_specify(
+  qmatrix = sim_data$q_matrix,
+  identifier = "item_id",
+  measurement_model = lcdm(),
+  structural_model = unconstrained(),
+  priors = prior(normal(0, 15), type = "maineffect", lower_bound = 0)
+)
 
 # Estimate the updated model
-new_lcdm <- dcm_estimate(new_spec, data = sim_data$data, identifier = "resp_id",
-                         method = "optim", backend = "cmdstanr",
-                         file = "fits/sim-lcdm-optim")
+new_lcdm <- dcm_estimate(
+  new_spec,
+  data = sim_data$data,
+  identifier = "resp_id",
+  method = "optim",
+  backend = "cmdstanr",
+  file = "fits/sim-lcdm-optim"
+)
 ```
 
 The priors used to estimate the model are saved in the returned model
@@ -364,7 +387,7 @@ respectively.
 Future development work will continue to add functionality for more DCM
 subtypes. If there is a specific subtype you are interested in, or would
 like to see supported, please open an issue on the [GitHub
-repository](https://github.com/wjakethompson/measr/issues).
+repository](https://github.com/r-dcm/measr/issues).
 
 ## References
 

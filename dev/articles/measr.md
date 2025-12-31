@@ -60,9 +60,10 @@ The cmdstanr package is not yet available on CRAN. The beta release can
 be installed from the *Stan* R package repository:
 
 ``` r
-install.packages("cmdstanr",
-                 repos = c("https://mc-stan.org/r-packages/",
-                           getOption("repos")))
+install.packages(
+  "cmdstanr",
+  repos = c("https://stan-dev.r-universe.dev", getOption("repos"))
+)
 ```
 
 Or the development version can be installed from
@@ -107,11 +108,11 @@ install.packages("measr")
 ```
 
 Or, the development version can be installed from
-[GitHub](https://github.com/wjakethompson/measr):
+[GitHub](https://github.com/r-dcm/measr):
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("wjakethompson/measr")
+remotes::install_github("r-dcm/measr")
 ```
 
 Once everything has been installed, we’re ready to start estimating and
@@ -191,33 +192,43 @@ function also allows us to define the type of DCM we want to estimate,
 in this case, an LCDM with unconstrained attributes.
 
 Once we have created the specification, we can estimate the model using
-[`dcm_estimate()`](https://measr.info/dev/reference/dcm_estimate.md). We
-provide our model specification, along with the data set and the column
-name of the respondent identifiers. We can also add arguments to control
-the estimation process. The `method` defines how the model should be
-estimated. For computational efficiency, I’ve selected `"optim"`, which
-uses Stan’s optimizer to estimate the model. For a fully Bayesian
-estimation, you can change this `method = "mcmc"`. The `backend` defines
-which Stan engine to use for the estimation. The default is `"rstan"`,
-which will then use the [rstan](https://mc-stan.org/rstan) package for
-estimating the model. Alternatively, `backend = "cmdstanr"` will use the
+[`dcm_estimate()`](https://measr.r-dcm.org/dev/reference/dcm_estimate.md).
+We provide our model specification, along with the data set and the
+column name of the respondent identifiers. We can also add arguments to
+control the estimation process. The `method` defines how the model
+should be estimated. For computational efficiency, we’ll use
+`method = "optim"`, which uses Stan’s optimizer to estimate the model.
+For a fully Bayesian estimation, you can change this `method = "mcmc"`,
+or `method = "variational"` to use Stan’s variational algorithm. The
+`backend` defines which Stan engine to use for the estimation. The
+default is `"rstan"`, which will then use the
+[rstan](https://mc-stan.org/rstan) package for estimating the model.
+Alternatively, `backend = "cmdstanr"` will use the
 [cmdstanr](https://mc-stan.org/cmdstanr) package. For more details and
 options for customizing the model specification and estimation, see the
 [model estimation
-article](https://measr.info/articles/model-estimation.html) on the measr
-website.
+article](https://measr.r-dcm.org/articles/model-estimation.html) on the
+measr website.
 
 ``` r
-ecpe_spec <- dcm_specify(ecpe_qmatrix, identifier = "item_id",
-                         measurement_model = lcdm(),
-                         structural_model = unconstrained())
+ecpe_spec <- dcm_specify(
+  ecpe_qmatrix,
+  identifier = "item_id",
+  measurement_model = lcdm(),
+  structural_model = unconstrained()
+)
 
-ecpe_lcdm <- dcm_estimate(ecpe_spec, data = ecpe_data, identifier = "resp_id",
-                          method = "optim", backend = "rstan")
+ecpe_lcdm <- dcm_estimate(
+  ecpe_spec,
+  data = ecpe_data,
+  identifier = "resp_id",
+  method = "optim",
+  backend = "rstan"
+)
 ```
 
 Once the model as estimated, we can use
-[`measr_extract()`](https://measr.info/dev/reference/measr_extract.md)
+[`measr_extract()`](https://measr.r-dcm.org/dev/reference/measr_extract.md)
 to pull out the probability that each respondent is proficient on each
 of the attributes. For example, the first respondent has probabilities
 near 1 for all attributes, indicating a high degree of confidence that
@@ -232,15 +243,15 @@ measr_extract(ecpe_lcdm, "attribute_prob")
 #>    resp_id morphosyntactic cohesive lexical
 #>    <chr>             <dbl>    <dbl>   <dbl>
 #>  1 1               0.997      0.962  1.000 
-#>  2 2               0.995      0.911  1.000 
+#>  2 2               0.995      0.910  1.000 
 #>  3 3               0.985      0.990  1.000 
 #>  4 4               0.998      0.991  1.000 
 #>  5 5               0.989      0.984  0.956 
 #>  6 6               0.993      0.991  1.000 
 #>  7 7               0.993      0.991  1.000 
-#>  8 8               0.00453    0.462  0.963 
+#>  8 8               0.00455    0.461  0.963 
 #>  9 9               0.949      0.986  0.998 
-#> 10 10              0.627      0.139  0.0928
+#> 10 10              0.627      0.138  0.0929
 #> # ℹ 2,912 more rows
 ```
 
@@ -249,16 +260,16 @@ measr_extract(ecpe_lcdm, "attribute_prob")
 There are many ways to evaluate our estimated model including model fit,
 model comparisons, and reliability. For a complete listing of available
 options, see
-[`?model_evaluation`](https://measr.info/dev/reference/model_evaluation.md).
+[`?model_evaluation`](https://measr.r-dcm.org/dev/reference/model_evaluation.md).
 To illustrate how these functions work, we’ll look at the classification
 accuracy and consistency metrics described by Johnson & Sinharay
 ([2018](#ref-johnson2018)).
 
 We start by adding the reliability information to our estimated model
 using
-[`add_reliability()`](https://measr.info/dev/reference/model_evaluation.md).
+[`add_reliability()`](https://measr.r-dcm.org/dev/reference/model_evaluation.md).
 We can then extract that information, again using
-[`measr_extract()`](https://measr.info/dev/reference/measr_extract.md).
+[`measr_extract()`](https://measr.r-dcm.org/dev/reference/measr_extract.md).
 For these indices, numbers close to 1 indicate a high level of
 classification accuracy or consistency. These numbers are not amazing,
 but overall look pretty good. For guidance on cutoff values for “good,”
@@ -271,7 +282,7 @@ measr_extract(ecpe_lcdm, "classification_reliability")
 #> # A tibble: 3 × 3
 #>   attribute       accuracy consistency
 #>   <chr>              <dbl>       <dbl>
-#> 1 morphosyntactic    0.896       0.832
+#> 1 morphosyntactic    0.896       0.833
 #> 2 cohesive           0.858       0.810
 #> 3 lexical            0.918       0.858
 ```

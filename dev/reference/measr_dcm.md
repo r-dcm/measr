@@ -3,10 +3,10 @@
 **\[deprecated\]**
 
 `measr_dcm()` has been deprecated in favor of
-[`dcm_estimate()`](https://measr.info/dev/reference/dcm_estimate.md).
+[`dcm_estimate()`](https://measr.r-dcm.org/dev/reference/dcm_estimate.md).
 Please use
-[`dcm_estimate()`](https://measr.info/dev/reference/dcm_estimate.md), as
-`measr_dcm()` will be removed in a future release.
+[`dcm_estimate()`](https://measr.r-dcm.org/dev/reference/dcm_estimate.md),
+as `measr_dcm()` will be removed in a future release.
 
 ## Usage
 
@@ -20,7 +20,7 @@ measr_dcm(
   type = c("lcdm", "dina", "dino", "crum"),
   max_interaction = Inf,
   attribute_structure = c("unconstrained", "independent"),
-  method = c("mcmc", "optim"),
+  method = c("variational", "mcmc", "optim"),
   prior = NULL,
   backend = getOption("measr.backend", "rstan"),
   file = NULL,
@@ -88,8 +88,9 @@ measr_dcm(
 
 - method:
 
-  Estimation method. Options are `"mcmc"`, which uses Stan's sampling
-  method, or `"optim"`, which uses Stan's optimizer.
+  Estimation method. Options are `"variational"`, which uses Stan's
+  variational algorithm; `"mcmc"`, which uses Stan's sampling method; or
+  `"optim"`, which uses Stan's optimizer.
 
 - prior:
 

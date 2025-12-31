@@ -22,13 +22,14 @@ bayes_factor(
 
 - x:
 
-  A [measrdcm](https://measr.info/dev/reference/dcm_estimate.md) object.
+  A [measrdcm](https://measr.r-dcm.org/dev/reference/dcm_estimate.md)
+  object.
 
 - ...:
 
   Additional
-  [measrdcm](https://measr.info/dev/reference/dcm_estimate.md) to be
-  compared to `x`.
+  [measrdcm](https://measr.r-dcm.org/dev/reference/dcm_estimate.md) to
+  be compared to `x`.
 
 - model_names:
 
@@ -145,21 +146,21 @@ bf
 #> # A tibble: 1 × 4
 #>   null_model alt_model    bf posterior_probs  
 #>   <chr>      <chr>     <dbl> <list>           
-#> 1 mdm_dina   mdm_dino  0.972 <tibble [49 × 2]>
+#> 1 mdm_dina   mdm_dino  0.932 <tibble [49 × 2]>
 
 tidyr::unnest(bf, "posterior_probs")
 #> # A tibble: 49 × 5
 #>    null_model alt_model    bf prior_prob_null posterior_prob_null
 #>    <chr>      <chr>     <dbl>           <dbl>               <dbl>
-#>  1 mdm_dina   mdm_dino  0.972            0.02              0.0212
-#>  2 mdm_dina   mdm_dino  0.972            0.04              0.0424
-#>  3 mdm_dina   mdm_dino  0.972            0.06              0.0635
-#>  4 mdm_dina   mdm_dino  0.972            0.08              0.0845
-#>  5 mdm_dina   mdm_dino  0.972            0.1               0.106 
-#>  6 mdm_dina   mdm_dino  0.972            0.12              0.127 
-#>  7 mdm_dina   mdm_dino  0.972            0.14              0.147 
-#>  8 mdm_dina   mdm_dino  0.972            0.16              0.168 
-#>  9 mdm_dina   mdm_dino  0.972            0.18              0.189 
-#> 10 mdm_dina   mdm_dino  0.972            0.2               0.210 
+#>  1 mdm_dina   mdm_dino  0.932            0.02              0.0215
+#>  2 mdm_dina   mdm_dino  0.932            0.04              0.0428
+#>  3 mdm_dina   mdm_dino  0.932            0.06              0.0642
+#>  4 mdm_dina   mdm_dino  0.932            0.08              0.0854
+#>  5 mdm_dina   mdm_dino  0.932            0.1               0.107 
+#>  6 mdm_dina   mdm_dino  0.932            0.12              0.128 
+#>  7 mdm_dina   mdm_dino  0.932            0.14              0.149 
+#>  8 mdm_dina   mdm_dino  0.932            0.16              0.170 
+#>  9 mdm_dina   mdm_dino  0.932            0.18              0.191 
+#> 10 mdm_dina   mdm_dino  0.932            0.2               0.212 
 #> # ℹ 39 more rows
 ```

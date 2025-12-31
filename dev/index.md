@@ -26,11 +26,11 @@ install.packages("measr")
 ```
 
 To install the development version of measr from
-[GitHub](https://github.com/wjakethompson/measr) use:
+[GitHub](https://github.com/r-dcm/measr) use:
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("wjakethompson/measr")
+remotes::install_github("r-dcm/measr")
 ```
 
 Because measr is based on Stan, a C++ compiler is required. For Windows,
@@ -49,8 +49,8 @@ by each item. We also identify any item identifier columns. Other
 arguments can be specified to customize the type of model to estimate
 (e.g., type of measurement or structural model; see
 `?dcmstan::dcm_specify()`). We can then estimate our specified DCM using
-[`dcm_estimate()`](https://measr.info/dev/reference/dcm_estimate.md). We
-supply our specification and our data set, along with any respondent
+[`dcm_estimate()`](https://measr.r-dcm.org/dev/reference/dcm_estimate.md).
+We supply our specification and our data set, along with any respondent
 identifiers. As with
 [`dcm_specify()`](https://dcmstan.r-dcm.org/reference/dcm_specify.html),
 other arguments can be specified to customize the model estimation
@@ -74,9 +74,15 @@ library(measr)
 
 model_spec <- dcm_specify(dcmdata::ecpe_qmatrix, identifier = "item_id")
 
-model <- dcm_estimate(dcm_spec = model_spec,
-                      data = dcmdata::ecpe_data, identifier = "resp_id",
-                      iter = 1000, warmup = 200, chains = 2, cores = 2)
+model <- dcm_estimate(
+  dcm_spec = model_spec,
+  data = dcmdata::ecpe_data,
+  identifier = "resp_id",
+  iter = 1000,
+  warmup = 200,
+  chains = 2,
+  cores = 2
+)
 ```
 
 Once a model has been estimated, we can then add and evaluate model fit.
@@ -84,7 +90,7 @@ This can done through absolute model fit, relative model fit
 (information criteria), or reliability indices. Model parameters,
 respondent classifications, and results of the model fit analyses can
 then be extracted using
-[`measr_extract()`](https://measr.info/dev/reference/measr_extract.md).
+[`measr_extract()`](https://measr.r-dcm.org/dev/reference/measr_extract.md).
 
 ``` r
 model <- add_fit(model, method = "m2")
@@ -101,7 +107,7 @@ measr_extract(model, "m2")
 ------------------------------------------------------------------------
 
 Contributions are welcome. To ensure a smooth process, please review the
-[Contributing Guide](https://measr.info/dev/CONTRIBUTING.html). Please
+[Contributing Guide](https://measr.r-dcm.org/CONTRIBUTING.html). Please
 note that the measr project is released with a [Contributor Code of
-Conduct](https://measr.info/CODE_OF_CONDUCT.html). By contributing to
-this project, you agree to abide by its terms.
+Conduct](https://measr.r-dcm.org/CODE_OF_CONDUCT.html). By contributing
+to this project, you agree to abide by its terms.

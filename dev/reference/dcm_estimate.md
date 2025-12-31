@@ -12,7 +12,7 @@ dcm_estimate(
   data,
   missing = NA,
   identifier = NULL,
-  method = c("mcmc", "optim"),
+  method = c("variational", "mcmc", "optim", "pathfinder"),
   backend = getOption("measr.backend", "rstan"),
   file = NULL,
   file_refit = getOption("measr.file_refit", "never"),
@@ -45,8 +45,11 @@ dcm_estimate(
 
 - method:
 
-  Estimation method. Options are `"mcmc"`, which uses Stan's sampling
-  method, or `"optim"`, which uses Stan's optimizer.
+  Estimation method. Options are `"variational"`, which uses Stan's
+  variational algorithm; `"mcmc"`, which uses Stan's sampling method;
+  `"optim"`, which uses Stan's optimizer; or `"pathfinder"` which uses
+  Stan's pathfinder variational inference algorithm (only available if
+  `backend = "cmdstanr"`).
 
 - backend:
 

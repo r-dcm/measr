@@ -43,7 +43,7 @@ reliability(x, ..., threshold = 0.5, force = FALSE)
 
   If reliability information has already been added to the model object
   with
-  [`add_reliability()`](https://measr.info/dev/reference/model_evaluation.md),
+  [`add_reliability()`](https://measr.r-dcm.org/dev/reference/model_evaluation.md),
   should it be recalculated. Default is `FALSE`.
 
 ## Value
@@ -98,7 +98,7 @@ rstn_mdm_lcdm <- dcm_estimate(
 reliability(rstn_mdm_lcdm)
 #> $pattern_reliability
 #>       p_a       p_c 
-#> 0.9122250 0.8401031 
+#> 0.9122378 0.8401200 
 #> 
 #> $map_reliability
 #> $map_reliability$accuracy

@@ -9,6 +9,7 @@ to see their documentation.
 
 - dcmstan:
 
+  [`bayesnet`](https://dcmstan.r-dcm.org/reference/structural-model.html),
   [`create_profiles`](https://dcmstan.r-dcm.org/reference/create_profiles.html),
   [`crum`](https://dcmstan.r-dcm.org/reference/measurement-model.html),
   [`dcm_specify`](https://dcmstan.r-dcm.org/reference/dcm_specify.html),
@@ -19,6 +20,7 @@ to see their documentation.
   [`hdcm`](https://dcmstan.r-dcm.org/reference/structural-model.html),
   [`independent`](https://dcmstan.r-dcm.org/reference/structural-model.html),
   [`lcdm`](https://dcmstan.r-dcm.org/reference/measurement-model.html),
+  [`loglinear`](https://dcmstan.r-dcm.org/reference/structural-model.html),
   [`ncrum`](https://dcmstan.r-dcm.org/reference/measurement-model.html),
   [`nida`](https://dcmstan.r-dcm.org/reference/measurement-model.html),
   [`nido`](https://dcmstan.r-dcm.org/reference/measurement-model.html),

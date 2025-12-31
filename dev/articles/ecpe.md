@@ -197,7 +197,7 @@ The structural parameters define the base rate of membership in each of
 attribute profiles. Because the ECPE data consists of 3 dichotomous
 attributes, there are a total of 2³ = 8 possible profiles, or classes.
 We can view the possible profiles using
-[`measr_extract()`](https://measr.info/dev/reference/measr_extract.md).
+[`measr_extract()`](https://measr.r-dcm.org/dev/reference/measr_extract.md).
 This function extracts different aspects of a model estimated with
 measr. The order of the attributes in the profiles corresponds to the
 order the attributes were listed in the Q-matrix used to estimate the
@@ -221,7 +221,7 @@ ecpe_classes
 ```
 
 We can extract the structural parameters also using
-[`measr_extract()`](https://measr.info/dev/reference/measr_extract.md).
+[`measr_extract()`](https://measr.r-dcm.org/dev/reference/measr_extract.md).
 For structural parameters, we see the `class`, or the attribute profile,
 and the estimated proportion of respondents in that class with a measure
 of error (the standard deviation of the posterior). For example, nearly
@@ -298,7 +298,7 @@ difficult than items measuring lexical or cohesive rules.
 The item parameters define the log-odds of a respondent in each class
 providing a correct response. We can again extract our estimated item
 parameters using
-[`measr_extract()`](https://measr.info/dev/reference/measr_extract.md).
+[`measr_extract()`](https://measr.r-dcm.org/dev/reference/measr_extract.md).
 Here, the `estimate` column reports estimated value for each parameter
 and a measure of the associated error (i.e., the standard deviation of
 the posterior distribution). For example, item E1 has four parameters,
@@ -418,14 +418,15 @@ and instead used the default priors provided by measr. For more
 information on prior distributions, including information on how to
 specify your own prior distributions for the model parameters, see
 [`?prior`](https://dcmstan.r-dcm.org/reference/prior.html) and the
-[model estimation vignette](https://measr.info/dev/model-estimation.md).
+[model estimation
+vignette](https://measr.r-dcm.org/dev/model-estimation.md).
 
 ### Respondent Proficiency
 
 The final piece of output from our model we will examine is the
 respondent probabilities. There are two types of probabilities that we
 can calculate, both of which are returned by the
-[`score()`](https://measr.info/dev/reference/score.md) function.
+[`score()`](https://measr.r-dcm.org/dev/reference/score.md) function.
 
 ``` r
 resp_probs <- score(ecpe_lcdm)
@@ -524,13 +525,13 @@ resp_probs$attribute_probabilities |>
 #> 3 73      lexical               0.933  0.881   0.967
 ```
 
-By default, [`score()`](https://measr.info/dev/reference/score.md) only
-returns a summary of the posterior distribution for each probability
-(i.e., the mean and 95% credible interval). There are many class and
-attribute probabilities, and therefore the object containing the full
-posterior distributions would be quite large. You can change the
-percentiles that are returned in the posterior summary by setting the
-`probs` argument to quantiles other than the default of
+By default, [`score()`](https://measr.r-dcm.org/dev/reference/score.md)
+only returns a summary of the posterior distribution for each
+probability (i.e., the mean and 95% credible interval). There are many
+class and attribute probabilities, and therefore the object containing
+the full posterior distributions would be quite large. You can change
+the percentiles that are returned in the posterior summary by setting
+the `probs` argument to quantiles other than the default of
 `probs = c(0.025, 0.975)`. Alternatively, if you do want the full
 posterior distribution for each probability, you can set
 `summary = FALSE`. This will return a
@@ -614,16 +615,17 @@ if the model fits. For our estimated LCDM, the *p*-value is extremely
 small, indicating that our model has poor fit.
 
 As described in the [model evaluation
-vignette](https://measr.info/dev/model-evaluation.md), a fully Bayesian
-estimation allows us to evaluate model fit using posterior predictive
-model checks (PPMCs). Specifically, measr supports a PPMC of the overall
-raw score distribution as described by Park et al.
+vignette](https://measr.r-dcm.org/dev/model-evaluation.md), a fully
+Bayesian estimation allows us to evaluate model fit using posterior
+predictive model checks (PPMCs). Specifically, measr supports a PPMC of
+the overall raw score distribution as described by Park et al.
 ([2015](#ref-park2015)) and Thompson ([2019](#ref-thompson2019)). For
 each of the replicated data sets, we calculate the number of students
 with each raw score (i.e., the number of correct responses). This can be
-done using [`fit_ppmc()`](https://measr.info/dev/reference/fit_ppmc.md).
-Note that we can also calculate item-level PPMCs. However, because in
-this case study we are only interested in overall model fit, we’ll set
+done using
+[`fit_ppmc()`](https://measr.r-dcm.org/dev/reference/fit_ppmc.md). Note
+that we can also calculate item-level PPMCs. However, because in this
+case study we are only interested in overall model fit, we’ll set
 `item_fit = NULL` to save some computation time.
 
 ``` r
@@ -709,14 +711,14 @@ calculation is completed on each of the replicated data sets, creating a
 posterior distribution of χ²_(rep) that represents the plausible values
 for the χ²-like statistic if our model is correct. This distribution is
 summarized in the
-[`fit_ppmc()`](https://measr.info/dev/reference/fit_ppmc.md) output.
-Specifically, we expect the χ²-like statistic for our observed data to
-be between 12 and 59, as shown in the following figure. However, when we
-calculate the statistic on our observed data, we get a value of 930, way
-beyond our expected range. This is represented by the *ppp* value, which
-is the proportion of χ²_(rep) values that are larger than our observed
-value. In this case, no values of χ²_(rep) were larger than our observed
-value, leading to a *ppp* of 0.
+[`fit_ppmc()`](https://measr.r-dcm.org/dev/reference/fit_ppmc.md)
+output. Specifically, we expect the χ²-like statistic for our observed
+data to be between 12 and 59, as shown in the following figure. However,
+when we calculate the statistic on our observed data, we get a value of
+930, way beyond our expected range. This is represented by the *ppp*
+value, which is the proportion of χ²_(rep) values that are larger than
+our observed value. In this case, no values of χ²_(rep) were larger than
+our observed value, leading to a *ppp* of 0.
 
 Plot code
 
@@ -758,7 +760,7 @@ comprehensive summary of methods, see Sinharay & Johnson
 ([2019](#ref-reliability-handbook)). Using measr, we can easily
 calculate a wide variety of reliability metrics for our estimated LCDM
 using
-[`reliability()`](https://measr.info/dev/reference/reliability.md).
+[`reliability()`](https://measr.r-dcm.org/dev/reference/reliability.md).
 
 ``` r
 ecpe_reliability <- reliability(ecpe_lcdm)
@@ -796,7 +798,7 @@ ecpe_reliability
 ```
 
 By default,
-[`reliability()`](https://measr.info/dev/reference/reliability.md)
+[`reliability()`](https://measr.r-dcm.org/dev/reference/reliability.md)
 returns several different types of reliability evidence. For all types
 of evidence, the indices range from 0–1, with values close to 1
 indicating high accuracy or consistency. Which information is most
@@ -804,10 +806,10 @@ relevant will depend on how scores are determined and reported. For
 example, we could determine each respondent’s scores by choosing the
 overall profile that is most consistent with their observed responses
 (i.e., the class probabilities returned by
-[`score()`](https://measr.info/dev/reference/score.md)). For this type
-of classification we would want to look at pattern reliability, as we
-are classifying responding into an overall pattern of proficiency on the
-attributes.
+[`score()`](https://measr.r-dcm.org/dev/reference/score.md)). For this
+type of classification we would want to look at pattern reliability, as
+we are classifying responding into an overall pattern of proficiency on
+the attributes.
 
 ``` r
 ecpe_reliability$pattern_reliability
@@ -824,7 +826,7 @@ two test administrations.
 On the other hand, rather than basing results on the overall most likely
 profile, we could score each attribute individually (i.e., the attribute
 probabilities returned by
-[`score()`](https://measr.info/dev/reference/score.md)). This is
+[`score()`](https://measr.r-dcm.org/dev/reference/score.md)). This is
 accomplished by calculating the probability of proficiency on each
 attribute and creating classifications based on a given threshold
 (usually .5). This result is known as the *maximum a posteriori* (MAP)

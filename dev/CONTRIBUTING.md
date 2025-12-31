@@ -26,7 +26,7 @@ more advice.
 
 - Fork the package and clone onto your computer. If you haven’t done
   this before, we recommend using
-  `usethis::create_from_github("wjakethompson/measr", fork = TRUE)`.
+  `usethis::create_from_github("r-dcm/measr", fork = TRUE)`.
 
 - Install all development dependencies with
   `devtools::install_dev_deps()`, and then make sure the package passes
@@ -65,5 +65,5 @@ more advice.
 ## Code of Conduct
 
 Please note that the measr project is released with a [Contributor Code
-of Conduct](https://measr.info/dev/CODE_OF_CONDUCT.md). By contributing
-to this project you agree to abide by its terms.
+of Conduct](https://measr.r-dcm.org/dev/CODE_OF_CONDUCT.md). By
+contributing to this project you agree to abide by its terms.

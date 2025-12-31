@@ -24,7 +24,8 @@ loo_compare(x, ..., criterion = c("loo", "waic"), model_names = NULL)
 
 - x:
 
-  A [measrdcm](https://measr.info/dev/reference/dcm_estimate.md) object.
+  A [measrdcm](https://measr.r-dcm.org/dev/reference/dcm_estimate.md)
+  object.
 
 - ...:
 
@@ -36,8 +37,8 @@ loo_compare(x, ..., criterion = c("loo", "waic"), model_names = NULL)
   respectively. For
   [`loo_compare()`](https://mc-stan.org/loo/reference/loo_compare.html),
   additional
-  [measrdcm](https://measr.info/dev/reference/dcm_estimate.md) objects
-  to be compared to `x`.
+  [measrdcm](https://measr.r-dcm.org/dev/reference/dcm_estimate.md)
+  objects to be compared to `x`.
 
 - r_eff:
 
@@ -57,7 +58,7 @@ loo_compare(x, ..., criterion = c("loo", "waic"), model_names = NULL)
 - force:
 
   If the LOO criterion has already been added to the model object with
-  [`add_criterion()`](https://measr.info/dev/reference/model_evaluation.md),
+  [`add_criterion()`](https://measr.r-dcm.org/dev/reference/model_evaluation.md),
   should it be recalculated. Default is `FALSE`.
 
 - criterion:

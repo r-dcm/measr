@@ -16,8 +16,8 @@ log_mll(x, ..., force = FALSE)
 
 - x:
 
-  A [measrdcm](https://measr.info/dev/reference/dcm_estimate.md) object
-  estimated with `backend = "optim"`.
+  A [measrdcm](https://measr.r-dcm.org/dev/reference/dcm_estimate.md)
+  object estimated with `backend = "optim"`.
 
 - ...:
 
@@ -26,7 +26,7 @@ log_mll(x, ..., force = FALSE)
 - force:
 
   If the criterion has already been added to the model object with
-  [`add_criterion()`](https://measr.info/dev/reference/model_evaluation.md),
+  [`add_criterion()`](https://measr.r-dcm.org/dev/reference/model_evaluation.md),
   should it be recalculated. Default is `FALSE`.
 
 ## Value
@@ -45,113 +45,61 @@ Sinica, 6*(4), 831-860. <https://www.jstor.org/stable/24306045>
 model_spec <- dcm_specify(qmatrix = dcmdata::mdm_qmatrix,
                           identifier = "item")
 model <- dcm_estimate(dcm_spec = model_spec, data = dcmdata::mdm_data,
-                      identifier = "respondent", method = "mcmc",
+                      identifier = "respondent", method = "variational",
                       seed = 63277)
-#> 
-#> SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).
+#> Chain 1: ------------------------------------------------------------
+#> Chain 1: EXPERIMENTAL ALGORITHM:
+#> Chain 1:   This procedure has not been thoroughly tested and may be unstable
+#> Chain 1:   or buggy. The interface is subject to change.
+#> Chain 1: ------------------------------------------------------------
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.000135 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.35 seconds.
+#> Chain 1: 
+#> Chain 1: 
+#> Chain 1: Gradient evaluation took 0.000129 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.29 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
-#> Chain 1: Iteration:    1 / 4000 [  0%]  (Warmup)
-#> Chain 1: Iteration:  400 / 4000 [ 10%]  (Warmup)
-#> Chain 1: Iteration:  800 / 4000 [ 20%]  (Warmup)
-#> Chain 1: Iteration: 1200 / 4000 [ 30%]  (Warmup)
-#> Chain 1: Iteration: 1600 / 4000 [ 40%]  (Warmup)
-#> Chain 1: Iteration: 2000 / 4000 [ 50%]  (Warmup)
-#> Chain 1: Iteration: 2001 / 4000 [ 50%]  (Sampling)
-#> Chain 1: Iteration: 2400 / 4000 [ 60%]  (Sampling)
-#> Chain 1: Iteration: 2800 / 4000 [ 70%]  (Sampling)
-#> Chain 1: Iteration: 3200 / 4000 [ 80%]  (Sampling)
-#> Chain 1: Iteration: 3600 / 4000 [ 90%]  (Sampling)
-#> Chain 1: Iteration: 4000 / 4000 [100%]  (Sampling)
+#> Chain 1: Begin eta adaptation.
+#> Chain 1: Iteration:   1 / 250 [  0%]  (Adaptation)
+#> Chain 1: Iteration:  50 / 250 [ 20%]  (Adaptation)
+#> Chain 1: Iteration: 100 / 250 [ 40%]  (Adaptation)
+#> Chain 1: Iteration: 150 / 250 [ 60%]  (Adaptation)
+#> Chain 1: Iteration: 200 / 250 [ 80%]  (Adaptation)
+#> Chain 1: Success! Found best value [eta = 1] earlier than expected.
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 8.014 seconds (Warm-up)
-#> Chain 1:                7.917 seconds (Sampling)
-#> Chain 1:                15.931 seconds (Total)
+#> Chain 1: Begin stochastic gradient ascent.
+#> Chain 1:   iter             ELBO   delta_ELBO_mean   delta_ELBO_med   notes 
+#> Chain 1:    100         -359.619             1.000            1.000
+#> Chain 1:    200         -356.482             0.504            1.000
+#> Chain 1:    300         -357.533             0.337            0.009
+#> Chain 1:    400         -356.970             0.253            0.009
+#> Chain 1:    500         -356.577             0.203            0.003
+#> Chain 1:    600         -356.663             0.169            0.003
+#> Chain 1:    700         -356.504             0.145            0.002
+#> Chain 1:    800         -356.213             0.127            0.002
+#> Chain 1:    900         -356.102             0.113            0.001
+#> Chain 1:   1000         -357.671             0.102            0.002
+#> Chain 1:   1100         -356.013             0.003            0.002
+#> Chain 1:   1200         -356.499             0.002            0.001
+#> Chain 1:   1300         -355.419             0.002            0.001
+#> Chain 1:   1400         -355.379             0.002            0.001
+#> Chain 1:   1500         -356.771             0.002            0.001
+#> Chain 1:   1600         -355.933             0.002            0.002
+#> Chain 1:   1700         -356.108             0.002            0.002
+#> Chain 1:   1800         -356.069             0.002            0.002
+#> Chain 1:   1900         -356.345             0.002            0.002
+#> Chain 1:   2000         -356.950             0.002            0.002
+#> Chain 1:   2100         -356.320             0.002            0.002
+#> Chain 1:   2200         -356.238             0.001            0.002
+#> Chain 1:   2300         -355.858             0.001            0.001
+#> Chain 1:   2400         -355.771             0.001            0.001
+#> Chain 1:   2500         -355.857             0.001            0.001   MEAN ELBO CONVERGED   MEDIAN ELBO CONVERGED
 #> Chain 1: 
-#> 
-#> SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).
-#> Chain 2: 
-#> Chain 2: Gradient evaluation took 0.000131 seconds
-#> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 1.31 seconds.
-#> Chain 2: Adjust your expectations accordingly!
-#> Chain 2: 
-#> Chain 2: 
-#> Chain 2: Iteration:    1 / 4000 [  0%]  (Warmup)
-#> Chain 2: Iteration:  400 / 4000 [ 10%]  (Warmup)
-#> Chain 2: Iteration:  800 / 4000 [ 20%]  (Warmup)
-#> Chain 2: Iteration: 1200 / 4000 [ 30%]  (Warmup)
-#> Chain 2: Iteration: 1600 / 4000 [ 40%]  (Warmup)
-#> Chain 2: Iteration: 2000 / 4000 [ 50%]  (Warmup)
-#> Chain 2: Iteration: 2001 / 4000 [ 50%]  (Sampling)
-#> Chain 2: Iteration: 2400 / 4000 [ 60%]  (Sampling)
-#> Chain 2: Iteration: 2800 / 4000 [ 70%]  (Sampling)
-#> Chain 2: Iteration: 3200 / 4000 [ 80%]  (Sampling)
-#> Chain 2: Iteration: 3600 / 4000 [ 90%]  (Sampling)
-#> Chain 2: Iteration: 4000 / 4000 [100%]  (Sampling)
-#> Chain 2: 
-#> Chain 2:  Elapsed Time: 8.175 seconds (Warm-up)
-#> Chain 2:                9.77 seconds (Sampling)
-#> Chain 2:                17.945 seconds (Total)
-#> Chain 2: 
-#> 
-#> SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).
-#> Chain 3: 
-#> Chain 3: Gradient evaluation took 0.000132 seconds
-#> Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 1.32 seconds.
-#> Chain 3: Adjust your expectations accordingly!
-#> Chain 3: 
-#> Chain 3: 
-#> Chain 3: Iteration:    1 / 4000 [  0%]  (Warmup)
-#> Chain 3: Iteration:  400 / 4000 [ 10%]  (Warmup)
-#> Chain 3: Iteration:  800 / 4000 [ 20%]  (Warmup)
-#> Chain 3: Iteration: 1200 / 4000 [ 30%]  (Warmup)
-#> Chain 3: Iteration: 1600 / 4000 [ 40%]  (Warmup)
-#> Chain 3: Iteration: 2000 / 4000 [ 50%]  (Warmup)
-#> Chain 3: Iteration: 2001 / 4000 [ 50%]  (Sampling)
-#> Chain 3: Iteration: 2400 / 4000 [ 60%]  (Sampling)
-#> Chain 3: Iteration: 2800 / 4000 [ 70%]  (Sampling)
-#> Chain 3: Iteration: 3200 / 4000 [ 80%]  (Sampling)
-#> Chain 3: Iteration: 3600 / 4000 [ 90%]  (Sampling)
-#> Chain 3: Iteration: 4000 / 4000 [100%]  (Sampling)
-#> Chain 3: 
-#> Chain 3:  Elapsed Time: 8.045 seconds (Warm-up)
-#> Chain 3:                6.624 seconds (Sampling)
-#> Chain 3:                14.669 seconds (Total)
-#> Chain 3: 
-#> 
-#> SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).
-#> Chain 4: 
-#> Chain 4: Gradient evaluation took 0.000132 seconds
-#> Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 1.32 seconds.
-#> Chain 4: Adjust your expectations accordingly!
-#> Chain 4: 
-#> Chain 4: 
-#> Chain 4: Iteration:    1 / 4000 [  0%]  (Warmup)
-#> Chain 4: Iteration:  400 / 4000 [ 10%]  (Warmup)
-#> Chain 4: Iteration:  800 / 4000 [ 20%]  (Warmup)
-#> Chain 4: Iteration: 1200 / 4000 [ 30%]  (Warmup)
-#> Chain 4: Iteration: 1600 / 4000 [ 40%]  (Warmup)
-#> Chain 4: Iteration: 2000 / 4000 [ 50%]  (Warmup)
-#> Chain 4: Iteration: 2001 / 4000 [ 50%]  (Sampling)
-#> Chain 4: Iteration: 2400 / 4000 [ 60%]  (Sampling)
-#> Chain 4: Iteration: 2800 / 4000 [ 70%]  (Sampling)
-#> Chain 4: Iteration: 3200 / 4000 [ 80%]  (Sampling)
-#> Chain 4: Iteration: 3600 / 4000 [ 90%]  (Sampling)
-#> Chain 4: Iteration: 4000 / 4000 [100%]  (Sampling)
-#> Chain 4: 
-#> Chain 4:  Elapsed Time: 8.31 seconds (Warm-up)
-#> Chain 4:                7.745 seconds (Sampling)
-#> Chain 4:                16.055 seconds (Total)
-#> Chain 4: 
-#> Warning: There were 2 divergent transitions after warmup. See
-#> https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
-#> to find out why this is a problem and how to eliminate them.
-#> Warning: Examine the pairs() plot to diagnose sampling problems
+#> Chain 1: Drawing a sample of size 2000 from the approximate posterior... 
+#> Chain 1: COMPLETED.
+#> Warning: Pareto k diagnostic value is 1.09. Resampling is disabled. Decreasing tol_rel_obj may help if variational algorithm has terminated prematurely. Otherwise consider using sampling instead.
 
 log_mll(model)
-#> [1] -346.3355
+#> [1] -349.5096
 ```

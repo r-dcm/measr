@@ -13,7 +13,8 @@ yens_q3(x, ..., crit_value = 0.2, summary = NULL)
 
 - x:
 
-  A [measrdcm](https://measr.info/dev/reference/dcm_estimate.md) object.
+  A [measrdcm](https://measr.r-dcm.org/dev/reference/dcm_estimate.md)
+  object.
 
 - ...:
 
@@ -99,5 +100,5 @@ yens_q3(model)
 #> 3 mdm1   mdm4      -0.123  FALSE
 #> 4 mdm2   mdm3      -0.110  FALSE
 #> 5 mdm2   mdm4      -0.249  TRUE 
-#> 6 mdm3   mdm4      -0.0988 FALSE
+#> 6 mdm3   mdm4      -0.0989 FALSE
 ```

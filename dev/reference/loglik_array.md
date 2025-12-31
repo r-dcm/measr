@@ -1,10 +1,10 @@
 # Extract the log-likelihood of an estimated model
 
 The `loglik_array()` methods for
-[measrdcm](https://measr.info/dev/reference/dcm_estimate.md) objects
-calculates the log-likelihood for an estimated model via the generated
-quantities functionality in *Stan* and returns the draws of the
-`log_lik` parameter.
+[measrdcm](https://measr.r-dcm.org/dev/reference/dcm_estimate.md)
+objects calculates the log-likelihood for an estimated model via the
+generated quantities functionality in *Stan* and returns the draws of
+the `log_lik` parameter.
 
 ## Usage
 
@@ -16,7 +16,8 @@ loglik_array(model, ...)
 
 - model:
 
-  A [measrdcm](https://measr.info/dev/reference/dcm_estimate.md) object.
+  A [measrdcm](https://measr.r-dcm.org/dev/reference/dcm_estimate.md)
+  object.
 
 - ...:
 

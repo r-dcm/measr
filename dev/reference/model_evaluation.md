@@ -41,7 +41,8 @@ add_respondent_estimates(
 
 - x:
 
-  A [measrdcm](https://measr.info/dev/reference/dcm_estimate.md) object.
+  A [measrdcm](https://measr.r-dcm.org/dev/reference/dcm_estimate.md)
+  object.
 
 - criterion:
 
@@ -59,16 +60,16 @@ add_respondent_estimates(
 - save:
 
   Logical. Only relevant if a file was specified in the
-  [measrdcm](https://measr.info/dev/reference/dcm_estimate.md) object
-  passed to `x`. If `TRUE` (the default), the model is re-saved to the
-  specified file when new criteria are added to the `R` object. If
-  `FALSE`, the new criteria will be added to the `R` object, but the
+  [measrdcm](https://measr.r-dcm.org/dev/reference/dcm_estimate.md)
+  object passed to `x`. If `TRUE` (the default), the model is re-saved
+  to the specified file when new criteria are added to the `R` object.
+  If `FALSE`, the new criteria will be added to the `R` object, but the
   saved file will not be updated.
 
 - ...:
 
   Arguments passed on to
-  [`fit_ppmc`](https://measr.info/dev/reference/fit_ppmc.md)
+  [`fit_ppmc`](https://measr.r-dcm.org/dev/reference/fit_ppmc.md)
 
   `model_fit`
 
@@ -109,50 +110,51 @@ add_respondent_estimates(
 
   The percentiles to be computed by the
   [`stats::quantile()`](https://rdrr.io/r/stats/quantile.html) function.
-  Only relevant if the model was estimated with `method = "mcmc"`. Only
-  used if `summary` is `TRUE`.
+  Only relevant if the model was estimated with a method that results in
+  posterior distributions (e.g., "mcmc", "variational"). Only used if
+  `summary` is `TRUE`.
 
 ## Value
 
-A modified [measrdcm](https://measr.info/dev/reference/dcm_estimate.md)
-object with the corresponding slot populated with the specified
-information.
+A modified
+[measrdcm](https://measr.r-dcm.org/dev/reference/dcm_estimate.md) object
+with the corresponding slot populated with the specified information.
 
 ## Details
 
 For `add_respondent_estimates()`, estimated person parameters are added
-to the `$respondent_estimates` element of the fitted model.
+to the `@respondent_estimates` element of the fitted model.
 
-For `add_fit()`, model and item fit information are added to the `$fit`
+For `add_fit()`, model and item fit information are added to the `@fit`
 element of the fitted model. This function wraps
 [`fit_m2()`](https://rdrr.io/pkg/dcm2/man/fit_m2.html) to calculate the
 M₂ statistic (Hansen et al., 2016; Liu et al., 2016) and/or
-[`fit_ppmc()`](https://measr.info/dev/reference/fit_ppmc.md) to
+[`fit_ppmc()`](https://measr.r-dcm.org/dev/reference/fit_ppmc.md) to
 calculate posterior predictive model checks (Park et al., 2015; Sinharay
 & Almond, 2007; Sinharay et al., 2006; Thompson, 2019), depending on
 which methods are specified.
 
 For `add_criterion()`, relative fit criteria are added to the
-`$criteria` element of the fitted model. For models estimated with MCMC,
+`@criteria` element of the fitted model. For models estimated with MCMC,
 this function wraps
 [`loo()`](https://mc-stan.org/loo/reference/loo.html) or
 [`waic()`](https://mc-stan.org/loo/reference/waic.html) to calculate the
 LOO-CV (Vehtari et al., 2017) or WAIC (Watanabe, 2010), respectively, or
-[`log_mll()`](https://measr.info/dev/reference/log_mll.md) to calculate
-the log marginal likelihood, which is used for calculating Bayes
-factors. For models estimated with the optimizer, this wraps
-[`aic()`](https://measr.info/dev/reference/aic-bic.md) or
-[`bic()`](https://measr.info/dev/reference/aic-bic.md) to estimate the
-AIC (Akaike, 1973) or BIC (Schwarz, 1978), respectively.
+[`log_mll()`](https://measr.r-dcm.org/dev/reference/log_mll.md) to
+calculate the log marginal likelihood, which is used for calculating
+Bayes factors. For models estimated with the optimizer, this wraps
+[`aic()`](https://measr.r-dcm.org/dev/reference/aic-bic.md) or
+[`bic()`](https://measr.r-dcm.org/dev/reference/aic-bic.md) to estimate
+the AIC (Akaike, 1973) or BIC (Schwarz, 1978), respectively.
 
 For `add_reliability()`, reliability information is added to the
-`$reliability` element of the fitted model. Pattern level reliability is
+`@reliability` element of the fitted model. Pattern level reliability is
 described by Cui et al. (2012). Classification reliability and posterior
 probability reliability are described by Johnson & Sinharay (2018,
 2020), respectively. This function wraps
-[`reliability()`](https://measr.info/dev/reference/reliability.md).
+[`reliability()`](https://measr.r-dcm.org/dev/reference/reliability.md).
 Arguments supplied to `...` are passed to
-[`reliability()`](https://measr.info/dev/reference/reliability.md).
+[`reliability()`](https://measr.r-dcm.org/dev/reference/reliability.md).
 
 ## References
 

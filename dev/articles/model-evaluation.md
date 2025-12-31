@@ -22,7 +22,7 @@ library(measr)
 
 To demonstrate the model fit functionality of measr, we’ll use the same
 simulated data set that was used to illustrate [model estimation
-functionality](https://measr.info/dev/articles/model-estimation.md).
+functionality](https://measr.r-dcm.org/dev/articles/model-estimation.md).
 This data set contains 2,000 respondents and 20 items that measure a
 total of 4 attributes, but no item measures more than 2 attributes. The
 data was generated from the loglinear cognitive diagnostic model (LCDM),
@@ -35,7 +35,7 @@ our fake data, we expect our estimated LCDM model to perform well. On
 the other hand, the DINA model places heavy constraints on the LCDM, and
 therefore we expect worse performance from the DINA model. For details
 on model estimation, see [Estimating diagnostic classification
-models](https://measr.info/dev/articles/model-estimation.md).
+models](https://measr.r-dcm.org/dev/articles/model-estimation.md).
 
 ``` r
 library(tidyverse)
@@ -134,9 +134,9 @@ as the expected odds ratio between each pair of items ([Park et al.,
 2015](#ref-park2015); [Sinharay et al., 2006](#ref-sinharay2006)).
 
 With measr, PPMCs can be calculated with
-[`fit_ppmc()`](https://measr.info/dev/reference/fit_ppmc.md). Using
-[`fit_ppmc()`](https://measr.info/dev/reference/fit_ppmc.md) can specify
-which PPMCs to calculate. For example, here we estimate just the
+[`fit_ppmc()`](https://measr.r-dcm.org/dev/reference/fit_ppmc.md). Using
+[`fit_ppmc()`](https://measr.r-dcm.org/dev/reference/fit_ppmc.md) can
+specify which PPMCs to calculate. For example, here we estimate just the
 model-level raw score check by setting `item_fit = NULL`.
 
 ``` r
@@ -148,19 +148,19 @@ fit_ppmc(lcdm, model_fit = "raw_score")
 #> 1      24.0      23.7   10.9    40.9 0.452
 ```
 
-[`fit_ppmc()`](https://measr.info/dev/reference/fit_ppmc.md) returns a
-list, where each element is a different PPMC. Here, we only specified
-one PPMC, so we only get the `raw_score` element back. The `obs_chisq`
-is the raw score χ² values from our observed data. We then see the mean
-of the posterior distribution for the χ², quantiles of the posterior
-distribution, and the posterior predictive *p*-value (*ppp*). The *ppp*
-is the proportion of posterior draws that are greater than the observed
-value. Values close to 0 indicate poor fit. Values close to 1 may
-indicate overfitting. Because the LCDM was used to generate this data,
-it’s not surprising that the *ppp* is approaching close to 0.5 for our
-estimated model, as the model is perfectly capturing the data generating
-process (i.e., our observed data is right in the middle of what the
-estimated model would expect).
+[`fit_ppmc()`](https://measr.r-dcm.org/dev/reference/fit_ppmc.md)
+returns a list, where each element is a different PPMC. Here, we only
+specified one PPMC, so we only get the `raw_score` element back. The
+`obs_chisq` is the raw score χ² values from our observed data. We then
+see the mean of the posterior distribution for the χ², quantiles of the
+posterior distribution, and the posterior predictive *p*-value (*ppp*).
+The *ppp* is the proportion of posterior draws that are greater than the
+observed value. Values close to 0 indicate poor fit. Values close to 1
+may indicate overfitting. Because the LCDM was used to generate this
+data, it’s not surprising that the *ppp* is approaching close to 0.5 for
+our estimated model, as the model is perfectly capturing the data
+generating process (i.e., our observed data is right in the middle of
+what the estimated model would expect).
 
 We can also specify the posterior quantiles that are returned. For
 example, we can calculate the item-level odds ratios and request
@@ -283,7 +283,7 @@ We can also evaluate DCMs through their reliability. That is, it’s
 important to understand the accuracy and consistency of the
 classifications that are made by the model. For models estimated with
 measr, estimates of reliability can be calculated using
-[`reliability()`](https://measr.info/dev/reference/reliability.md).
+[`reliability()`](https://measr.r-dcm.org/dev/reference/reliability.md).
 
 ``` r
 reliability(lcdm)
@@ -397,11 +397,11 @@ There are three functions for adding model evaluation components to a
 model object, which correspond to the three types of evaluation
 described in this vignette:
 
-- [`add_fit()`](https://measr.info/dev/reference/model_evaluation.md):
+- [`add_fit()`](https://measr.r-dcm.org/dev/reference/model_evaluation.md):
   Adds absolute model fit indices (i.e., M₂, PPMCs)
-- [`add_criterion()`](https://measr.info/dev/reference/model_evaluation.md):
+- [`add_criterion()`](https://measr.r-dcm.org/dev/reference/model_evaluation.md):
   Adds relative model fit indices (i.e., LOO, WAIC)
-- [`add_reliability()`](https://measr.info/dev/reference/model_evaluation.md):
+- [`add_reliability()`](https://measr.r-dcm.org/dev/reference/model_evaluation.md):
   Adds reliability metrics
 
 All three functions have several arguments in common.
@@ -411,7 +411,7 @@ All three functions have several arguments in common.
   when estimating the model. The default is `TRUE`.
 - `overwrite`: Whether to overwrite existing evaluations. For example,
   if you attempt to add reliability metrics with
-  [`add_reliability()`](https://measr.info/dev/reference/model_evaluation.md),
+  [`add_reliability()`](https://measr.r-dcm.org/dev/reference/model_evaluation.md),
   but those metrics have already been added, should the reliability
   metrics be recalculated and overwrite the existing metrics? The
   default is `FALSE`.
@@ -420,7 +420,7 @@ Additionally, all three functions have a `...` argument for passing
 additional arguments along to the relevant functions. For example, if we
 want to add PPMC absolute model fit indices, we can specify the types of
 model- and item-level fit indices to calculate, just as we did when
-using [`fit_ppmc()`](https://measr.info/dev/reference/fit_ppmc.md).
+using [`fit_ppmc()`](https://measr.r-dcm.org/dev/reference/fit_ppmc.md).
 
 ``` r
 lcdm <- add_fit(lcdm, method = "ppmc",
@@ -450,7 +450,7 @@ lcdm <- add_fit(lcdm, method = "ppmc",
 ```
 
 Once components have been added to the model, a helper function,
-[`measr_extract()`](https://measr.info/dev/reference/measr_extract.md),
+[`measr_extract()`](https://measr.r-dcm.org/dev/reference/measr_extract.md),
 can be used to pull out relevant pieces of output. For example, we can
 extract the PPMC raw score results.
 
@@ -499,9 +499,9 @@ measr_extract(lcdm, what = "strc_param")
 ```
 
 For a complete list of what can be extract with
-[`measr_extract()`](https://measr.info/dev/reference/measr_extract.md),
+[`measr_extract()`](https://measr.r-dcm.org/dev/reference/measr_extract.md),
 see
-[`?measr_extract`](https://measr.info/dev/reference/measr_extract.md).
+[`?measr_extract`](https://measr.r-dcm.org/dev/reference/measr_extract.md).
 
 ## References
 
