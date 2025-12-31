@@ -47,9 +47,6 @@
 <li><a class="dropdown-item" href="../articles/paper.html">measr: Bayesian psychometric measurement using Stan</a></li>
     <li><a class="dropdown-item" href="../articles/model-estimation.html">Estimating diagnostic classification models</a></li>
     <li><a class="dropdown-item" href="../articles/model-evaluation.html">Evaluating diagnostic classification models</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Case Studies</h6></li>
-    <li><a class="dropdown-item" href="../articles/ecpe.html">Examination for the Certificate of Proficiency in English</a></li>
   </ul>
 </li>
 <li class="nav-item dropdown">
@@ -127,20 +124,36 @@ models</a>.</p>
 <span><span class="va">sim_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_rds.html" class="external-link">read_rds</a></span><span class="op">(</span><span class="st">"data/simulated-data.rds"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">lcdm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dcm_estimate.html">dcm_estimate</a></span><span class="op">(</span></span>
-<span>  dcm_spec <span class="op">=</span> <span class="fu"><a href="https://dcmstan.r-dcm.org/reference/dcm_specify.html" class="external-link">dcm_specify</a></span><span class="op">(</span>qmatrix <span class="op">=</span> <span class="va">sim_data</span><span class="op">$</span><span class="va">q_matrix</span>, identifier <span class="op">=</span> <span class="st">"item_id"</span>,</span>
-<span>                         measurement_model <span class="op">=</span> <span class="fu"><a href="https://dcmstan.r-dcm.org/reference/measurement-model.html" class="external-link">lcdm</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  data <span class="op">=</span> <span class="va">sim_data</span><span class="op">$</span><span class="va">data</span>, identifier <span class="op">=</span> <span class="st">"resp_id"</span>,</span>
-<span>  method <span class="op">=</span> <span class="st">"mcmc"</span>, backend <span class="op">=</span> <span class="st">"cmdstanr"</span>,</span>
-<span>  iter_warmup <span class="op">=</span> <span class="fl">1000</span>, iter_sampling <span class="op">=</span> <span class="fl">500</span>, chains <span class="op">=</span> <span class="fl">4</span>, parallel_chains <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  dcm_spec <span class="op">=</span> <span class="fu"><a href="https://dcmstan.r-dcm.org/reference/dcm_specify.html" class="external-link">dcm_specify</a></span><span class="op">(</span></span>
+<span>    qmatrix <span class="op">=</span> <span class="va">sim_data</span><span class="op">$</span><span class="va">q_matrix</span>,</span>
+<span>    identifier <span class="op">=</span> <span class="st">"item_id"</span>,</span>
+<span>    measurement_model <span class="op">=</span> <span class="fu"><a href="https://dcmstan.r-dcm.org/reference/measurement-model.html" class="external-link">lcdm</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">sim_data</span><span class="op">$</span><span class="va">data</span>,</span>
+<span>  identifier <span class="op">=</span> <span class="st">"resp_id"</span>,</span>
+<span>  method <span class="op">=</span> <span class="st">"mcmc"</span>,</span>
+<span>  backend <span class="op">=</span> <span class="st">"cmdstanr"</span>,</span>
+<span>  iter_warmup <span class="op">=</span> <span class="fl">1000</span>,</span>
+<span>  iter_sampling <span class="op">=</span> <span class="fl">500</span>,</span>
+<span>  chains <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  parallel_chains <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>  file <span class="op">=</span> <span class="st">"fits/sim-lcdm"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">dina</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dcm_estimate.html">dcm_estimate</a></span><span class="op">(</span></span>
-<span>  dcm_spec <span class="op">=</span> <span class="fu"><a href="https://dcmstan.r-dcm.org/reference/dcm_specify.html" class="external-link">dcm_specify</a></span><span class="op">(</span>qmatrix <span class="op">=</span> <span class="va">sim_data</span><span class="op">$</span><span class="va">q_matrix</span>, identifier <span class="op">=</span> <span class="st">"item_id"</span>,</span>
-<span>                         measurement_model <span class="op">=</span> <span class="fu"><a href="https://dcmstan.r-dcm.org/reference/measurement-model.html" class="external-link">dina</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  data <span class="op">=</span> <span class="va">sim_data</span><span class="op">$</span><span class="va">data</span>, identifier <span class="op">=</span> <span class="st">"resp_id"</span>,</span>
-<span>  method <span class="op">=</span> <span class="st">"mcmc"</span>, backend <span class="op">=</span> <span class="st">"cmdstanr"</span>,</span>
-<span>  iter_warmup <span class="op">=</span> <span class="fl">1000</span>, iter_sampling <span class="op">=</span> <span class="fl">500</span>, chains <span class="op">=</span> <span class="fl">4</span>, parallel_chains <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  dcm_spec <span class="op">=</span> <span class="fu"><a href="https://dcmstan.r-dcm.org/reference/dcm_specify.html" class="external-link">dcm_specify</a></span><span class="op">(</span></span>
+<span>    qmatrix <span class="op">=</span> <span class="va">sim_data</span><span class="op">$</span><span class="va">q_matrix</span>,</span>
+<span>    identifier <span class="op">=</span> <span class="st">"item_id"</span>,</span>
+<span>    measurement_model <span class="op">=</span> <span class="fu"><a href="https://dcmstan.r-dcm.org/reference/measurement-model.html" class="external-link">dina</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">sim_data</span><span class="op">$</span><span class="va">data</span>,</span>
+<span>  identifier <span class="op">=</span> <span class="st">"resp_id"</span>,</span>
+<span>  method <span class="op">=</span> <span class="st">"mcmc"</span>,</span>
+<span>  backend <span class="op">=</span> <span class="st">"cmdstanr"</span>,</span>
+<span>  iter_warmup <span class="op">=</span> <span class="fl">1000</span>,</span>
+<span>  iter_sampling <span class="op">=</span> <span class="fl">500</span>,</span>
+<span>  chains <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  parallel_chains <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>  file <span class="op">=</span> <span class="st">"fits/sim-dina"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -243,8 +256,7 @@ model would expect).</p>
 example, we can calculate the item-level odds ratios and request
 quantiles that will result in a 90% credible interval.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/fit_ppmc.html">fit_ppmc</a></span><span class="op">(</span><span class="va">lcdm</span>, model_fit <span class="op">=</span> <span class="cn">NULL</span>, item_fit <span class="op">=</span> <span class="st">"odds_ratio"</span>,</span>
-<span>         probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.05</span>, <span class="fl">0.95</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/fit_ppmc.html">fit_ppmc</a></span><span class="op">(</span><span class="va">lcdm</span>, model_fit <span class="op">=</span> <span class="cn">NULL</span>, item_fit <span class="op">=</span> <span class="st">"odds_ratio"</span>, probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.05</span>, <span class="fl">0.95</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $ppmc_odds_ratio</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 190 × 7</span></span></span>
 <span><span class="co">#&gt;    item_1 item_2 obs_or ppmc_mean  `5%` `95%`   ppp</span></span>
@@ -488,9 +500,12 @@ example, if we want to add PPMC absolute model fit indices, we can
 specify the types of model- and item-level fit indices to calculate,
 just as we did when using <code><a href="../reference/fit_ppmc.html">fit_ppmc()</a></code>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">lcdm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_evaluation.html">add_fit</a></span><span class="op">(</span><span class="va">lcdm</span>, method <span class="op">=</span> <span class="st">"ppmc"</span>,</span>
-<span>                model_fit <span class="op">=</span> <span class="st">"raw_score"</span>,</span>
-<span>                item_fit <span class="op">=</span> <span class="st">"odds_ratio"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">lcdm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_evaluation.html">add_fit</a></span><span class="op">(</span></span>
+<span>  <span class="va">lcdm</span>,</span>
+<span>  method <span class="op">=</span> <span class="st">"ppmc"</span>,</span>
+<span>  model_fit <span class="op">=</span> <span class="st">"raw_score"</span>,</span>
+<span>  item_fit <span class="op">=</span> <span class="st">"odds_ratio"</span></span>
+<span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in file.remove(current_files[!current_files %in% new_paths]):</span></span>
 <span><span class="co">#&gt; cannot remove file</span></span>
 <span><span class="co">#&gt; '/Users/jakethompson/Documents/GIT/packages/measr/vignettes/articles/fits/sim-lcdm-1.csv',</span></span>
@@ -535,25 +550,25 @@ the base rate of membership in each class.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> structural  Vc          dirichlet(rep_vector(1, C))</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/measr_extract.html">measr_extract</a></span><span class="op">(</span><span class="va">lcdm</span>, what <span class="op">=</span> <span class="st">"strc_param"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 16 × 2</span></span></span>
-<span><span class="co">#&gt;    class            estimate</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> [0,0,0,0]  0.059 <span style="color: #949494;">± 0.0069</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> [1,0,0,0]  0.080 <span style="color: #949494;">± 0.0075</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> [0,1,0,0]  0.063 <span style="color: #949494;">± 0.0065</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> [0,0,1,0]  0.083 <span style="color: #949494;">± 0.0078</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> [0,0,0,1]  0.052 <span style="color: #949494;">± 0.0086</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> [1,1,0,0]  0.044 <span style="color: #949494;">± 0.0059</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> [1,0,1,0]  0.051 <span style="color: #949494;">± 0.0066</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> [1,0,0,1]  0.060 <span style="color: #949494;">± 0.0110</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> [0,1,1,0]  0.083 <span style="color: #949494;">± 0.0078</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> [0,1,0,1]  0.049 <span style="color: #949494;">± 0.0079</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> [0,0,1,1]  0.081 <span style="color: #949494;">± 0.0100</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> [1,1,1,0]  0.043 <span style="color: #949494;">± 0.0066</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> [1,1,0,1]  0.044 <span style="color: #949494;">± 0.0095</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> [1,0,1,1]  0.092 <span style="color: #949494;">± 0.0111</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> [0,1,1,1]  0.047 <span style="color: #949494;">± 0.0085</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> [1,1,1,1]  0.068 <span style="color: #949494;">± 0.0099</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 16 × 6</span></span></span>
+<span><span class="co">#&gt;    class      att1  att2  att3  att4        estimate</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> [0,0,0,0]     0     0     0     0  0.059 <span style="color: #949494;">± 0.0069</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> [1,0,0,0]     1     0     0     0  0.080 <span style="color: #949494;">± 0.0075</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> [0,1,0,0]     0     1     0     0  0.063 <span style="color: #949494;">± 0.0065</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> [0,0,1,0]     0     0     1     0  0.083 <span style="color: #949494;">± 0.0078</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> [0,0,0,1]     0     0     0     1  0.052 <span style="color: #949494;">± 0.0086</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> [1,1,0,0]     1     1     0     0  0.044 <span style="color: #949494;">± 0.0059</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> [1,0,1,0]     1     0     1     0  0.051 <span style="color: #949494;">± 0.0066</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> [1,0,0,1]     1     0     0     1  0.060 <span style="color: #949494;">± 0.0110</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> [0,1,1,0]     0     1     1     0  0.083 <span style="color: #949494;">± 0.0078</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> [0,1,0,1]     0     1     0     1  0.049 <span style="color: #949494;">± 0.0079</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> [0,0,1,1]     0     0     1     1  0.081 <span style="color: #949494;">± 0.0100</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> [1,1,1,0]     1     1     1     0  0.043 <span style="color: #949494;">± 0.0066</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> [1,1,0,1]     1     1     0     1  0.044 <span style="color: #949494;">± 0.0095</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> [1,0,1,1]     1     0     1     1  0.092 <span style="color: #949494;">± 0.0111</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> [0,1,1,1]     0     1     1     1  0.047 <span style="color: #949494;">± 0.0085</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> [1,1,1,1]     1     1     1     1  0.068 <span style="color: #949494;">± 0.0099</span></span></span></code></pre></div>
 <p>For a complete list of what can be extract with
 <code><a href="../reference/measr_extract.html">measr_extract()</a></code>, see <code><a href="../reference/measr_extract.html">?measr_extract</a></code>.</p>
 </div>

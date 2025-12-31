@@ -42,11 +42,17 @@ Sinica, 6*(4), 831-860. <https://www.jstor.org/stable/24306045>
 ## Examples
 
 ``` r
-model_spec <- dcm_specify(qmatrix = dcmdata::mdm_qmatrix,
-                          identifier = "item")
-model <- dcm_estimate(dcm_spec = model_spec, data = dcmdata::mdm_data,
-                      identifier = "respondent", method = "variational",
-                      seed = 63277)
+model_spec <- dcm_specify(
+  qmatrix = dcmdata::mdm_qmatrix,
+  identifier = "item"
+)
+model <- dcm_estimate(
+  dcm_spec = model_spec,
+  data = dcmdata::mdm_data,
+  identifier = "respondent",
+  method = "variational",
+  seed = 63277
+)
 #> Chain 1: ------------------------------------------------------------
 #> Chain 1: EXPERIMENTAL ALGORITHM:
 #> Chain 1:   This procedure has not been thoroughly tested and may be unstable
@@ -55,8 +61,8 @@ model <- dcm_estimate(dcm_spec = model_spec, data = dcmdata::mdm_data,
 #> Chain 1: 
 #> Chain 1: 
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.000129 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.29 seconds.
+#> Chain 1: Gradient evaluation took 0.000128 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.28 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 

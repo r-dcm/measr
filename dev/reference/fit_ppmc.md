@@ -153,11 +153,21 @@ of Kansas; Accessible Teaching, Learning, and Assessment Systems.
 
 ``` r
 mdm_dina <- dcm_estimate(
-  dcm_specify(dcmdata::mdm_qmatrix, identifier = "item",
-              measurement_model = dina()),
-  data = dcmdata::mdm_data, missing = NA, identifier = "respondent",
-  method = "mcmc", seed = 63277, backend = "rstan",
-  iter = 700, warmup = 500, chains = 2, refresh = 0
+  dcm_specify(
+    dcmdata::mdm_qmatrix,
+    identifier = "item",
+    measurement_model = dina()
+  ),
+  data = dcmdata::mdm_data,
+  missing = NA,
+  identifier = "respondent",
+  method = "mcmc",
+  seed = 63277,
+  backend = "rstan",
+  iter = 700,
+  warmup = 500,
+  chains = 2,
+  refresh = 0
 )
 #> Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
 #> Running the chains for more iterations may help. See

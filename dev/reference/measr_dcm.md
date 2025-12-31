@@ -159,9 +159,15 @@ A `measrdcm` object.
 
 ``` r
 rstn_mdm_lcdm <- measr_dcm(
-  data = mdm_data, missing = NA, qmatrix = mdm_qmatrix,
-  resp_id = "respondent", item_id = "item", type = "lcdm",
-  method = "optim", seed = 63277, backend = "rstan"
+  data = mdm_data,
+  missing = NA,
+  qmatrix = mdm_qmatrix,
+  resp_id = "respondent",
+  item_id = "item",
+  type = "lcdm",
+  method = "optim",
+  seed = 63277,
+  backend = "rstan"
 )
 #> Warning: `measr_dcm()` was deprecated in measr 2.0.0.
 #> ℹ This is a limited version of dcm_estimate(); use it instead.

@@ -30,9 +30,6 @@ should use dcm_estimate()."><meta property="og:image" content="https://measr.r-d
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/paper.html">measr: Bayesian psychometric measurement using Stan</a></li>
     <li><a class="dropdown-item" href="../articles/model-estimation.html">Estimating diagnostic classification models</a></li>
     <li><a class="dropdown-item" href="../articles/model-evaluation.html">Evaluating diagnostic classification models</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Case Studies</h6></li>
-    <li><a class="dropdown-item" href="../articles/ecpe.html">Examination for the Certificate of Proficiency in English</a></li>
   </ul></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-news" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">News</button>
@@ -174,10 +171,10 @@ used to fit the model.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;measr::measrdcm&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  @ model_spec          : &lt;dcmstan::dcm_specification&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  .. @ qmatrix          : tibble [15 × 4] (S3: tbl_df/tbl/data.frame)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ att1: int [1:15] 0 1 0 1 1 0 1 0 1 1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ att2: int [1:15] 1 0 1 0 0 1 1 1 1 1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ att3: int [1:15] 0 1 1 0 1 0 1 1 1 1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ att4: int [1:15] 1 1 1 1 0 1 1 0 1 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ att1: int [1:15] 1 0 1 0 1 1 0 0 0 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ att2: int [1:15] 0 1 1 1 1 1 1 0 1 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ att3: int [1:15] 1 0 1 1 1 1 1 0 0 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ att4: int [1:15] 0 1 1 0 1 0 0 1 0 0 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  .. @ qmatrix_meta     :List of 3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  .. .. $ attribute_names: Named chr [1:4] "att1" "att2" "att3" "att4"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  .. ..  ..- attr(*, "names")= chr [1:4] "att1" "att2" "att3" "att4"</span>

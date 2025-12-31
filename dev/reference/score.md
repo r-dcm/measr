@@ -84,3 +84,51 @@ If summary is `TRUE`, each element is a tibble with one row per
 respondent and class or attribute. The columns include the respondent
 identifier, `class` or `attribute`, `mean`, and one column for every
 value specified in `probs`.
+
+## Examples
+
+``` r
+rstn_mdm_lcdm <- dcm_estimate(
+  dcm_specify(dcmdata::mdm_qmatrix, identifier = "item"),
+  data = dcmdata::mdm_data,
+  missing = NA,
+  identifier = "respondent",
+  method = "optim",
+  seed = 63277,
+  backend = "rstan"
+)
+
+score(rstn_mdm_lcdm, summary = FALSE)
+#> $class_probabilities
+#> # A tibble: 142 × 3
+#>    respondent   `[0]` `[1]`
+#>    <chr>        <dbl> <dbl>
+#>  1 m8qre      0.00193 0.998
+#>  2 8wMPc      0.00193 0.998
+#>  3 xdbT8      0.00193 0.998
+#>  4 Ee9ob      0.00193 0.998
+#>  5 0tyTA      0.00193 0.998
+#>  6 L4bzq      0.00193 0.998
+#>  7 QTW1v      0.00193 0.998
+#>  8 w4NOH      0.00193 0.998
+#>  9 t9sIe      0.00193 0.998
+#> 10 FDa7I      0.00193 0.998
+#> # ℹ 132 more rows
+#> 
+#> $attribute_probabilities
+#> # A tibble: 142 × 2
+#>    respondent multiplication
+#>    <chr>               <dbl>
+#>  1 m8qre               0.998
+#>  2 8wMPc               0.998
+#>  3 xdbT8               0.998
+#>  4 Ee9ob               0.998
+#>  5 0tyTA               0.998
+#>  6 L4bzq               0.998
+#>  7 QTW1v               0.998
+#>  8 w4NOH               0.998
+#>  9 t9sIe               0.998
+#> 10 FDa7I               0.998
+#> # ℹ 132 more rows
+#> 
+```

@@ -85,20 +85,20 @@ Psychological Measurement, 8*(2), 125-145.
 ## Examples
 
 ``` r
-model_spec <- dcm_specify(qmatrix = dcmdata::mdm_qmatrix,
-                          identifier = "item")
-model <- dcm_estimate(dcm_spec = model_spec, data = dcmdata::mdm_data,
-                      identifier = "respondent", method = "optim",
-                      seed = 63277)
+model_spec <- dcm_specify(
+  qmatrix = dcmdata::mdm_qmatrix,
+  dentifier = "item"
+)
+#> Error in dcm_specify(qmatrix = dcmdata::mdm_qmatrix, dentifier = "item"): unused argument (dentifier = "item")
+model <- dcm_estimate(
+  dcm_spec = model_spec,
+  data = dcmdata::mdm_data,
+  identifier = "respondent",
+  method = "optim",
+  seed = 63277
+)
+#> Error: object 'model_spec' not found
 
 yens_q3(model)
-#> # A tibble: 6 × 4
-#>   item_1 item_2 resid_corr flag 
-#>   <chr>  <chr>       <dbl> <lgl>
-#> 1 mdm1   mdm2      -0.132  FALSE
-#> 2 mdm1   mdm3      -0.0910 FALSE
-#> 3 mdm1   mdm4      -0.123  FALSE
-#> 4 mdm2   mdm3      -0.110  FALSE
-#> 5 mdm2   mdm4      -0.249  TRUE 
-#> 6 mdm3   mdm4      -0.0989 FALSE
+#> Error: object 'model' not found
 ```

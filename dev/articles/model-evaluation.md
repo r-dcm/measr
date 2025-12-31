@@ -43,20 +43,36 @@ library(tidyverse)
 sim_data <- read_rds("data/simulated-data.rds")
 
 lcdm <- dcm_estimate(
-  dcm_spec = dcm_specify(qmatrix = sim_data$q_matrix, identifier = "item_id",
-                         measurement_model = lcdm()),
-  data = sim_data$data, identifier = "resp_id",
-  method = "mcmc", backend = "cmdstanr",
-  iter_warmup = 1000, iter_sampling = 500, chains = 4, parallel_chains = 4,
+  dcm_spec = dcm_specify(
+    qmatrix = sim_data$q_matrix,
+    identifier = "item_id",
+    measurement_model = lcdm()
+  ),
+  data = sim_data$data,
+  identifier = "resp_id",
+  method = "mcmc",
+  backend = "cmdstanr",
+  iter_warmup = 1000,
+  iter_sampling = 500,
+  chains = 4,
+  parallel_chains = 4,
   file = "fits/sim-lcdm"
 )
 
 dina <- dcm_estimate(
-  dcm_spec = dcm_specify(qmatrix = sim_data$q_matrix, identifier = "item_id",
-                         measurement_model = dina()),
-  data = sim_data$data, identifier = "resp_id",
-  method = "mcmc", backend = "cmdstanr",
-  iter_warmup = 1000, iter_sampling = 500, chains = 4, parallel_chains = 4,
+  dcm_spec = dcm_specify(
+    qmatrix = sim_data$q_matrix,
+    identifier = "item_id",
+    measurement_model = dina()
+  ),
+  data = sim_data$data,
+  identifier = "resp_id",
+  method = "mcmc",
+  backend = "cmdstanr",
+  iter_warmup = 1000,
+  iter_sampling = 500,
+  chains = 4,
+  parallel_chains = 4,
   file = "fits/sim-dina"
 )
 ```
@@ -167,8 +183,7 @@ example, we can calculate the item-level odds ratios and request
 quantiles that will result in a 90% credible interval.
 
 ``` r
-fit_ppmc(lcdm, model_fit = NULL, item_fit = "odds_ratio",
-         probs = c(0.05, 0.95))
+fit_ppmc(lcdm, model_fit = NULL, item_fit = "odds_ratio", probs = c(0.05, 0.95))
 #> $ppmc_odds_ratio
 #> # A tibble: 190 × 7
 #>    item_1 item_2 obs_or ppmc_mean  `5%` `95%`   ppp
@@ -423,9 +438,12 @@ model- and item-level fit indices to calculate, just as we did when
 using [`fit_ppmc()`](https://measr.r-dcm.org/dev/reference/fit_ppmc.md).
 
 ``` r
-lcdm <- add_fit(lcdm, method = "ppmc",
-                model_fit = "raw_score",
-                item_fit = "odds_ratio")
+lcdm <- add_fit(
+  lcdm,
+  method = "ppmc",
+  model_fit = "raw_score",
+  item_fit = "odds_ratio"
+)
 #> Warning in file.remove(current_files[!current_files %in% new_paths]):
 #> cannot remove file
 #> '/Users/jakethompson/Documents/GIT/packages/measr/vignettes/articles/fits/sim-lcdm-1.csv',
@@ -477,25 +495,25 @@ measr_extract(lcdm, what = "prior")
 #> 4 structural  Vc          dirichlet(rep_vector(1, C))
 
 measr_extract(lcdm, what = "strc_param")
-#> # A tibble: 16 × 2
-#>    class            estimate
-#>    <chr>          <rvar[1d]>
-#>  1 [0,0,0,0]  0.059 ± 0.0069
-#>  2 [1,0,0,0]  0.080 ± 0.0075
-#>  3 [0,1,0,0]  0.063 ± 0.0065
-#>  4 [0,0,1,0]  0.083 ± 0.0078
-#>  5 [0,0,0,1]  0.052 ± 0.0086
-#>  6 [1,1,0,0]  0.044 ± 0.0059
-#>  7 [1,0,1,0]  0.051 ± 0.0066
-#>  8 [1,0,0,1]  0.060 ± 0.0110
-#>  9 [0,1,1,0]  0.083 ± 0.0078
-#> 10 [0,1,0,1]  0.049 ± 0.0079
-#> 11 [0,0,1,1]  0.081 ± 0.0100
-#> 12 [1,1,1,0]  0.043 ± 0.0066
-#> 13 [1,1,0,1]  0.044 ± 0.0095
-#> 14 [1,0,1,1]  0.092 ± 0.0111
-#> 15 [0,1,1,1]  0.047 ± 0.0085
-#> 16 [1,1,1,1]  0.068 ± 0.0099
+#> # A tibble: 16 × 6
+#>    class      att1  att2  att3  att4        estimate
+#>    <chr>     <int> <int> <int> <int>      <rvar[1d]>
+#>  1 [0,0,0,0]     0     0     0     0  0.059 ± 0.0069
+#>  2 [1,0,0,0]     1     0     0     0  0.080 ± 0.0075
+#>  3 [0,1,0,0]     0     1     0     0  0.063 ± 0.0065
+#>  4 [0,0,1,0]     0     0     1     0  0.083 ± 0.0078
+#>  5 [0,0,0,1]     0     0     0     1  0.052 ± 0.0086
+#>  6 [1,1,0,0]     1     1     0     0  0.044 ± 0.0059
+#>  7 [1,0,1,0]     1     0     1     0  0.051 ± 0.0066
+#>  8 [1,0,0,1]     1     0     0     1  0.060 ± 0.0110
+#>  9 [0,1,1,0]     0     1     1     0  0.083 ± 0.0078
+#> 10 [0,1,0,1]     0     1     0     1  0.049 ± 0.0079
+#> 11 [0,0,1,1]     0     0     1     1  0.081 ± 0.0100
+#> 12 [1,1,1,0]     1     1     1     0  0.043 ± 0.0066
+#> 13 [1,1,0,1]     1     1     0     1  0.044 ± 0.0095
+#> 14 [1,0,1,1]     1     0     1     1  0.092 ± 0.0111
+#> 15 [0,1,1,1]     0     1     1     1  0.047 ± 0.0085
+#> 16 [1,1,1,1]     1     1     1     1  0.068 ± 0.0099
 ```
 
 For a complete list of what can be extract with

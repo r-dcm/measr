@@ -79,18 +79,23 @@ information:
   the parameter, the class of the parameter, and the estimated value.
 
 - `strc_param`: The estimated structural parameters. This is the base
-  rate of membership in each class. This shows the class pattern and the
-  estimated proportion of respondents in each class.
+  rate of membership in each class. This shows the class pattern, the
+  attributes present in each class, and the estimated proportion of
+  respondents in each class.
+
+- `attribute_base_rate`: The estimated base rate of attribute
+  proficiency. Calculated from the structural parameters of the classes
+  where each attribute is present.
 
 - `pi_matrix`: The model estimated probability that a respondent in the
   given class provides a correct response to the item. The output shows
   the the item (rows), class (columns), and estimated *p*-values.
 
 - `exp_pvalues`: Model expected *p*-values for each item. This is
-  equivalent to the `pi_matrix`, but also includes and "overall"
-  variable, which represents the expected *p*-value for each item (i.e.,
-  an average of the class-specific *p*-values, weighted by the
-  prevalence of each class).
+  equivalent to the `pi_matrix`, but also includes an "overall" field,
+  which represents the expected *p*-value for each item (i.e., an
+  average of the class-specific *p*-values, weighted by the prevalence
+  of each class).
 
 #### Respondent results
 
@@ -204,14 +209,18 @@ Classification, 30*(2), 251-275.
 ``` r
 rstn_mdm_lcdm <- dcm_estimate(
   dcm_specify(dcmdata::mdm_qmatrix, identifier = "item"),
-  data = dcmdata::mdm_data, missing = NA, identifier = "respondent",
-  method = "optim", seed = 63277, backend = "rstan"
+  data = dcmdata::mdm_data,
+  missing = NA,
+  identifier = "respondent",
+  method = "optim",
+  seed = 63277,
+  backend = "rstan"
 )
 
 measr_extract(rstn_mdm_lcdm, "strc_param")
-#> # A tibble: 2 × 2
-#>   class estimate
-#>   <chr>    <dbl>
-#> 1 [0]      0.488
-#> 2 [1]      0.512
+#> # A tibble: 2 × 3
+#>   class multiplication estimate
+#>   <chr>          <int>    <dbl>
+#> 1 [0]                0    0.488
+#> 2 [1]                1    0.512
 ```
