@@ -121,7 +121,7 @@ S7::method(reliability, measrdcm) <- function(
     cli::cli_abort(msg)
   }
 
-  # coerce model into a list of values required for reliability
+  # coerce model into a list of values required for reliability -----
   obj <- reli_list(model = x, threshold = threshold)
 
   tbl <- obj$acc
@@ -178,7 +178,7 @@ S7::method(reliability, measrdcm) <- function(
   kap_base <- p * p + (1 - p) * (1 - p)
   kappa_c <- (acc - kap_base) / kap_base
 
-  all_a <- as.matrix(create_profiles(k))
+  all_a <- as.matrix(create_profiles(x@model_spec))
   p_prime <- apply(
     sweep(
       apply(obj$posterior, 2, function(v) {

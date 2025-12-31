@@ -11,7 +11,7 @@ S7::method(stan_data, measrdcm) <- function(x, clean_data = NULL) {
     dplyr::summarize(start = min(.data$rowid), num = dplyr::n()) |>
     dplyr::arrange(.data$resp_id)
 
-  profiles <- dcmstan::create_profiles(
+  profiles <- create_profiles(
     x@model_spec@structural_model,
     attributes = x@model_spec@qmatrix_meta$attribute_names
   )

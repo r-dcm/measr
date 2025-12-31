@@ -213,7 +213,7 @@ dcm_extract_pi_matrix <- function(model, call) {
 }
 
 dcm_extract_classes <- function(model, call) {
-  dcmstan::create_profiles(model@model_spec) |>
+  create_profiles(model@model_spec) |>
     tibble::rowid_to_column(var = "class_id") |>
     dplyr::left_join(
       profile_labels(model@model_spec),

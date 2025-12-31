@@ -203,8 +203,8 @@ create_reli_list <- function(
 reli_list <- function(model, threshold) {
   n_resp <- length(model@data$respondent_names)
   n_att <- length(model@model_spec@qmatrix_meta$attribute_names)
-  n_class <- 2^n_att
-  profile_vec <- dcmstan::create_profiles(n_att) |>
+  n_class <- nrow(create_profiles(model@model_spec))
+  profile_vec <- create_profiles(model@model_spec) |>
     as.matrix() |>
     t() |>
     as.vector()
