@@ -145,18 +145,6 @@ test_that("loo and waic work", {
 test_that("loo and waic can be added to model", {
   skip_on_cran()
 
-  err <- rlang::catch_cnd(measr_extract(cmds_mdm_dino, "loo"))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "LOO criterion\\nmust be added")
-
-  err <- rlang::catch_cnd(measr_extract(cmds_mdm_dino, "waic"))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "WAIC criterion\\nmust be added")
-
-  err <- rlang::catch_cnd(add_criterion(rstn_dino))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "supports posterior distributions")
-
   loo_model <- add_criterion(cmds_mdm_dino, criterion = "loo")
   expect_equal(names(loo_model@criteria), "loo")
   expect_s3_class(loo_model@criteria$loo, "psis_loo")
@@ -576,37 +564,6 @@ test_that("ppmc works", {
   )
 })
 
-test_that("ppmc extraction errors", {
-  skip_on_cran()
-
-  err <- rlang::catch_cnd(measr_extract(cmds_mdm_dino, "ppmc_raw_score"))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "Model fit information must be\\nadded")
-
-  err <- rlang::catch_cnd(measr_extract(cmds_mdm_dino, "ppmc_conditional_prob"))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "Model fit information must be\\nadded")
-
-  err <- rlang::catch_cnd(measr_extract(
-    cmds_mdm_dino,
-    "ppmc_conditional_prob_flags"
-  ))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "Model fit information must be\\nadded")
-
-  err <- rlang::catch_cnd(measr_extract(cmds_mdm_dino, "ppmc_odds_ratio"))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "Model fit information must be\\nadded")
-
-  err <- rlang::catch_cnd(measr_extract(cmds_mdm_dino, "ppmc_odds_ratio_flags"))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "Model fit information must be\\nadded")
-
-  err <- rlang::catch_cnd(measr_extract(cmds_mdm_dino, "ppmc_pvalue"))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "Model fit information must be\\nadded")
-})
-
 test_that("model fit can be added", {
   skip_on_cran()
 
@@ -905,16 +862,6 @@ test_that("respondent probabilities are correct", {
 
   # extract works -----
   expect_equal(cmds_mdm_dino@respondent_estimates, list())
-  err <- rlang::catch_cnd(measr_extract(cmds_mdm_dino, "class_prob"))
-  expect_match(
-    err$message,
-    "added to a model object before\\nclass probabilities"
-  )
-  err <- rlang::catch_cnd(measr_extract(cmds_mdm_dino, "attribute_prob"))
-  expect_match(
-    err$message,
-    "added to a model object before\\nattribute probabilities"
-  )
 
   cmds_mdm_dino <- add_respondent_estimates(cmds_mdm_dino)
   expect_equal(cmds_mdm_dino@respondent_estimates, mdm_preds)

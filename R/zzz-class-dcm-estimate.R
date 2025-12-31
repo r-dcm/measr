@@ -16,7 +16,7 @@
 #' @param method Estimation method. Options are `"variational"`, which uses
 #'   Stan's variational algorithm; `"mcmc"`, which uses Stan's sampling method;
 #'   `"optim"`, which uses Stan's optimizer; or `"pathfinder"` which uses Stan's
-#'   Pathfinder variational inference algorithm (only available if
+#'   pathfinder variational inference algorithm (only available if
 #'   `backend = "cmdstanr"`).
 #' @param backend Character string naming the package to use as the backend for
 #'   fitting the Stan model. Options are `"rstan"` (the default) or

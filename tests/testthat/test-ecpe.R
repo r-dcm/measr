@@ -193,19 +193,22 @@ test_that("ecpe probabilities are accurate", {
     nrow(dcmdata::ecpe_data) * 3
   )
 
-  # extract works -----
+  # extract works (unsaved) -----
   expect_equal(cmds_ecpe_lcdm@respondent_estimates, list())
-  err <- rlang::catch_cnd(measr_extract(cmds_ecpe_lcdm, "class_prob"))
-  expect_match(
-    err$message,
-    "added to a model object before\\nclass probabilities"
+  expect_equal(
+    measr_extract(cmds_ecpe_lcdm, "class_prob"),
+    ecpe_preds$class_probabilities |>
+      dplyr::select("resp_id", "class", "probability") |>
+      tidyr::pivot_wider(names_from = "class", values_from = "probability")
   )
-  err <- rlang::catch_cnd(measr_extract(cmds_ecpe_lcdm, "attribute_prob"))
-  expect_match(
-    err$message,
-    "added to a model object before\\nattribute probabilities"
+  expect_equal(
+    measr_extract(cmds_ecpe_lcdm, "attribute_prob"),
+    ecpe_preds$attribute_prob |>
+      dplyr::select("resp_id", "attribute", "probability") |>
+      tidyr::pivot_wider(names_from = "attribute", values_from = "probability")
   )
 
+  # extract works (saved) -----
   cmds_ecpe_lcdm <- add_respondent_estimates(cmds_ecpe_lcdm)
   expect_equal(cmds_ecpe_lcdm@respondent_estimates, ecpe_preds)
   expect_equal(
@@ -344,17 +347,26 @@ test_that("ecpe reliability", {
   expect_lt(mean(eap_diff), .01)
   expect_lt(median(eap_diff), .01)
 
-  # check extraction -----
+  # check extraction (unsaved) -----
   expect_equal(cmds_ecpe_lcdm@reliability, list())
-  err <- rlang::catch_cnd(measr_extract(
-    cmds_ecpe_lcdm,
-    "classification_reliability"
-  ))
-  expect_match(
-    err$message,
-    "Reliability information must be\\nadded to a model"
+  expect_equal(
+    measr_extract(cmds_ecpe_lcdm, "classification_reliability"),
+    dplyr::full_join(
+      dplyr::select(
+        ecpe_reli$map_reliability$accuracy,
+        "attribute",
+        accuracy = "acc"
+      ),
+      dplyr::select(
+        ecpe_reli$map_reliability$consistency,
+        "attribute",
+        consistency = "consist"
+      ),
+      by = "attribute"
+    )
   )
 
+  # check extraction (saved) -----
   reli_mod <- add_reliability(cmds_ecpe_lcdm)
   expect_equal(reli_mod@reliability, ecpe_reli)
 

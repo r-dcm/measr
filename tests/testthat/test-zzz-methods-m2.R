@@ -8,18 +8,6 @@ test_that("m2 works", {
   expect_equal(m2$ci_upper, 0.0115, tolerance = 0.1)
   expect_equal(m2$srmsr, 0.0301, tolerance = 0.1)
 
-  err <- rlang::catch_cnd(measr_extract(rstn_dina, "m2"))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "Model fit information must be added")
-
-  err <- rlang::catch_cnd(measr_extract(rstn_dina, "rmsea"))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "Model fit information must be added")
-
-  err <- rlang::catch_cnd(measr_extract(rstn_dina, "srmsr"))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "Model fit information must be added")
-
   m2_mod <- add_fit(rstn_dina, method = "m2", ci = 0.8)
   expect_equal(m2_mod@fit$m2, m2)
   expect_equal(
@@ -32,28 +20,30 @@ test_that("m2 works", {
   )
   expect_equal(measr_extract(m2_mod, "srmsr"), dplyr::select(m2, "srmsr"))
 
-  m2 <- fit_m2(rstn_dino, ci = 0.95)
+  # now with DINO -----
+  m2 <- fit_m2(rstn_dino, ci = 0.90)
   expect_equal(m2$m2, 565.0893, tolerance = 0.1)
   expect_equal(m2$df, 529)
   expect_equal(m2$pval, 0.1344, tolerance = 0.1)
   expect_equal(m2$rmsea, 0.0083, tolerance = 0.01)
   expect_equal(m2$ci_lower, 0, tolerance = 0.01)
-  expect_equal(m2$ci_upper, 0.0144, tolerance = 0.01)
+  expect_equal(m2$ci_upper, 0.0136, tolerance = 0.01)
   expect_equal(m2$srmsr, 0.031, tolerance = 0.1)
 
-  err <- rlang::catch_cnd(measr_extract(rstn_dino, "m2"))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "Model fit information must be added")
+  expect_equal(
+    measr_extract(rstn_dino, "m2"),
+    dplyr::select(m2, "m2", "df", "pval")
+  )
+  expect_equal(
+    measr_extract(rstn_dino, "rmsea"),
+    dplyr::select(m2, "rmsea", "90% CI")
+  )
+  expect_equal(
+    measr_extract(rstn_dino, "srmsr"),
+    dplyr::select(m2, "srmsr")
+  )
 
-  err <- rlang::catch_cnd(measr_extract(rstn_dino, "rmsea"))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "Model fit information must be added")
-
-  err <- rlang::catch_cnd(measr_extract(rstn_dino, "srmsr"))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "Model fit information must be added")
-
-  m2_mod <- add_fit(rstn_dino, method = "m2", ci = 0.95)
+  m2_mod <- add_fit(rstn_dino, method = "m2", ci = 0.90)
   expect_equal(m2_mod@fit$m2, m2)
   expect_equal(
     measr_extract(m2_mod, "m2"),
@@ -61,7 +51,7 @@ test_that("m2 works", {
   )
   expect_equal(
     measr_extract(m2_mod, "rmsea"),
-    dplyr::select(m2, "rmsea", "95% CI")
+    dplyr::select(m2, "rmsea", "90% CI")
   )
   expect_equal(measr_extract(m2_mod, "srmsr"), dplyr::select(m2, "srmsr"))
 

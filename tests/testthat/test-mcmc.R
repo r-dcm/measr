@@ -206,14 +206,6 @@ test_that("loo and waic work", {
 test_that("loo and waic can be added to model", {
   skip_on_cran()
 
-  err <- rlang::catch_cnd(measr_extract(cmds_mdm_lcdm, "loo"))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "LOO criterion\\nmust be added")
-
-  err <- rlang::catch_cnd(measr_extract(cmds_mdm_lcdm, "waic"))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "WAIC criterion\\nmust be added")
-
   err <- rlang::catch_cnd(add_criterion(rstn_dino))
   expect_s3_class(err, "rlang_error")
   expect_match(err$message, "supports posterior distributions")
@@ -221,6 +213,10 @@ test_that("loo and waic can be added to model", {
   loo_model <- add_criterion(cmds_mdm_lcdm, criterion = "loo")
   expect_equal(names(loo_model@criteria), "loo")
   expect_s3_class(loo_model@criteria$loo, "psis_loo")
+  expect_equal(
+    measr_extract(cmds_mdm_lcdm, "loo"),
+    measr_extract(loo_model, "loo")
+  )
 
   lw_model <- add_criterion(
     loo_model,
@@ -637,37 +633,6 @@ test_that("ppmc works", {
   )
 })
 
-test_that("ppmc extraction errors", {
-  skip_on_cran()
-
-  err <- rlang::catch_cnd(measr_extract(cmds_mdm_lcdm, "ppmc_raw_score"))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "Model fit information must be\\nadded")
-
-  err <- rlang::catch_cnd(measr_extract(cmds_mdm_lcdm, "ppmc_conditional_prob"))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "Model fit information must be\\nadded")
-
-  err <- rlang::catch_cnd(measr_extract(
-    cmds_mdm_lcdm,
-    "ppmc_conditional_prob_flags"
-  ))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "Model fit information must be\\nadded")
-
-  err <- rlang::catch_cnd(measr_extract(cmds_mdm_lcdm, "ppmc_odds_ratio"))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "Model fit information must be\\nadded")
-
-  err <- rlang::catch_cnd(measr_extract(cmds_mdm_lcdm, "ppmc_odds_ratio_flags"))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "Model fit information must be\\nadded")
-
-  err <- rlang::catch_cnd(measr_extract(cmds_mdm_lcdm, "ppmc_pvalue"))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "Model fit information must be\\nadded")
-})
-
 test_that("model fit can be added", {
   skip_on_cran()
 
@@ -815,9 +780,23 @@ test_that("model fit can be added", {
   # test extraction -----
   rs_check <- measr_extract(test_model, "ppmc_raw_score")
   expect_equal(rs_check, test_model@fit$ppmc_raw_score)
+  expect_equal(
+    measr_extract(rstn_mdm_dina, "ppmc_raw_score") |>
+      dplyr::select("obs_chisq", "ppmc_mean"),
+    rs_check |>
+      dplyr::select("obs_chisq", "ppmc_mean"),
+    tolerance = 0.2
+  )
 
   cp_check <- measr_extract(test_model, "ppmc_conditional_prob")
   expect_equal(cp_check, test_model@fit$ppmc_conditional_prob)
+  expect_equal(
+    measr_extract(rstn_mdm_dina, "ppmc_conditional_prob") |>
+      dplyr::select("item":"ppmc_mean", "ppp"),
+    cp_check |>
+      dplyr::select("item":"ppmc_mean", "ppp"),
+    tolerance = 0.2
+  )
   expect_equal(
     measr_extract(
       test_model,
@@ -838,6 +817,13 @@ test_that("model fit can be added", {
   or_check <- measr_extract(test_model, "ppmc_odds_ratio")
   expect_equal(or_check, test_model@fit$ppmc_odds_ratio)
   expect_equal(
+    measr_extract(rstn_mdm_dina, "ppmc_odds_ratio") |>
+      dplyr::select("item_1":"obs_or", "ppp"),
+    or_check |>
+      dplyr::select("item_1":"obs_or", "ppp"),
+    tolerance = 0.2
+  )
+  expect_equal(
     measr_extract(test_model, "ppmc_odds_ratio_flags", ppmc_interval = 0.95),
     dplyr::filter(or_check, ppp <= 0.025 | ppp >= 0.975)
   )
@@ -848,6 +834,13 @@ test_that("model fit can be added", {
 
   pval_check <- measr_extract(test_model, "ppmc_pvalue")
   expect_equal(pval_check, test_model@fit$ppmc_pvalue)
+  expect_equal(
+    measr_extract(rstn_mdm_dina, "ppmc_pvalue") |>
+      dplyr::select("item":"ppmc_mean", "ppp"),
+    pval_check |>
+      dplyr::select("item":"ppmc_mean", "ppp"),
+    tolerance = 0.2
+  )
   expect_equal(
     measr_extract(test_model, "ppmc_pvalue_flags", ppmc_interval = 0.95),
     dplyr::filter(pval_check, ppp <= 0.025 | ppp >= 0.975)
@@ -966,16 +959,6 @@ test_that("respondent probabilities are correct", {
 
   # extract works -----
   expect_equal(cmds_mdm_lcdm@respondent_estimates, list())
-  err <- rlang::catch_cnd(measr_extract(cmds_mdm_lcdm, "class_prob"))
-  expect_match(
-    err$message,
-    "added to a model object before\\nclass probabilities"
-  )
-  err <- rlang::catch_cnd(measr_extract(cmds_mdm_lcdm, "attribute_prob"))
-  expect_match(
-    err$message,
-    "added to a model object before\\nattribute probabilities"
-  )
 
   cmds_mdm_lcdm <- add_respondent_estimates(cmds_mdm_lcdm)
   expect_equal(cmds_mdm_lcdm@respondent_estimates, mdm_preds)

@@ -140,34 +140,30 @@ test_that("loo and waic work", {
 test_that("loo and waic can be added to model", {
   skip_on_cran()
 
-  err <- rlang::catch_cnd(measr_extract(cmds_dtmr_lcdm, "loo"))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "LOO criterion\\nmust be added")
-
-  err <- rlang::catch_cnd(measr_extract(cmds_dtmr_lcdm, "waic"))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "WAIC criterion\\nmust be added")
-
   err <- rlang::catch_cnd(add_criterion(rstn_dino))
   expect_s3_class(err, "rlang_error")
   expect_match(err$message, "supports posterior distributions")
 
-  loo_model <- suppressWarnings(add_criterion(
+  waic_model <- suppressWarnings(add_criterion(
     cmds_dtmr_lcdm,
-    criterion = "loo"
+    criterion = "waic"
   ))
-  expect_equal(names(loo_model@criteria), "loo")
-  expect_s3_class(loo_model@criteria$loo, "psis_loo")
+  expect_equal(names(waic_model@criteria), "waic")
+  expect_s3_class(waic_model@criteria$waic, "waic")
+  expect_equal(
+    measr_extract(cmds_dtmr_lcdm, "waic"),
+    measr_extract(waic_model, "waic")
+  )
 
   lw_model <- suppressWarnings(add_criterion(
-    loo_model,
+    waic_model,
     criterion = c("loo", "waic"),
     overwrite = TRUE
   ))
-  expect_equal(names(lw_model@criteria), c("loo", "waic"))
+  expect_equal(names(lw_model@criteria), c("waic", "loo"))
   expect_s3_class(lw_model@criteria$loo, "psis_loo")
   expect_s3_class(lw_model@criteria$waic, "waic")
-  expect_identical(loo_model@criteria$loo, lw_model@criteria$loo)
+  expect_identical(waic_model@criteria$waic, lw_model@criteria$waic)
 
   expect_identical(measr_extract(lw_model, "loo"), lw_model@criteria$loo)
   expect_identical(measr_extract(lw_model, "waic"), lw_model@criteria$waic)
@@ -484,43 +480,6 @@ test_that("ppmc works", {
   )
 })
 
-test_that("ppmc extraction errors", {
-  skip_on_cran()
-
-  err <- rlang::catch_cnd(measr_extract(cmds_dtmr_lcdm, "ppmc_raw_score"))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "Model fit information must be\\nadded")
-
-  err <- rlang::catch_cnd(measr_extract(
-    cmds_dtmr_lcdm,
-    "ppmc_conditional_prob"
-  ))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "Model fit information must be\\nadded")
-
-  err <- rlang::catch_cnd(measr_extract(
-    cmds_dtmr_lcdm,
-    "ppmc_conditional_prob_flags"
-  ))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "Model fit information must be\\nadded")
-
-  err <- rlang::catch_cnd(measr_extract(cmds_dtmr_lcdm, "ppmc_odds_ratio"))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "Model fit information must be\\nadded")
-
-  err <- rlang::catch_cnd(measr_extract(
-    cmds_dtmr_lcdm,
-    "ppmc_odds_ratio_flags"
-  ))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "Model fit information must be\\nadded")
-
-  err <- rlang::catch_cnd(measr_extract(cmds_dtmr_lcdm, "ppmc_pvalue"))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "Model fit information must be\\nadded")
-})
-
 # reliability ------------------------------------------------------------------
 test_that("reliability works", {
   reli <- reliability(cmds_dtmr_lcdm, threshold = 0.5)
@@ -659,16 +618,6 @@ test_that("respondent probabilities are correct", {
 
   # extract works -----
   expect_equal(cmds_dtmr_lcdm@respondent_estimates, list())
-  err <- rlang::catch_cnd(measr_extract(cmds_dtmr_lcdm, "class_prob"))
-  expect_match(
-    err$message,
-    "added to a model object before\\nclass probabilities"
-  )
-  err <- rlang::catch_cnd(measr_extract(cmds_dtmr_lcdm, "attribute_prob"))
-  expect_match(
-    err$message,
-    "added to a model object before\\nattribute probabilities"
-  )
 
   cmds_dtmr_lcdm <- add_respondent_estimates(cmds_dtmr_lcdm)
   expect_equal(cmds_dtmr_lcdm@respondent_estimates, dtmr_preds)

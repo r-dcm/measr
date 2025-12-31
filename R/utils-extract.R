@@ -1,30 +1,14 @@
 # General extracts -------------------------------------------------------------
 extract_m2 <- function(model, call) {
   if (rlang::is_empty(model@fit$m2)) {
-    cli::cli_abort(
-      cli::format_message(c(
-        "Model fit information must be added ",
-        "to a model object before ",
-        "the M2 can be extracted. See ",
-        "{.fun add_fit}."
-      )),
-      call = call
-    )
+    model <- add_fit(model, method = "m2", save = FALSE)
   }
   dplyr::select(model@fit$m2, "m2", "df", "pval")
 }
 
 extract_rmsea <- function(model, call) {
   if (rlang::is_empty(model@fit$m2)) {
-    cli::cli_abort(
-      cli::format_message(c(
-        "Model fit information must be added ",
-        "to a model object before ",
-        "the RMSEA can be extracted. See ",
-        "{.fun add_fit}."
-      )),
-      call = call
-    )
+    model <- add_fit(model, method = "m2", save = FALSE)
   }
 
   dplyr::select(model@fit$m2, "rmsea", dplyr::ends_with("CI"))
@@ -32,15 +16,7 @@ extract_rmsea <- function(model, call) {
 
 extract_srmsr <- function(model, call) {
   if (rlang::is_empty(model@fit$m2)) {
-    cli::cli_abort(
-      cli::format_message(c(
-        "Model fit information must be added ",
-        "to a model object before ",
-        "the SRMSR can be extracted. See ",
-        "{.fun add_fit}."
-      )),
-      call = call
-    )
+    model <- add_fit(model, method = "m2", save = FALSE)
   }
 
   dplyr::select(model@fit$m2, "srmsr")
@@ -48,14 +24,11 @@ extract_srmsr <- function(model, call) {
 
 extract_ppmc_raw_score <- function(model, call) {
   if (rlang::is_empty(model@fit$ppmc_raw_score)) {
-    cli::cli_abort(
-      cli::format_message(c(
-        "Model fit information must be ",
-        "added to a model object before ",
-        "the raw score distribution can be extracted. See ",
-        "{.fun add_fit}."
-      )),
-      call = call
+    model <- add_fit(
+      model,
+      method = "ppmc",
+      model_fit = "raw_score",
+      save = FALSE
     )
   }
   model@fit$ppmc_raw_score
@@ -70,14 +43,11 @@ extract_or <- function(model, ppmc_interval = 0.95, call) {
     call = call
   )
   if (rlang::is_empty(model@fit$ppmc_odds_ratio)) {
-    cli::cli_abort(
-      cli::format_message(c(
-        "Model fit information must be ",
-        "added to a model object before ",
-        "odds ratios can be extracted. See ",
-        "{.fun add_fit}."
-      )),
-      call = call
+    model <- add_fit(
+      model,
+      method = "ppmc",
+      item_fit = "odds_ratio",
+      save = FALSE
     )
   }
 
@@ -99,15 +69,7 @@ extract_or <- function(model, ppmc_interval = 0.95, call) {
 
 extract_info_crit <- function(model, criterion, call) {
   if (rlang::is_empty(model@criteria[[criterion]])) {
-    cli::cli_abort(
-      cli::format_message(c(
-        "The {toupper(criterion)} criterion ",
-        "must be added to a model object before ",
-        "it can be extracted. See ",
-        "{.fun add_criterion}."
-      )),
-      call = call
-    )
+    model <- add_criterion(model, criterion = criterion, save = FALSE)
   }
 
   model@criteria[[criterion]]
@@ -263,15 +225,7 @@ dcm_extract_classes <- function(model, call) {
 
 dcm_extract_class_prob <- function(model, call) {
   if (rlang::is_empty(model@respondent_estimates)) {
-    cli::cli_abort(
-      cli::format_message(c(
-        "Respondent estimates must be ",
-        "added to a model object before ",
-        "class probabilities can be extracted. See ",
-        "{.fun add_respondent_estimates}."
-      )),
-      call = call
-    )
+    model <- add_respondent_estimates(model, save = FALSE)
   }
   model@respondent_estimates$class_probabilities |>
     dplyr::select(!!model@data$respondent_identifier, "class", "probability") |>
@@ -280,15 +234,7 @@ dcm_extract_class_prob <- function(model, call) {
 
 dcm_extract_attr_prob <- function(model, call) {
   if (rlang::is_empty(model@respondent_estimates)) {
-    cli::cli_abort(
-      cli::format_message(c(
-        "Respondent estimates must be ",
-        "added to a model object before ",
-        "attribute probabilities can be extracted. See ",
-        "{.fun add_respondent_estimates}."
-      )),
-      call = call
-    )
+    model <- add_respondent_estimates(model, save = FALSE)
   }
   model@respondent_estimates$attribute_probabilities |>
     dplyr::select(
@@ -309,14 +255,11 @@ dcm_extract_ppmc_cond_prob <- function(model, ppmc_interval = 0.95, call) {
   )
 
   if (rlang::is_empty(model@fit$ppmc_conditional_prob)) {
-    cli::cli_abort(
-      cli::format_message(c(
-        "Model fit information must be ",
-        "added to a model object before ",
-        "conditional probabilities can be extracted. See ",
-        "{.fun add_fit}."
-      )),
-      call = call
+    model <- add_fit(
+      model,
+      method = "ppmc",
+      item_fit = "conditional_prob",
+      save = FALSE
     )
   }
 
@@ -346,15 +289,7 @@ dcm_extract_ppmc_pvalue <- function(model, ppmc_interval = 0.95, call) {
   )
 
   if (rlang::is_empty(model@fit$ppmc_pvalue)) {
-    cli::cli_abort(
-      cli::format_message(c(
-        "Model fit information must be ",
-        "added to a model object before ",
-        "p-values can be extracted. See ",
-        "{.fun add_fit}."
-      )),
-      call = call
-    )
+    model <- add_fit(model, method = "ppmc", item_fit = "pvalue", save = FALSE)
   }
 
   res <- if (is.null(ppmc_interval)) {
@@ -375,15 +310,7 @@ dcm_extract_ppmc_pvalue <- function(model, ppmc_interval = 0.95, call) {
 
 dcm_extract_patt_reli <- function(model, call) {
   if (rlang::is_empty(model@reliability)) {
-    cli::cli_abort(
-      cli::format_message(c(
-        "Reliability information must be ",
-        "added to a model object before ",
-        "it can be extracted. See ",
-        "{.fun add_reliability}."
-      )),
-      call = call
-    )
+    model <- add_reliability(model, save = FALSE)
   }
 
   model@reliability$pattern_reliability |>
@@ -394,15 +321,7 @@ dcm_extract_patt_reli <- function(model, call) {
 
 dcm_extract_map_reli <- function(model, agreement = NULL, call) {
   if (rlang::is_empty(model@reliability)) {
-    cli::cli_abort(
-      cli::format_message(c(
-        "Reliability information must be ",
-        "added to a model object before ",
-        "it can be extracted. See ",
-        "{.fun add_reliability}."
-      )),
-      call = call
-    )
+    model <- add_reliability(model, save = FALSE)
   }
 
   if (is.null(agreement)) {
@@ -439,15 +358,7 @@ dcm_extract_map_reli <- function(model, agreement = NULL, call) {
 
 dcm_extract_eap_reli <- function(model, agreement = NULL, call) {
   if (rlang::is_empty(model@reliability)) {
-    cli::cli_abort(
-      cli::format_message(c(
-        "Reliability information must be ",
-        "added to a model object before ",
-        "it can be extracted. See ",
-        "{.fun add_reliability}."
-      )),
-      call = call
-    )
+    model <- add_reliability(model, save = FALSE)
   }
 
   if (rlang::is_empty(agreement)) {
