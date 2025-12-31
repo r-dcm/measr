@@ -5,7 +5,10 @@ if (!identical(Sys.getenv("NOT_CRAN"), "true")) {
     qmatrix = dcmdata::dtmr_qmatrix,
     identifier = "item",
     measurement_model = lcdm(),
-    structural_model = unconstrained()
+    structural_model = hdcm(
+      "appropriateness -> partitioning_iterating -> referent_units
+      appropriateness -> multiplicative_comparison -> referent_units"
+    )
   )
   dina_spec <- dcm_specify(
     qmatrix = dcmdata::dtmr_qmatrix,
@@ -78,7 +81,7 @@ test_that("get_draws works as expected", {
 
   test_draws <- get_draws(cmds_dtmr_lcdm)
   expect_equal(posterior::ndraws(test_draws), 1000)
-  expect_equal(posterior::nvariables(test_draws), 537)
+  expect_equal(posterior::nvariables(test_draws), 241)
   expect_s3_class(test_draws, "draws_array")
 
   test_draws <- get_draws(
@@ -95,11 +98,11 @@ test_that("get_draws works as expected", {
 test_that("extract pi matrix", {
   lcdm_pimat <- measr_extract(cmds_dtmr_lcdm, "pi_matrix")
   expect_equal(nrow(lcdm_pimat), 27)
-  expect_equal(ncol(lcdm_pimat), 17)
+  expect_equal(ncol(lcdm_pimat), 7)
   expect_equal(lcdm_pimat$item, dcmdata::dtmr_qmatrix$item)
   expect_equal(
     colnames(lcdm_pimat)[-1],
-    dplyr::pull(profile_labels(4), "class")
+    dplyr::pull(profile_labels(lcdm_spec), "class")
   )
   expect_true(all(vapply(lcdm_pimat[, -1], posterior::is_rvar, logical(1))))
   expect_true(all(vapply(lcdm_pimat[, -1], \(x) !any(is.na(x)), logical(1))))
@@ -359,7 +362,7 @@ test_that("ppmc works", {
   expect_equal(length(test_ppmc$ppmc_raw_score$chisq_samples[[1]]), 100)
 
   expect_s3_class(test_ppmc$ppmc_conditional_prob, "tbl_df")
-  expect_equal(nrow(test_ppmc$ppmc_conditional_prob), 432L)
+  expect_equal(nrow(test_ppmc$ppmc_conditional_prob), 162L)
   expect_equal(
     colnames(test_ppmc$ppmc_conditional_prob),
     c(
@@ -375,7 +378,7 @@ test_that("ppmc works", {
   )
   expect_equal(
     as.character(test_ppmc$ppmc_conditional_prob$item),
-    rep(dcmdata::dtmr_qmatrix$item, each = 16)
+    rep(dcmdata::dtmr_qmatrix$item, each = 6)
   )
   expect_equal(
     as.character(test_ppmc$ppmc_conditional_prob$class),
@@ -383,7 +386,7 @@ test_that("ppmc works", {
   )
   expect_equal(
     vapply(test_ppmc$ppmc_conditional_prob$samples, length, integer(1)),
-    rep(100, 432)
+    rep(100, 162)
   )
 
   # test 2 -----
@@ -582,7 +585,7 @@ test_that("respondent probabilities are correct", {
   )
   expect_equal(
     nrow(dtmr_preds$class_probabilities),
-    nrow(dcmdata::dtmr_data) * (2^4)
+    nrow(dcmdata::dtmr_data) * nrow(create_profiles(lcdm_spec))
   )
   expect_equal(
     nrow(dtmr_preds$attribute_probabilities),

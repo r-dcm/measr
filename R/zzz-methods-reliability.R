@@ -126,7 +126,6 @@ S7::method(reliability, measrdcm) <- function(
 
   tbl <- obj$acc
   p <- obj$prev
-  k <- length(p)
   acc <- apply(tbl, 3, function(m) {
     sum(diag(m)) / sum(m)
   })
