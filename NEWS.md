@@ -7,7 +7,7 @@
 * Some of measr's functionality has been decoupled into other packages to allow
   for quicker and easier updates. 
   The generation of *Stan* code and data lists have been moved to `{dcmstan}`.
-  Similarly, the example data sets have been moved to `{dcmdata}` to faciliate
+  Similarly, the example data sets have been moved to `{dcmdata}` to facilitate
   the use of the data across other packages.
   As part of the decoupling, `measr_dcm()` has been deprecated in favor of
   `dcmstan::dcm_specify()` and `dcm_estimate()`.
