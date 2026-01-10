@@ -1,20 +1,85 @@
 # measr (development version)
 
-* Updated reliability functionality to allow for the calculation of accuracy and consistency with different thresholds for determining attribute classifications.
+## Breaking changes
 
-* Added new `measrfit()` function for creating measrfit objects from *Stan* models that were not originally created with measr.
+* The S3 parts of measr have been converted to `{S7}`.
 
-* Added `aic()` and `bic()` functions for calculating the Akaike and Bayesian information criteria, respectively, for models estimated with `method = "optim"`.
+* Some of measr's functionality has been decoupled into other packages to allow
+  for quicker and easier updates. 
+  The generation of *Stan* code and data lists have been moved to `{dcmstan}`.
+  Similarly, the example data sets have been moved to `{dcmdata}` to faciliate
+  the use of the data across other packages.
+  As part of the decoupling, `measr_dcm()` has been deprecated in favor of
+  `dcmstan::dcm_specify()` and `dcm_estimate()`.
 
-* Refactored package to use S7 objects instead of S3.
+  ```r
+  # old
+  my_model <- measr_dcm(
+    data = ecpe_data,
+    qmatrix = ecpe_qmatrix,
+    resp_id = "resp_id",
+    item_id = "item_id",
+    type = "lcdm",
+    attribute_structure = "unconstrained",
+    method = "mcmc"
+  )
+  
+  # new
+  library(dcmdata)
 
-* Functions for generating Stan code have been relocated to dcmstan.
+  my_spec <- dcm_specify(
+    qmatrix = ecpe_qmatrix,
+    identifier = "item_id",
+    measurement_model = lcdm(),
+    structural_model = unconstrained()
+  )
+  my_model <- dcm_estimate(
+    dcm_spec = my_spec,
+    data = ecpe_data,
+    identifier = "resp_id",
+    method = "mcmc"
+  )
+  ```
 
-* `measr_dcm()` deprecated in favor of `dcm_estimate()`.
+* `predict()` has been deprecated in favor of `score()`. The functionality is
+  the same, but
 
-* New functionality for relative model fit comparisons (`aic()`, `bic()`, `bayes_factor()`).
+## New features
 
-* New functionality for testing model assumptions (`yens_q3()`).
+* `aic()` and `bic()` have been added for estimating relative model fit for
+  models estimated with `method = "optim"` (@JeffreyCHoover, #54).
+
+* `bayes_factor()` has been added for comparing models using Bayes factors. This
+  is only available for models estimated with `backend = "rstan"`
+  (@JeffreyCHoover, #67).
+
+* Item and attribute discrimination measures can now be calculated with `cdi()`
+  (@auburnhimenez34, #63).
+
+* The specified Q-matrix can now be evaluated and compared to other empirical
+  Q-matrix specifications using `qmatrix_validation()` (@JeffreyCHoover, #65).
+
+* In `reliability()`, users can now calculate the classification accuracy and
+  consistency for different probability classification threshold by specifying
+  a `threshold` (#45).
+
+* New estimation methods, `variational()` and `pathfinder()`, have been added to
+  support estimation via *Stan's* variational algorithm for approximate
+  posterior sampling and the pathfinder variational inference algorithm,
+  respectively. Pathfinder is only available when the model is estimated with
+  `{cmdstanr}` (#72).
+
+* Local item dependence can now be estimated with `yens_q3()`
+  (@JeffreyCHoover, #62).
+
+## Minor improvements and fixes
+
+* Documentation has been updated to ensure examples use
+  [Air formatting](https://posit-dev.github.io/air/) to improve accessibility
+  (#68).
+
+* `measr_extract()` has been updated to no longer require adding elements to
+  a model object before extracting (#73).
 
 # measr 1.0.0
 
