@@ -70,36 +70,32 @@ Note that by default, measr uses a full Markov chain Monte Carlo (MCMC) estimati
 For a quicker estimation, we could use Stan's optimizer instead of MCMC by adding `method = "optim"` to the function call.
 However, please note that some functionality will be lost when using the optimizer (e.g., the calculation of some model fit criteria requires the use of MCMC).
 
-```{r est-model, eval = FALSE}
+```{r}
+#| label: est-model
+#| message: false
+#| warning: false
+
 library(measr)
 
-model_spec <- dcm_specify(dcmdata::ecpe_qmatrix, identifier = "item_id")
+model_spec <- dcm_specify(dcmdata::dtmr_qmatrix, identifier = "item")
 
 model <- dcm_estimate(
   dcm_spec = model_spec,
-  data = dcmdata::ecpe_data,
-  identifier = "resp_id",
-  iter = 1000,
-  warmup = 200,
-  chains = 2,
-  cores = 2
+  data = dcmdata::dtmr_data,
+  identifier = "id",
+  seed = 69385,
+  refresh = 0
 )
 ```
 
-Once a model has been estimated, we can then add and evaluate model fit.
-This can done through absolute model fit, relative model fit (information criteria), or reliability indices.
-Model parameters, respondent classifications, and results of the model fit analyses can then be extracted using `measr_extract()`.
+Once a model has been estimated, model parameters, respondent classifications, and results of the model fit analyses can then be extracted using `measr_extract()`.
 
-```{r evl-model, eval = FALSE}
-model <- add_fit(model, method = "m2")
-model <- add_criterion(model, criterion = "loo")
-model <- add_reliability(model)
+```{r}
+#| label: evl-model
 
 measr_extract(model, "m2")
-#> # A tibble: 1 × 3
-#>      m2    df     pval
-#>   <dbl> <int>    <dbl>
-#> 1  514.   325 1.17e-10
+
+measr_extract(model, "classification_reliability")
 ```
 
 
