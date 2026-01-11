@@ -2,7 +2,8 @@
 % Please edit documentation in R/zzz-methods-yens-q3.R
 \name{yens_q3}
 \alias{yens_q3}
-\title{Yen's \eqn{Q_3} statistic for local item dependence}
+\title{Yen's \ifelse{html}{\out{Q<sub>3</sub>}}{\eqn{Q_3}} statistic for local item
+dependence}
 \usage{
 yens_q3(x, ..., crit_value = 0.2, summary = NULL)
 }
@@ -25,34 +26,28 @@ flags for all item pairs. Otherwise, a numeric value representing the
 requested summary statistic.
 }
 \description{
-Calculate the \eqn{Q_3} statistic to evaluate the assumption of independent
-items.
+Calculate the \ifelse{html}{\out{Q<sub>3</sub>}}{\eqn{Q_3}} statistic to
+evaluate the assumption of independent items.
 }
 \details{
 Psychometric models assume that items are independent of each other,
 conditional on the latent trait.
-The \eqn{Q_3} statistic (Yen, 1984) is used to evaluate this assumption.
+The \ifelse{html}{\out{Q<sub>3</sub>}}{\eqn{Q_3}} statistic (Yen, 1984) is
+used to evaluate this assumption.
 For each observed item response, we calculate the residual between the model
 predicted score and the observed score and then estimate correlations between
 the residuals across items.
-Each residual correlation is a \eqn{Q_3} statistic.
+Each residual correlation is a \ifelse{html}{\out{Q<sub>3</sub>}}{\eqn{Q_3}}
+statistic.
 
 Often, a critical values is used to flag a residual correlation above a given
 threshold (e.g., Chen & Thissen, 1997).
-Alternatively, we may use a summary statistic such as the maximum \eqn{Q_3}
-statistic (\eqn{Q_{3,max}}; Christensen et al., 2017), defined as
-
-\deqn{Q_{3,max} = \text{max}_{i>j}\left|Q_{3,ij}\right|}
-
-Or the mean-adjusted maximum \eqn{Q_3} statistic (\eqn{Q_{3,*}};
-Marais, 2013), defined as
-
-\deqn{
-  \overline{Q}_3 = \begin{pmatrix} I\\\ 2\end{pmatrix}^{-1}
-  \displaystyle\sum_{i>j}Q_{3,ij} \\
-
-  Q_{3,*} = Q_{3,max} - \overline{Q}_3
-}
+Alternatively, we may use a summary statistic such as the maximum
+\ifelse{html}{\out{Q<sub>3</sub>}}{\eqn{Q_3}} statistic
+(\ifelse{html}{\out{Q<sub>3,max</sub>}}{\eqn{Q_{3,max}}}; Christensen et al.,
+2017), or the mean-adjusted maximum
+\ifelse{html}{\out{Q<sub>3</sub>}}{\eqn{Q_3}} statistic
+(\ifelse{html}{\out{Q<sub>3,*</sub>}}{\eqn{Q_{3,*}}}; Marais, 2013).
 }
 \examples{
 \dontshow{if (measr_examples()) withAutoprint(\{ # examplesIf}
