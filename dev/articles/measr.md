@@ -202,9 +202,9 @@ For a fully Bayesian estimation, you can change this `method = "mcmc"`,
 or `method = "variational"` to use Stan’s variational algorithm. The
 `backend` defines which Stan engine to use for the estimation. The
 default is `"rstan"`, which will then use the
-[rstan](https://mc-stan.org/rstan) package for estimating the model.
+[rstan](https://mc-stan.org/rstan/) package for estimating the model.
 Alternatively, `backend = "cmdstanr"` will use the
-[cmdstanr](https://mc-stan.org/cmdstanr) package. For more details and
+[cmdstanr](https://mc-stan.org/cmdstanr/) package. For more details and
 options for customizing the model specification and estimation, see the
 [model estimation
 article](https://measr.r-dcm.org/articles/model-estimation.html) on the

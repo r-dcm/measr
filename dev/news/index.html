@@ -48,15 +48,57 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="measr-development-version">measr (development version)<a class="anchor" aria-label="anchor" href="#measr-development-version"></a></h2>
-<ul><li><p>Updated reliability functionality to allow for the calculation of accuracy and consistency with different thresholds for determining attribute classifications.</p></li>
-<li><p>Added new <code>measrfit()</code> function for creating measrfit objects from <em>Stan</em> models that were not originally created with measr.</p></li>
-<li><p>Added <code><a href="../reference/aic-bic.html">aic()</a></code> and <code><a href="../reference/aic-bic.html">bic()</a></code> functions for calculating the Akaike and Bayesian information criteria, respectively, for models estimated with <code>method = "optim"</code>.</p></li>
-<li><p>Refactored package to use S7 objects instead of S3.</p></li>
-<li><p>Functions for generating Stan code have been relocated to dcmstan.</p></li>
-<li><p><code><a href="../reference/measr_dcm.html">measr_dcm()</a></code> deprecated in favor of <code><a href="../reference/dcm_estimate.html">dcm_estimate()</a></code>.</p></li>
-<li><p>New functionality for relative model fit comparisons (<code><a href="../reference/aic-bic.html">aic()</a></code>, <code><a href="../reference/aic-bic.html">bic()</a></code>, <code><a href="../reference/bayes_factor.html">bayes_factor()</a></code>).</p></li>
-<li><p>New functionality for testing model assumptions (<code><a href="../reference/yens_q3.html">yens_q3()</a></code>).</p></li>
+<div class="section level3">
+<h3 id="breaking-changes-development-version">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-development-version"></a></h3>
+<ul><li><p>The S3 parts of measr have been converted to <a href="https://rconsortium.github.io/S7/" class="external-link">S7</a>.</p></li>
+<li>
+<p>Some of measr’s functionality has been decoupled into other packages to allow for quicker and easier updates. The generation of <em>Stan</em> code and data lists have been moved to <a href="https://dcmstan.r-dcm.org" class="external-link">dcmstan</a>. Similarly, the example data sets have been moved to <a href="https://dcmdata.r-dcm.org" class="external-link">dcmdata</a> to facilitate the use of the data across other packages. As part of the decoupling, <code><a href="../reference/measr_dcm.html">measr_dcm()</a></code> has been deprecated in favor of <code><a href="https://dcmstan.r-dcm.org/reference/dcm_specify.html" class="external-link">dcmstan::dcm_specify()</a></code> and <code><a href="../reference/dcm_estimate.html">dcm_estimate()</a></code>.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># old</span></span>
+<span><span class="va">my_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/measr_dcm.html">measr_dcm</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">ecpe_data</span>,</span>
+<span>  qmatrix <span class="op">=</span> <span class="va">ecpe_qmatrix</span>,</span>
+<span>  resp_id <span class="op">=</span> <span class="st">"resp_id"</span>,</span>
+<span>  item_id <span class="op">=</span> <span class="st">"item_id"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"lcdm"</span>,</span>
+<span>  attribute_structure <span class="op">=</span> <span class="st">"unconstrained"</span>,</span>
+<span>  method <span class="op">=</span> <span class="st">"mcmc"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># new</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dcmdata.r-dcm.org" class="external-link">dcmdata</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">my_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dcmstan.r-dcm.org/reference/dcm_specify.html" class="external-link">dcm_specify</a></span><span class="op">(</span></span>
+<span>  qmatrix <span class="op">=</span> <span class="va">ecpe_qmatrix</span>,</span>
+<span>  identifier <span class="op">=</span> <span class="st">"item_id"</span>,</span>
+<span>  measurement_model <span class="op">=</span> <span class="fu"><a href="https://dcmstan.r-dcm.org/reference/measurement-model.html" class="external-link">lcdm</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  structural_model <span class="op">=</span> <span class="fu"><a href="https://dcmstan.r-dcm.org/reference/structural-model.html" class="external-link">unconstrained</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">my_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dcm_estimate.html">dcm_estimate</a></span><span class="op">(</span></span>
+<span>  dcm_spec <span class="op">=</span> <span class="va">my_spec</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">ecpe_data</span>,</span>
+<span>  identifier <span class="op">=</span> <span class="st">"resp_id"</span>,</span>
+<span>  method <span class="op">=</span> <span class="st">"mcmc"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</li>
+<li><p><code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> has been deprecated in favor of <code><a href="../reference/score.html">score()</a></code>. The functionality is the same, but</p></li>
 </ul></div>
+<div class="section level3">
+<h3 id="new-features-development-version">New features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<ul><li><p><code><a href="../reference/aic-bic.html">aic()</a></code> and <code><a href="../reference/aic-bic.html">bic()</a></code> have been added for estimating relative model fit for models estimated with <code>method = "optim"</code> (<a href="https://github.com/JeffreyCHoover" class="external-link">@JeffreyCHoover</a>, <a href="https://github.com/r-dcm/measr/issues/54" class="external-link">#54</a>).</p></li>
+<li><p><code><a href="../reference/bayes_factor.html">bayes_factor()</a></code> has been added for comparing models using Bayes factors. This is only available for models estimated with <code>backend = "rstan"</code> (<a href="https://github.com/JeffreyCHoover" class="external-link">@JeffreyCHoover</a>, <a href="https://github.com/r-dcm/measr/issues/67" class="external-link">#67</a>).</p></li>
+<li><p>Item and attribute discrimination measures can now be calculated with <code><a href="../reference/cdi.html">cdi()</a></code> (<a href="https://github.com/auburnhimenez34" class="external-link">@auburnhimenez34</a>, <a href="https://github.com/r-dcm/measr/issues/63" class="external-link">#63</a>).</p></li>
+<li><p>The specified Q-matrix can now be evaluated and compared to other empirical Q-matrix specifications using <code><a href="../reference/qmatrix_validation.html">qmatrix_validation()</a></code> (<a href="https://github.com/JeffreyCHoover" class="external-link">@JeffreyCHoover</a>, <a href="https://github.com/r-dcm/measr/issues/65" class="external-link">#65</a>).</p></li>
+<li><p>In <code><a href="../reference/reliability.html">reliability()</a></code>, users can now calculate the classification accuracy and consistency for different probability classification threshold by specifying a <code>threshold</code> (<a href="https://github.com/r-dcm/measr/issues/45" class="external-link">#45</a>).</p></li>
+<li><p>New estimation methods, <code><a href="../reference/stan-classes.html">variational()</a></code> and <code><a href="../reference/stan-classes.html">pathfinder()</a></code>, have been added to support estimation via <em>Stan’s</em> variational algorithm for approximate posterior sampling and the pathfinder variational inference algorithm, respectively. Pathfinder is only available when the model is estimated with <a href="https://mc-stan.org/cmdstanr/" class="external-link">cmdstanr</a> (<a href="https://github.com/r-dcm/measr/issues/72" class="external-link">#72</a>).</p></li>
+<li><p>Local item dependence can now be estimated with <code><a href="../reference/yens_q3.html">yens_q3()</a></code> (<a href="https://github.com/JeffreyCHoover" class="external-link">@JeffreyCHoover</a>, <a href="https://github.com/r-dcm/measr/issues/62" class="external-link">#62</a>).</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="minor-improvements-and-fixes-development-version">Minor improvements and fixes<a class="anchor" aria-label="anchor" href="#minor-improvements-and-fixes-development-version"></a></h3>
+<ul><li><p>Documentation has been updated to ensure examples use <a href="https://posit-dev.github.io/air/" class="external-link">Air formatting</a> to improve accessibility (<a href="https://github.com/r-dcm/measr/issues/68" class="external-link">#68</a>).</p></li>
+<li><p><code><a href="../reference/measr_extract.html">measr_extract()</a></code> has been updated to no longer require adding elements to a model object before extracting (<a href="https://github.com/r-dcm/measr/issues/73" class="external-link">#73</a>).</p></li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.0" id="measr-100">measr 1.0.0<a class="anchor" aria-label="anchor" href="#measr-100"></a></h2><p class="text-muted">CRAN release: 2024-01-30</p>
 <div class="section level3">

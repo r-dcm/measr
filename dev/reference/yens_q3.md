@@ -1,7 +1,7 @@
-# Yen's \\Q_3\\ statistic for local item dependence
+# Yen's Q₃ statistic for local item dependence
 
-Calculate the \\Q_3\\ statistic to evaluate the assumption of
-independent items.
+Calculate the Q₃ statistic to evaluate the assumption of independent
+items.
 
 ## Usage
 
@@ -41,25 +41,17 @@ requested summary statistic.
 ## Details
 
 Psychometric models assume that items are independent of each other,
-conditional on the latent trait. The \\Q_3\\ statistic (Yen, 1984) is
-used to evaluate this assumption. For each observed item response, we
-calculate the residual between the model predicted score and the
-observed score and then estimate correlations between the residuals
-across items. Each residual correlation is a \\Q_3\\ statistic.
+conditional on the latent trait. The Q₃ statistic (Yen, 1984) is used to
+evaluate this assumption. For each observed item response, we calculate
+the residual between the model predicted score and the observed score
+and then estimate correlations between the residuals across items. Each
+residual correlation is a Q₃ statistic.
 
 Often, a critical values is used to flag a residual correlation above a
 given threshold (e.g., Chen & Thissen, 1997). Alternatively, we may use
-a summary statistic such as the maximum \\Q_3\\ statistic
-(\\Q\_{3,max}\\; Christensen et al., 2017), defined as
-
-\$\$Q\_{3,max} = \text{max}\_{i\>j}\left\|Q\_{3,ij}\right\|\$\$
-
-Or the mean-adjusted maximum \\Q_3\\ statistic (\\Q\_{3,\*}\\; Marais,
-2013), defined as
-
-\$\$ \overline{Q}\_3 = \begin{pmatrix} I\\\\ 2\end{pmatrix}^{-1}
-\displaystyle\sum\_{i\>j}Q\_{3,ij} \\ Q\_{3,\*} = Q\_{3,max} -
-\overline{Q}\_3 \$\$
+a summary statistic such as the maximum Q₃ statistic (Q_(3,max);
+Christensen et al., 2017), or the mean-adjusted maximum Q₃ statistic
+(Q_(3,\*); Marais, 2013).
 
 ## References
 

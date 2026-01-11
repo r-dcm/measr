@@ -2,33 +2,115 @@
 
 ## measr (development version)
 
-- Updated reliability functionality to allow for the calculation of
-  accuracy and consistency with different thresholds for determining
-  attribute classifications.
+### Breaking changes
 
-- Added new `measrfit()` function for creating measrfit objects from
-  *Stan* models that were not originally created with measr.
+- The S3 parts of measr have been converted to
+  [S7](https://rconsortium.github.io/S7/).
 
-- Added [`aic()`](https://measr.r-dcm.org/dev/reference/aic-bic.md) and
-  [`bic()`](https://measr.r-dcm.org/dev/reference/aic-bic.md) functions
-  for calculating the Akaike and Bayesian information criteria,
-  respectively, for models estimated with `method = "optim"`.
-
-- Refactored package to use S7 objects instead of S3.
-
-- Functions for generating Stan code have been relocated to dcmstan.
-
-- [`measr_dcm()`](https://measr.r-dcm.org/dev/reference/measr_dcm.md)
-  deprecated in favor of
+- Some of measr’s functionality has been decoupled into other packages
+  to allow for quicker and easier updates. The generation of *Stan* code
+  and data lists have been moved to
+  [dcmstan](https://dcmstan.r-dcm.org). Similarly, the example data sets
+  have been moved to [dcmdata](https://dcmdata.r-dcm.org) to facilitate
+  the use of the data across other packages. As part of the decoupling,
+  [`measr_dcm()`](https://measr.r-dcm.org/dev/reference/measr_dcm.md)
+  has been deprecated in favor of
+  [`dcmstan::dcm_specify()`](https://dcmstan.r-dcm.org/reference/dcm_specify.html)
+  and
   [`dcm_estimate()`](https://measr.r-dcm.org/dev/reference/dcm_estimate.md).
 
-- New functionality for relative model fit comparisons
-  ([`aic()`](https://measr.r-dcm.org/dev/reference/aic-bic.md),
-  [`bic()`](https://measr.r-dcm.org/dev/reference/aic-bic.md),
-  [`bayes_factor()`](https://measr.r-dcm.org/dev/reference/bayes_factor.md)).
+  ``` r
+  # old
+  my_model <- measr_dcm(
+    data = ecpe_data,
+    qmatrix = ecpe_qmatrix,
+    resp_id = "resp_id",
+    item_id = "item_id",
+    type = "lcdm",
+    attribute_structure = "unconstrained",
+    method = "mcmc"
+  )
 
-- New functionality for testing model assumptions
-  ([`yens_q3()`](https://measr.r-dcm.org/dev/reference/yens_q3.md)).
+  # new
+  library(dcmdata)
+
+  my_spec <- dcm_specify(
+    qmatrix = ecpe_qmatrix,
+    identifier = "item_id",
+    measurement_model = lcdm(),
+    structural_model = unconstrained()
+  )
+  my_model <- dcm_estimate(
+    dcm_spec = my_spec,
+    data = ecpe_data,
+    identifier = "resp_id",
+    method = "mcmc"
+  )
+  ```
+
+- [`predict()`](https://rdrr.io/r/stats/predict.html) has been
+  deprecated in favor of
+  [`score()`](https://measr.r-dcm.org/dev/reference/score.md). The
+  functionality is the same, but
+
+### New features
+
+- [`aic()`](https://measr.r-dcm.org/dev/reference/aic-bic.md) and
+  [`bic()`](https://measr.r-dcm.org/dev/reference/aic-bic.md) have been
+  added for estimating relative model fit for models estimated with
+  `method = "optim"`
+  ([@JeffreyCHoover](https://github.com/JeffreyCHoover),
+  [\#54](https://github.com/r-dcm/measr/issues/54)).
+
+- [`bayes_factor()`](https://measr.r-dcm.org/dev/reference/bayes_factor.md)
+  has been added for comparing models using Bayes factors. This is only
+  available for models estimated with `backend = "rstan"`
+  ([@JeffreyCHoover](https://github.com/JeffreyCHoover),
+  [\#67](https://github.com/r-dcm/measr/issues/67)).
+
+- Item and attribute discrimination measures can now be calculated with
+  [`cdi()`](https://measr.r-dcm.org/dev/reference/cdi.md)
+  ([@auburnhimenez34](https://github.com/auburnhimenez34),
+  [\#63](https://github.com/r-dcm/measr/issues/63)).
+
+- The specified Q-matrix can now be evaluated and compared to other
+  empirical Q-matrix specifications using
+  [`qmatrix_validation()`](https://measr.r-dcm.org/dev/reference/qmatrix_validation.md)
+  ([@JeffreyCHoover](https://github.com/JeffreyCHoover),
+  [\#65](https://github.com/r-dcm/measr/issues/65)).
+
+- In
+  [`reliability()`](https://measr.r-dcm.org/dev/reference/reliability.md),
+  users can now calculate the classification accuracy and consistency
+  for different probability classification threshold by specifying a
+  `threshold` ([\#45](https://github.com/r-dcm/measr/issues/45)).
+
+- New estimation methods,
+  [`variational()`](https://measr.r-dcm.org/dev/reference/stan-classes.md)
+  and
+  [`pathfinder()`](https://measr.r-dcm.org/dev/reference/stan-classes.md),
+  have been added to support estimation via *Stan’s* variational
+  algorithm for approximate posterior sampling and the pathfinder
+  variational inference algorithm, respectively. Pathfinder is only
+  available when the model is estimated with
+  [cmdstanr](https://mc-stan.org/cmdstanr/)
+  ([\#72](https://github.com/r-dcm/measr/issues/72)).
+
+- Local item dependence can now be estimated with
+  [`yens_q3()`](https://measr.r-dcm.org/dev/reference/yens_q3.md)
+  ([@JeffreyCHoover](https://github.com/JeffreyCHoover),
+  [\#62](https://github.com/r-dcm/measr/issues/62)).
+
+### Minor improvements and fixes
+
+- Documentation has been updated to ensure examples use [Air
+  formatting](https://posit-dev.github.io/air/) to improve accessibility
+  ([\#68](https://github.com/r-dcm/measr/issues/68)).
+
+- [`measr_extract()`](https://measr.r-dcm.org/dev/reference/measr_extract.md)
+  has been updated to no longer require adding elements to a model
+  object before extracting
+  ([\#73](https://github.com/r-dcm/measr/issues/73)).
 
 ## measr 1.0.0
 

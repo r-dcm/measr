@@ -55,8 +55,10 @@ Evaluate assumptions of the estimated model
 
 - [`qmatrix_validation()`](https://measr.r-dcm.org/dev/reference/qmatrix_validation.md)
   : Q-matrix validation
+
 - [`yens_q3()`](https://measr.r-dcm.org/dev/reference/yens_q3.md) :
-  Yen's \\Q_3\\ statistic for local item dependence
+
+  Yen's Q₃ statistic for local item dependence
 
 ### Model comparisons
 

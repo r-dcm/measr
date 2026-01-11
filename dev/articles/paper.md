@@ -85,7 +85,7 @@ as a starting point for writing their own customized models.
 
 The research reported here was supported by the Institute of Education
 Sciences, U.S. Department of Education, through Grant
-[R305D210045](https://ies.ed.gov/funding/grantsearch/details.asp?ID=4546)
+[R305D210045](https://ies.ed.gov/use-work/awards/improving-software-and-methods-estimating-diagnostic-classification-models-and-evaluating-model-fit?ID=4546)
 to the University of Kansas. The opinions expressed are those of the
 authors and do not represent the views of the Institute or the U.S.
 Department of Education.
