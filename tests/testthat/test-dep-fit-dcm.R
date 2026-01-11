@@ -11,10 +11,8 @@ test_that("measr_dcm is deprecated", {
       method = "optim"
     )
   )
-  expect_equal(err$function_nm, "measr_dcm")
-  expect_match(err$message, "is deprecated")
-  expect_equal(err$stage, "deprecated")
-  expect_equal(err$package, "lifecycle")
+  expect_match(err$message[1], "was deprecated")
+  expect_match(err$message[2], "limited version of dcm_estimate()")
 })
 
 test_that("measr_dcm works", {
