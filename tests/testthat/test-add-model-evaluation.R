@@ -1,4 +1,6 @@
 test_that("model evaluation works", {
+  skip_on_cran_os(os = "windows")
+
   dir <- withr::local_tempdir()
 
   dina_spec <- dcmstan::dcm_specify(
