@@ -11,6 +11,8 @@
 #' @importFrom glue glue
 #' @importFrom lifecycle deprecated
 #' @importFrom rstan sampling
+#' @importFrom rstantools rstan_config
+#' @importFrom RcppParallel RcppParallelLibs
 #' @importFrom bridgesampling bridge_sampler
 #' @importFrom tibble tibble
 #' @useDynLib measr, .registration = TRUE
