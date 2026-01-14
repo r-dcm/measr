@@ -6,5 +6,19 @@
     "[quarto]": {
         "editor.formatOnSave": true,
         "editor.defaultFormatter": "quarto.quarto"
-    }
+    },
+    "workbench.colorCustomizations": {
+        "commandCenter.border": "#e7e7e799",
+        "sash.hoverBorder": "#35bbdb",
+        "statusBar.background": "#219ebc",
+        "statusBar.foreground": "#e7e7e7",
+        "statusBarItem.hoverBackground": "#35bbdb",
+        "statusBarItem.remoteBackground": "#219ebc",
+        "statusBarItem.remoteForeground": "#e7e7e7",
+        "titleBar.activeBackground": "#219ebc",
+        "titleBar.activeForeground": "#e7e7e7",
+        "titleBar.inactiveBackground": "#219ebc99",
+        "titleBar.inactiveForeground": "#e7e7e799"
+    },
+    "peacock.color": "#219ebc"
 }
