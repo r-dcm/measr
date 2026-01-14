@@ -1,3 +1,23 @@
+if (!identical(Sys.getenv("NOT_CRAN"), "true")) {
+  skip("No Q-matrix validation on CRAN")
+} else {
+  dina_spec <- dcmstan::dcm_specify(
+    qmatrix = dcmdata::mdm_qmatrix,
+    identifier = "item",
+    measurement_model = dina()
+  )
+  suppressMessages(
+    dina_mod <- dcm_estimate(
+      dina_spec,
+      data = dcmdata::mdm_data,
+      identifier = "respondent",
+      method = "optim",
+      backend = "rstan",
+      seed = 63277
+    )
+  )
+}
+
 test_that("Q-matrix validation works for ecpe", {
   skip_on_cran()
 
@@ -56,22 +76,6 @@ test_that("Q-matrix validation works for ecpe", {
 
 test_that("qmatrix validation errors for 1 attribute", {
   skip_on_cran()
-
-  dina_spec <- dcmstan::dcm_specify(
-    qmatrix = dcmdata::mdm_qmatrix,
-    identifier = "item",
-    measurement_model = dina()
-  )
-  suppressMessages(
-    dina_mod <- dcm_estimate(
-      dina_spec,
-      data = dcmdata::mdm_data,
-      identifier = "respondent",
-      method = "optim",
-      backend = "rstan",
-      seed = 63277
-    )
-  )
 
   err <- rlang::catch_cnd(qmatrix_validation(x = dina_mod))
   expect_match(
