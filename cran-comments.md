@@ -1,5 +1,7 @@
 ## Release summary
 
+This is a resubmission to address issues with total check time in the original.
+
 This is a major release to update the user API add some several new features.
 
 ## Test environments
