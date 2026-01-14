@@ -2,7 +2,7 @@ test_that("Yen's Q3 works", {
   q3_dina <- add_respondent_estimates(rstn_dina)
   yens_output <- yens_q3(q3_dina)
 
-  expect_equal(nrow(yens_output), ((35 * (35 + 1)) / 2) - 35)
+  expect_equal(nrow(yens_output), ((20 * (20 + 1)) / 2) - 20)
   expect_equal(ncol(yens_output), 4)
   expect_equal(names(yens_output), c("item_1", "item_2", "resid_corr", "flag"))
 
@@ -24,7 +24,7 @@ test_that("Yen's Q3 works", {
 test_that("respondent estimates get added", {
   dino_output <- yens_q3(rstn_dino)
 
-  expect_equal(nrow(dino_output), ((35 * (35 + 1)) / 2) - 35)
+  expect_equal(nrow(dino_output), ((20 * (20 + 1)) / 2) - 20)
   expect_equal(ncol(dino_output), 4)
   expect_equal(names(dino_output), c("item_1", "item_2", "resid_corr", "flag"))
 })

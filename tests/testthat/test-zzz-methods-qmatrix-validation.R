@@ -1,5 +1,25 @@
 test_that("Q-matrix validation works for ecpe", {
+  skip_on_cran()
+
   # correctly specified lcdm model with ecpe data ------------------------------
+  lcdm_spec <- dcmstan::dcm_specify(
+    qmatrix = dcmdata::ecpe_qmatrix |>
+      dplyr::select(-"item_id"),
+    measurement_model = lcdm()
+  )
+  out <- capture.output(
+    suppressMessages(
+      rstn_lcdm <- dcm_estimate(
+        lcdm_spec,
+        data = dcmdata::ecpe_data,
+        identifier = "resp_id",
+        method = "optim",
+        backend = "rstan",
+        seed = 63277
+      )
+    )
+  )
+
   # should match the results from the gdina package ----------------------------
   qmat_valid_res <- qmatrix_validation(x = rstn_lcdm)
   expect_equal(
@@ -35,6 +55,8 @@ test_that("Q-matrix validation works for ecpe", {
 })
 
 test_that("qmatrix validation errors for 1 attribute", {
+  skip_on_cran()
+
   dina_spec <- dcmstan::dcm_specify(
     qmatrix = dcmdata::mdm_qmatrix,
     identifier = "item",

@@ -8,8 +8,7 @@ test_that("dino reliability", {
       "att1" = 0.5,
       "asdf" = 0.8,
       "test" = 0.7,
-      "att4" = 0.5,
-      "att5" = 0.3
+      "att4" = 0.5
     )
   ))
   expect_match(err$message, "unknown attribute names")
@@ -17,7 +16,7 @@ test_that("dino reliability", {
     rstn_dino,
     threshold = c("att1" = 0.5, "asdf" = 0.8)
   ))
-  expect_match(err$message, "must be length 1 or 5")
+  expect_match(err$message, "must be length 1 or 4")
 
   # list naming
   expect_equal(
@@ -75,7 +74,7 @@ test_that("reliability can be added to model object", {
   dina_mod <- rstn_dina
   expect_equal(dina_mod@reliability, list())
 
-  dina_mod <- add_reliability(dina_mod, threshold = rep(0.5, 5))
+  dina_mod <- add_reliability(dina_mod, threshold = rep(0.5, 4))
   expect_equal(
     names(dina_mod@reliability),
     c("pattern_reliability", "map_reliability", "eap_reliability")

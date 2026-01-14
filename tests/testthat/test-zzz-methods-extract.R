@@ -7,13 +7,13 @@ test_that("errors for unknown", {
 test_that("extract item parameters", {
   # dina -----------------------------------------------------------------------
   dina_param <- measr_extract(rstn_dina, "item_param")
-  expect_equal(nrow(dina_param), 70)
+  expect_equal(nrow(dina_param), 40)
   expect_equal(
     colnames(dina_param),
     c("item_id", "type", "coefficient", "estimate")
   )
   expect_true(all(dina_param$item_id %in% q_matrix$item))
-  expect_equal(dina_param$type, rep(c("slip", "guess"), 35))
+  expect_equal(dina_param$type, rep(c("slip", "guess"), 20))
   expect_equal(
     dina_param$coefficient,
     dcmstan::get_parameters(dina(), qmatrix = q_matrix[, -1]) |>
@@ -24,13 +24,13 @@ test_that("extract item parameters", {
 
   # dino -----------------------------------------------------------------------
   dino_param <- measr_extract(rstn_dino, "item_param")
-  expect_equal(nrow(dino_param), 70)
+  expect_equal(nrow(dino_param), 40)
   expect_equal(
     colnames(dino_param),
     c("item", "type", "coefficient", "estimate")
   )
   expect_true(all(dino_param$item %in% q_matrix$item))
-  expect_equal(dino_param$type, rep(c("slip", "guess"), 35))
+  expect_equal(dino_param$type, rep(c("slip", "guess"), 20))
   expect_equal(
     dino_param$coefficient,
     dcmstan::get_parameters(dino(), qmatrix = q_matrix, identifier = "item") |>
@@ -42,8 +42,8 @@ test_that("extract item parameters", {
 
 test_that("extract structural parameters", {
   dina_param <- measr_extract(rstn_dina, "strc_param")
-  expect_equal(nrow(dina_param), 32)
-  expect_equal(dina_param$class, dplyr::pull(profile_labels(5), "class"))
+  expect_equal(nrow(dina_param), 16)
+  expect_equal(dina_param$class, dplyr::pull(profile_labels(4), "class"))
   expect_equal(
     dplyr::select(dina_param, -c("class", "estimate")),
     create_profiles(dina_spec)
@@ -63,12 +63,12 @@ test_that("extract base rates", {
 
 test_that("extract pi matrix", {
   dina_pimat <- measr_extract(rstn_dina, "pi_matrix")
-  expect_equal(nrow(dina_pimat), 35)
-  expect_equal(ncol(dina_pimat), 33)
+  expect_equal(nrow(dina_pimat), 20)
+  expect_equal(ncol(dina_pimat), 17)
   expect_equal(dina_pimat$item_id, q_matrix$item)
   expect_equal(
     colnames(dina_pimat)[-1],
-    dplyr::pull(profile_labels(5), "class")
+    dplyr::pull(profile_labels(4), "class")
   )
   expect_true(all(vapply(dina_pimat[, -1], is.double, logical(1))))
   expect_true(all(vapply(dina_pimat[, -1], \(x) !any(is.na(x)), logical(1))))
@@ -76,12 +76,12 @@ test_that("extract pi matrix", {
 
 test_that("extract model p-values", {
   dino_pimat <- measr_extract(rstn_dino, "exp_pvalues")
-  expect_equal(nrow(dino_pimat), 35)
-  expect_equal(ncol(dino_pimat), 34)
+  expect_equal(nrow(dino_pimat), 20)
+  expect_equal(ncol(dino_pimat), 18)
   expect_equal(dino_pimat$item, q_matrix$item)
   expect_equal(
     colnames(dino_pimat)[-1],
-    c(dplyr::pull(profile_labels(5), "class"), "overall")
+    c(dplyr::pull(profile_labels(4), "class"), "overall")
   )
   expect_true(all(vapply(dino_pimat[, -1], is.double, logical(1))))
   expect_true(all(vapply(dino_pimat[, -1], \(x) !any(is.na(x)), logical(1))))
@@ -94,24 +94,12 @@ test_that("extract priors", {
 
 test_that("extract classes", {
   dino_param <- measr_extract(rstn_dino, "classes")
-  expect_equal(colnames(dino_param), c("class", paste0("att", 1:5)))
-  expect_equal(dino_param$class, dplyr::pull(profile_labels(5), "class"))
+  expect_equal(colnames(dino_param), c("class", paste0("att", 1:4)))
+  expect_equal(dino_param$class, dplyr::pull(profile_labels(4), "class"))
 
   exp_label <- dino_param |>
     dplyr::mutate(
-      new_label = paste0(
-        "[",
-        att1,
-        ",",
-        att2,
-        ",",
-        att3,
-        ",",
-        att4,
-        ",",
-        att5,
-        "]"
-      )
+      new_label = paste0("[", att1, ",", att2, ",", att3, ",", att4, "]")
     ) |>
     dplyr::pull("new_label")
   expect_equal(dino_param$class, exp_label)

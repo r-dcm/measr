@@ -10,7 +10,7 @@ test_that("measrdcm creation works", {
   expect_identical(rstn_dina@model_spec@qmatrix_meta$item_identifier, "item_id")
   expect_identical(
     rstn_dina@model_spec@qmatrix_meta$item_names,
-    rlang::set_names(1:35, paste0("item_", 1:35))
+    rlang::set_names(1:20, paste0("item_", 1:20))
   )
   expect_identical(
     rstn_dina@model_spec@measurement_model,

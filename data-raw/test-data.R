@@ -7,9 +7,9 @@ library(rstan)
 library(glue)
 library(here)
 
-num_item <- 35
-num_resp <- 1000
-num_attr <- 5
+num_item <- 20
+num_resp <- 750
+num_attr <- 4
 
 set.seed(9416)
 

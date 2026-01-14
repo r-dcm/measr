@@ -9,12 +9,6 @@ dino_spec <- dcmstan::dcm_specify(
   measurement_model = dino()
 )
 
-lcdm_spec <- dcmstan::dcm_specify(
-  qmatrix = dcmdata::ecpe_qmatrix |>
-    dplyr::select(-"item_id"),
-  measurement_model = lcdm()
-)
-
 out <- capture.output(
   suppressMessages(
     rstn_dina <- dcm_estimate(
@@ -39,19 +33,6 @@ out <- capture.output(
       backend = "rstan",
       seed = 63277,
       precompiled = stanmodels$test_dina
-    )
-  )
-)
-
-out <- capture.output(
-  suppressMessages(
-    rstn_lcdm <- dcm_estimate(
-      lcdm_spec,
-      data = dcmdata::ecpe_data,
-      identifier = "resp_id",
-      method = "optim",
-      backend = "rstan",
-      seed = 63277
     )
   )
 )

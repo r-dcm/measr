@@ -91,8 +91,6 @@ test_that("dina probabilities are accurate", {
         .data$att3,
         ",",
         .data$att4,
-        ",",
-        .data$att5,
         "]"
       ),
       true = 1

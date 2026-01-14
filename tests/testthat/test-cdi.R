@@ -9,13 +9,13 @@ test_that("discrimination works", {
 
   expect_equal(
     names(dina_discrim$item_discrimination),
-    c("item", "overall", paste0("att", 1:5))
+    c("item", "overall", paste0("att", 1:4))
   )
-  expect_equal(nrow(dina_discrim$item_discrimination), 35L)
+  expect_equal(nrow(dina_discrim$item_discrimination), 20L)
 
   expect_equal(
     names(dina_discrim$test_discrimination),
-    c("overall", paste0("att", 1:5))
+    c("overall", paste0("att", 1:4))
   )
   expect_equal(nrow(dina_discrim$test_discrimination), 1L)
   expect_equal(
@@ -37,9 +37,9 @@ test_that("discrimination works", {
 
   expect_equal(
     names(dina_no_weight$item_discrimination),
-    c("item", "overall", paste0("att", 1:5))
+    c("item", "overall", paste0("att", 1:4))
   )
-  expect_equal(nrow(dina_no_weight$item_discrimination), 35L)
+  expect_equal(nrow(dina_no_weight$item_discrimination), 20L)
   expect_false(identical(
     dina_discrim$item_discrimination,
     dina_no_weight$item_discrimination
@@ -47,7 +47,7 @@ test_that("discrimination works", {
 
   expect_equal(
     names(dina_no_weight$test_discrimination),
-    c("overall", paste0("att", 1:5))
+    c("overall", paste0("att", 1:4))
   )
   expect_equal(nrow(dina_no_weight$test_discrimination), 1L)
   expect_equal(
