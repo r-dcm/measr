@@ -1,5 +1,7 @@
 # measr (development version)
 
+* `yens_q3()` no longer errors when the pi-matrix contains rvars (#76).
+
 # measr 2.0.0
 
 ## Breaking changes
