@@ -32,6 +32,6 @@ skip_on_cran_os <- function(os) {
   if (is.null(msg)) {
     invisible(TRUE)
   } else {
-    skip(msg)
+    testthat::skip(msg)
   }
 }
