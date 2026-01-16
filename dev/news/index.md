@@ -2,6 +2,10 @@
 
 ## measr (development version)
 
+- [`yens_q3()`](https://measr.r-dcm.org/dev/reference/yens_q3.md) no
+  longer errors when the pi-matrix contains rvars
+  ([\#76](https://github.com/r-dcm/measr/issues/76)).
+
 ## measr 2.0.0
 
 CRAN release: 2026-01-14
