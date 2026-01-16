@@ -1,0 +1,96 @@
+# Yen's Q₃ statistic for local item dependence
+
+Calculate the Q₃ statistic to evaluate the assumption of independent
+items.
+
+## Usage
+
+``` r
+yens_q3(x, ..., crit_value = 0.2, summary = NULL)
+```
+
+## Arguments
+
+- x:
+
+  A [measrdcm](https://measr.r-dcm.org/reference/dcm_estimate.md)
+  object.
+
+- ...:
+
+  Unused.
+
+- crit_value:
+
+  The critical value threshold for flagging the residual correlation of
+  a given item pair. The default is 0.2, as described by Chen and
+  Thissen (1997).
+
+- summary:
+
+  A summary statistic to be returned. Must be one of `"q3max"` or
+  `"q3star"` (see Details). If `NULL` (the default), no summary
+  statistic is return, and all residual correlations are returned.
+
+## Value
+
+If `summary = NULL`, a tibble with the residual correlation and flags
+for all item pairs. Otherwise, a numeric value representing the
+requested summary statistic.
+
+## Details
+
+Psychometric models assume that items are independent of each other,
+conditional on the latent trait. The Q₃ statistic (Yen, 1984) is used to
+evaluate this assumption. For each observed item response, we calculate
+the residual between the model predicted score and the observed score
+and then estimate correlations between the residuals across items. Each
+residual correlation is a Q₃ statistic.
+
+Often, a critical values is used to flag a residual correlation above a
+given threshold (e.g., Chen & Thissen, 1997). Alternatively, we may use
+a summary statistic such as the maximum Q₃ statistic (Q_(3,max);
+Christensen et al., 2017), or the mean-adjusted maximum Q₃ statistic
+(Q_(3,\*); Marais, 2013).
+
+## References
+
+Chen, W.-H., & Thissen, D. (1997). Local dependence indexes for item
+pairs using item response theory. *Journal of Educational and Behavioral
+Statistics, 22*(3), 265-389.
+[doi:10.3102/10769986022003265](https://doi.org/10.3102/10769986022003265)
+
+Christensen, K. B., Makransky, G., & Horton, M. (2017). Critical values
+for Yen's Q3: Identification of local dependence in the Rasch model
+using residual correlations. *Applied Psychological Measurement, 41*(3),
+178-194.
+[doi:10.1177/0146621616677520](https://doi.org/10.1177/0146621616677520)
+
+Marais, I. (2013). Local dependence. In K. B. Christensen, S. Kreiner, &
+M. Mesbah (Eds.), *Rasch models in health* (pp. 111-130). Wiley.
+
+Yen, W. M. (1984). Effects of local item dependence on the fit and
+equating performance of the three-parameter logistic model. *Applied
+Psychological Measurement, 8*(2), 125-145.
+[doi:10.1177/014662168400800201](https://doi.org/10.1177/014662168400800201)
+
+## Examples
+
+``` r
+model_spec <- dcm_specify(
+  qmatrix = dcmdata::mdm_qmatrix,
+  dentifier = "item"
+)
+#> Error in dcm_specify(qmatrix = dcmdata::mdm_qmatrix, dentifier = "item"): unused argument (dentifier = "item")
+model <- dcm_estimate(
+  dcm_spec = model_spec,
+  data = dcmdata::mdm_data,
+  identifier = "respondent",
+  method = "optim",
+  seed = 63277
+)
+#> Error: object 'model_spec' not found
+
+yens_q3(model)
+#> Error: object 'model' not found
+```
