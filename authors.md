@@ -27,7 +27,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/r-dcm/measr/blob/main/inst/CITATION)
+[`inst/CITATION`](https://github.com/r-dcm/measr/blob/v2.0.0/inst/CITATION)
 
 Thompson WJ (2023). “measr: Bayesian psychometric measurement using
 Stan.” *Journal of Open Source Software*, **8**(91), 5742.
