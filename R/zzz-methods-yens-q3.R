@@ -93,6 +93,7 @@ S7::method(yens_q3, measrdcm) <- function(x, crit_value = .2, summary = NULL) {
     tibble::deframe()
 
   pi_mat <- measr_extract(x, "pi_matrix") |>
+    dplyr::mutate(dplyr::across(dplyr::where(posterior::is_rvar), E)) |>
     tidyr::pivot_longer(
       cols = -x@data$item_identifier,
       names_to = "profile",
