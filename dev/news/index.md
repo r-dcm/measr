@@ -2,6 +2,10 @@
 
 ## measr (development version)
 
+## measr 2.0.0
+
+CRAN release: 2026-01-14
+
 ### Breaking changes
 
 - The S3 parts of measr have been converted to
