@@ -99,6 +99,8 @@ articles:
 
 news:
   releases:
+  - text: "Version 2.0.0"
+    href: https://r-dcm.org/blog/2026-01-measr-2.0.0/
   - text: "Version 1.0.0"
     href: https://r-dcm.org/blog/2024-02-measr-1.0.0/
   - text: "Version 0.3.1"
