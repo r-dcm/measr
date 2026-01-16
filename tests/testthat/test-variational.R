@@ -878,3 +878,26 @@ test_that("respondent probabilities are correct", {
       tidyr::pivot_wider(names_from = "attribute", values_from = "probability")
   )
 })
+
+test_that("Yen's Q3 works", {
+  q3_dino <- add_respondent_estimates(cmds_mdm_dino)
+  yens_output <- yens_q3(q3_dino)
+
+  expect_equal(nrow(yens_output), ((4 * (4 + 1)) / 2) - 4)
+  expect_equal(ncol(yens_output), 4)
+  expect_equal(names(yens_output), c("item_1", "item_2", "resid_corr", "flag"))
+
+  q3max <- yens_q3(q3_dino, summary = "q3max")
+  expect_true(is.numeric(q3max))
+  expect_true(dplyr::between(q3max, 0, 1))
+  expect_equal(q3max, max(abs(yens_output$resid_corr)))
+
+  q3star <- yens_q3(q3_dino, summary = "q3star")
+  expect_true(is.numeric(q3star))
+  expect_true(dplyr::between(q3star, 0, 1))
+  expect_equal(
+    q3star,
+    max(abs(yens_output$resid_corr)) -
+      mean(abs(yens_output$resid_corr))
+  )
+})
