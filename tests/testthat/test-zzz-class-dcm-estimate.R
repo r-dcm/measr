@@ -1,3 +1,25 @@
+# model validator --------------------------------------------------------------
+test_that("measrfit validator errors correctly", {
+  expect_error(
+    {
+      dcm_estimate(
+        dcm_spec = dcm_specify(
+          qmatrix = dcmdata::dtmr_qmatrix,
+          identifier = "item"
+        ),
+        data = dcmdata::dtmr_data,
+        identifier = "id",
+        missing = c(NA_real_, -99),
+        method = "optim",
+        seed = 63277,
+        backend = "rstan"
+      )
+    },
+    "`missing` must be of length 1"
+  )
+})
+
+# creation works----------------------------------------------------------------
 test_that("measrdcm creation works", {
   # dina test ------------------------------------------------------------------
   expect_s7_class(rstn_dina, measrfit)

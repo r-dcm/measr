@@ -83,6 +83,7 @@ dcm_estimate <- function(
   # check function inputs ------------------------------------------------------
   S7::check_is_S7(dcm_spec, dcmstan::dcm_specification)
   check_string(identifier, allow_null = TRUE)
+  missing <- rdcmchecks::check_missing(missing)
   clean_data <- rdcmchecks::clean_data(
     data,
     identifier = identifier,
