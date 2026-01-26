@@ -2,6 +2,9 @@
 
 * `yens_q3()` no longer errors when the pi-matrix contains rvars (#76).
 
+* Fix edge case that prevented that prevented the use of data with missing
+  responses.
+
 # measr 2.0.0
 
 ## Breaking changes

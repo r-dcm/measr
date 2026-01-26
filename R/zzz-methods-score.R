@@ -93,6 +93,7 @@ S7::method(score, measrdcm) <-
 
     if (!is.null(newdata)) {
       check_string(identifier, allow_null = TRUE)
+      missing <- rdcmchecks::check_missing(missing)
       clean_data <- rdcmchecks::clean_data(
         newdata,
         identifier = identifier,
