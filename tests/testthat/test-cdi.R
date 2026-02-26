@@ -9,9 +9,10 @@ test_that("discrimination works", {
 
   expect_equal(
     names(dina_discrim$item_discrimination),
-    c("item", "overall", paste0("att", 1:4))
+    c("item_id", "overall", paste0("att", 1:4))
   )
   expect_equal(nrow(dina_discrim$item_discrimination), 20L)
+  expect_equal(dina_discrim$item_discrimination$item_id, q_matrix$item)
 
   expect_equal(
     names(dina_discrim$test_discrimination),
@@ -22,7 +23,7 @@ test_that("discrimination works", {
     dina_discrim$test_discrimination |>
       tidyr::pivot_longer(dplyr::everything()) |>
       tibble::deframe(),
-    colSums(dplyr::select(dina_discrim$item_discrimination, -"item"))
+    colSums(dplyr::select(dina_discrim$item_discrimination, -"item_id"))
   )
 
   # check different weighting scheme -----
@@ -37,9 +38,10 @@ test_that("discrimination works", {
 
   expect_equal(
     names(dina_no_weight$item_discrimination),
-    c("item", "overall", paste0("att", 1:4))
+    c("item_id", "overall", paste0("att", 1:4))
   )
   expect_equal(nrow(dina_no_weight$item_discrimination), 20L)
+  expect_equal(dina_no_weight$item_discrimination$item_id, q_matrix$item)
   expect_false(identical(
     dina_discrim$item_discrimination,
     dina_no_weight$item_discrimination
@@ -54,7 +56,7 @@ test_that("discrimination works", {
     dina_no_weight$test_discrimination |>
       tidyr::pivot_longer(dplyr::everything()) |>
       tibble::deframe(),
-    colSums(dplyr::select(dina_no_weight$item_discrimination, -"item"))
+    colSums(dplyr::select(dina_no_weight$item_discrimination, -"item_id"))
   )
   expect_false(identical(
     dina_discrim$test_discrimination,

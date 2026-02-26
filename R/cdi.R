@@ -149,10 +149,17 @@ cdi <- function(model, weight_prevalence = TRUE) {
         \(x) stats::weighted.mean(x, w = .data$weight, na.rm = TRUE)
       ),
       .by = "item"
-    )
+    ) |>
+    dplyr::mutate(
+      item = names(model@model_spec@qmatrix_meta$item_names)[.data$item]
+    ) |>
+    dplyr::rename(!!model@model_spec@qmatrix_meta$item_identifier := "item")
 
   test_discrim <- item_discrim |>
-    dplyr::summarize(dplyr::across(-"item", sum))
+    dplyr::summarize(dplyr::across(
+      -model@model_spec@qmatrix_meta$item_identifier,
+      sum
+    ))
 
   list(item_discrimination = item_discrim, test_discrimination = test_discrim)
 }
