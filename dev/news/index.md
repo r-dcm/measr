@@ -9,6 +9,9 @@
 - Fix edge case that prevented that prevented the use of data with
   missing responses.
 
+- [`cdi()`](https://measr.r-dcm.org/dev/reference/cdi.md) now includes
+  the real item identifiers in output.
+
 ## measr 2.0.0
 
 CRAN release: 2026-01-14
