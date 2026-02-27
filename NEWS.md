@@ -5,6 +5,8 @@
 * Fix edge case that prevented that prevented the use of data with missing
   responses.
 
+* `cdi()` now includes the real item identifiers in output.
+
 # measr 2.0.0
 
 ## Breaking changes
