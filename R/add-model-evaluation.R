@@ -192,12 +192,13 @@ add_reliability <- function(x, overwrite = FALSE, save = TRUE, ...) {
   # determine whether or not to calculate reliability --------------------------
   if (rlang::is_empty(x@reliability) || overwrite) {
     x@reliability <- reliability(x, force = TRUE, ...)
+
+    # re-save model object (if applicable) -----
+    if (!rlang::is_empty(x@file) && save) {
+      write_measrfit(x, file = x@file)
+    }
   }
 
-  # re-save model object (if applicable) ---------------------------------------
-  if (!rlang::is_empty(x@file) && save) {
-    write_measrfit(x, file = x@file)
-  }
   x
 }
 
@@ -226,14 +227,22 @@ add_fit <- function(
     )
   }
 
+  resave <- FALSE
+
   # m2 -------------------------------------------------------------------------
   if ("m2" %in% method && (rlang::is_empty(x@fit$m2) || overwrite)) {
     x@fit$m2 <- fit_m2(x, ci = ci, force = TRUE)
+    resave <- TRUE
   }
 
   # ppmc -----------------------------------------------------------------------
   if ("ppmc" %in% method) {
     ppmc_list <- fit_ppmc(x, ..., force = overwrite)
+
+    if (!all(names(ppmc_list) %in% names(x@fit)) || overwrite) {
+      resave <- TRUE
+    }
+
     x@fit <- utils::modifyList(x@fit, ppmc_list)
     x@fit <- lapply(names(x@fit), \(nm) {
       if (!nm %in% names(ppmc_list)) {
@@ -245,7 +254,7 @@ add_fit <- function(
   }
 
   # re-save model object (if applicable) ---------------------------------------
-  if (!rlang::is_empty(x@file) && save) {
+  if (!rlang::is_empty(x@file) && save && resave) {
     write_measrfit(x, file = x@file)
   }
   x
@@ -274,11 +283,12 @@ add_respondent_estimates <- function(
       probs = probs,
       force = TRUE
     )
+
+    # re-save model object (if applicable) -----
+    if (!rlang::is_empty(x@file) && save) {
+      write_measrfit(x, file = x@file)
+    }
   }
 
-  # re-save model object (if applicable) ---------------------------------------
-  if (!rlang::is_empty(x@file) && save) {
-    write_measrfit(x, file = x@file)
-  }
   x
 }
