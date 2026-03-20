@@ -419,7 +419,10 @@ test_that("ppmc works", {
   )
   expect_equal(
     vapply(test_ppmc$ppmc_conditional_prob$samples, length, integer(1)),
-    rep(100, 162)
+    rlang::set_names(
+      rep(100, 162),
+      nm = paste0(rep(1:27, each = 6), "_", rep(1:6, times = 27))
+    )
   )
 
   # test 2 -----
@@ -461,9 +464,16 @@ test_that("ppmc works", {
     as.character(test_ppmc$ppmc_odds_ratio$item_2),
     names(lcdm_spec@qmatrix_meta$item_names[item_combos$item2])
   )
+  pair_names <- rlang::rep_along(1:26, list())
+  for (i in seq_along(pair_names)) {
+    pair_names[[i]] <- paste0(i, "_", (i + 1):27)
+  }
   expect_equal(
     vapply(test_ppmc$ppmc_odds_ratio$samples, length, integer(1)),
-    rep(180, 351)
+    rlang::set_names(
+      rep(180, 351),
+      unlist(pair_names)
+    )
   )
 
   expect_s3_class(test_ppmc$ppmc_pvalue, "tbl_df")
@@ -478,7 +488,7 @@ test_that("ppmc works", {
   )
   expect_equal(
     vapply(test_ppmc$ppmc_pvalue$samples, length, double(1)),
-    rep(180, 27)
+    rlang::set_names(rep(180, 27), nm = paste0(1:27))
   )
 
   # test 3 -----
