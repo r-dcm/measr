@@ -477,7 +477,10 @@ test_that("ppmc works", {
   )
   expect_equal(
     vapply(test_ppmc$ppmc_conditional_prob$samples, length, integer(1)),
-    rep(100, 8)
+    rlang::set_names(
+      rep(100, 8),
+      nm = paste0(rep(1:4, each = 2), "_", rep(1:2, times = 4))
+    )
   )
 
   # test 2 -----
@@ -514,7 +517,10 @@ test_that("ppmc works", {
   )
   expect_equal(
     vapply(test_ppmc$ppmc_odds_ratio$samples, length, integer(1)),
-    rep(180, 6)
+    rlang::set_names(
+      rep(180, 6),
+      c(paste0(1, "_", 2:4), paste0(2, "_", 3:4), "3_4")
+    )
   )
 
   expect_s3_class(test_ppmc$ppmc_pvalue, "tbl_df")
@@ -526,7 +532,7 @@ test_that("ppmc works", {
   expect_equal(as.character(test_ppmc$ppmc_pvalue$item), paste0("mdm", 1:4))
   expect_equal(
     vapply(test_ppmc$ppmc_pvalue$samples, length, double(1)),
-    rep(180, 4)
+    rlang::set_names(rep(180, 4), nm = paste0(1:4))
   )
 
   # test 3 -----
@@ -593,8 +599,8 @@ test_that("model fit can be added", {
     )
   )
   expect_identical(
-    test_model@fit[-which(names(test_model@fit) == "m2")],
-    fit_ppmc(test_model, item_fit = "odds_ratio")
+    dplyr::select(test_model@fit$ppmc_odds_ratio, -"samples"),
+    fit_ppmc(test_model, item_fit = "odds_ratio")$ppmc_odds_ratio
   )
 
   # nothing new does nothing -----
@@ -615,7 +621,15 @@ test_that("model fit can be added", {
   )
   expect_equal(
     names(test_model@fit$ppmc_raw_score),
-    c("obs_chisq", "ppmc_mean", "5.5%", "94.5%", "ppp")
+    c(
+      "obs_chisq",
+      "ppmc_mean",
+      "5.5%",
+      "94.5%",
+      "rawscore_samples",
+      "chisq_samples",
+      "ppp"
+    )
   )
   expect_equal(
     names(test_model@fit$ppmc_odds_ratio),
@@ -632,8 +646,21 @@ test_that("model fit can be added", {
   )
   expect_equal(
     names(test_model@fit$ppmc_conditional_prob),
-    c("item", "class", "obs_cond_pval", "ppmc_mean", "5.5%", "94.5%", "ppp")
+    c(
+      "item",
+      "class",
+      "obs_cond_pval",
+      "ppmc_mean",
+      "5.5%",
+      "94.5%",
+      "samples",
+      "ppp"
+    )
   )
+  expect_equal(length(test_model@fit$ppmc_odds_ratio$samples[[1]]), 100)
+  expect_equal(nrow(test_model@fit$ppmc_raw_score$rawscore_samples[[1]]), 2000)
+  expect_equal(length(test_model@fit$ppmc_raw_score$chisq_samples[[1]]), 2000)
+  expect_equal(length(test_model@fit$ppmc_conditional_prob$samples[[1]]), 2000)
 
   # now calculate conditional probs and overall pvalue - overall is new, -----
   # but conditional prob should use stored value
@@ -645,7 +672,7 @@ test_that("model fit can be added", {
   expect_equal(names(test_ppmc), c("ppmc_conditional_prob", "ppmc_pvalue"))
   expect_identical(
     test_ppmc$ppmc_conditional_prob,
-    test_model@fit$ppmc_conditional_prob
+    dplyr::select(test_model@fit$ppmc_conditional_prob, -"samples")
   )
   expect_equal(
     names(test_ppmc$ppmc_pvalue),
@@ -675,7 +702,15 @@ test_that("model fit can be added", {
   )
   expect_equal(
     names(test_model@fit$ppmc_raw_score),
-    c("obs_chisq", "ppmc_mean", "5.5%", "94.5%", "ppp")
+    c(
+      "obs_chisq",
+      "ppmc_mean",
+      "5.5%",
+      "94.5%",
+      "rawscore_samples",
+      "chisq_samples",
+      "ppp"
+    )
   )
   expect_equal(
     names(test_model@fit$ppmc_odds_ratio),
@@ -707,6 +742,11 @@ test_that("model fit can be added", {
     names(test_model@fit$ppmc_pvalue),
     c("item", "obs_pvalue", "ppmc_mean", "10%", "90%", "samples", "ppp")
   )
+  expect_equal(length(test_model@fit$ppmc_odds_ratio$samples[[1]]), 100)
+  expect_equal(nrow(test_model@fit$ppmc_raw_score$rawscore_samples[[1]]), 2000)
+  expect_equal(length(test_model@fit$ppmc_raw_score$chisq_samples[[1]]), 2000)
+  expect_equal(length(test_model@fit$ppmc_conditional_prob$samples[[1]]), 200)
+  expect_equal(length(test_model@fit$ppmc_pvalue$samples[[1]]), 200)
 
   # test extraction -----
   rs_check <- measr_extract(test_model, "ppmc_raw_score")
