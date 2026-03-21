@@ -9,6 +9,7 @@
 #' @inheritParams loo::loo
 #' @inheritParams dcm2::calc_m2
 #' @inheritParams score
+#' @inheritParams fit_ppmc
 #' @param x A [measrdcm][dcm_estimate()] object.
 #' @param criterion A vector of information criteria to calculate and add to the
 #'   model object. Must be `"loo"`, `"waic"`, or `"log_mll"` for models
