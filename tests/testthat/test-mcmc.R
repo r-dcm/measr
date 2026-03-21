@@ -682,7 +682,7 @@ test_that("model fit can be added", {
   )
 
   # nothing new does nothing -----
-  test_model2 <- add_fit(test_model, method = "ppmc")
+  test_model2 <- add_fit(test_model, method = "ppmc", return_draws = NULL)
   expect_identical(test_model, test_model2)
 
   # now add raw score and conditional probs -- other fit should persist -----
@@ -897,6 +897,58 @@ test_that("model fit can be added", {
   expect_equal(
     measr_extract(test_model, "ppmc_pvalue_flags", ppmc_interval = 0.6),
     dplyr::filter(pval_check, ppp <= 0.2 | ppp >= 0.8)
+  )
+
+  # fit ppmc can return draws -----
+  fit1 <- fit_ppmc(test_model, model_fit = "raw_score")
+  expect_equal(names(fit1), "ppmc_raw_score")
+  expect_equal(
+    names(fit1$ppmc_raw_score),
+    c("obs_chisq", "ppmc_mean", "5.5%", "94.5%", "ppp")
+  )
+
+  fit2 <- fit_ppmc(
+    test_model,
+    model_fit = "raw_score",
+    item_fit = "pvalue",
+    return_draws = 100
+  )
+  expect_equal(names(fit2), c("ppmc_raw_score", "ppmc_pvalue"))
+  expect_equal(
+    names(fit2$ppmc_raw_score),
+    c(
+      "obs_chisq",
+      "ppmc_mean",
+      "5.5%",
+      "94.5%",
+      "rawscore_samples",
+      "chisq_samples",
+      "ppp"
+    )
+  )
+  expect_equal(
+    names(fit2$ppmc_pvalue),
+    c(
+      "item",
+      "obs_pvalue",
+      "ppmc_mean",
+      "10%",
+      "90%",
+      "samples",
+      "ppp"
+    )
+  )
+  expect_equal(
+    vapply(fit2$ppmc_raw_score$rawscore_samples, nrow, integer(1)),
+    rlang::set_names(100, "rawscores")
+  )
+  expect_equal(
+    vapply(fit2$ppmc_raw_score$chisq_samples, length, integer(1)),
+    rlang::set_names(100, "chisqs")
+  )
+  expect_equal(
+    vapply(fit2$ppmc_pvalue$samples, length, integer(1)),
+    rlang::set_names(rep(100, 4), paste0(1:4))
   )
 })
 
