@@ -22,6 +22,8 @@ add_reliability(x, overwrite = FALSE, save = TRUE, ...)
 add_fit(
   x,
   method = c("m2", "ppmc"),
+  ndraws = NULL,
+  return_draws = ndraws,
   overwrite = FALSE,
   save = TRUE,
   ...,
@@ -78,6 +80,18 @@ functions for help computing \code{r_eff}.}
 
 \item{method}{A vector of model fit methods to evaluate and add to the model
 object.}
+
+\item{ndraws}{The number of posterior draws to base the checks on. Must be
+less than or equal to the total number of posterior draws retained in the
+estimated model. If \code{NULL} (the default) the total number from the
+estimated model is used.}
+
+\item{return_draws}{Number of posterior draws for each specified fit
+statistic to be returned. This does not affect the calculation of the
+posterior predictive checks, but can be useful for visualizing the fit
+statistics. Must be less than \code{ndraws} (or the total number of draws if
+\code{ndraws = NULL}). If \code{0} (the default), only summaries of the posterior are
+returned (no individual samples).}
 
 \item{ci}{The confidence interval for the RMSEA, computed from the M2}
 

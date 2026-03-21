@@ -9,6 +9,7 @@
 #' @inheritParams loo::loo
 #' @inheritParams dcm2::calc_m2
 #' @inheritParams score
+#' @inheritParams fit_ppmc
 #' @param x A [measrdcm][dcm_estimate()] object.
 #' @param criterion A vector of information criteria to calculate and add to the
 #'   model object. Must be `"loo"`, `"waic"`, or `"log_mll"` for models
@@ -207,6 +208,8 @@ add_reliability <- function(x, overwrite = FALSE, save = TRUE, ...) {
 add_fit <- function(
   x,
   method = c("m2", "ppmc"),
+  ndraws = NULL,
+  return_draws = ndraws,
   overwrite = FALSE,
   save = TRUE,
   ...,
@@ -227,6 +230,26 @@ add_fit <- function(
     )
   }
 
+  total_draws <- posterior::ndraws(posterior::as_draws(x))
+  check_number_whole(
+    ndraws,
+    min = 1,
+    max = as.numeric(total_draws),
+    allow_null = TRUE
+  )
+  if (is.null(ndraws)) {
+    ndraws <- total_draws
+  }
+  check_number_whole(
+    return_draws,
+    min = 1,
+    max = as.numeric(ndraws),
+    allow_null = TRUE
+  )
+  if (is.null(return_draws)) {
+    return_draws <- ndraws
+  }
+
   resave <- FALSE
 
   # m2 -------------------------------------------------------------------------
@@ -237,7 +260,13 @@ add_fit <- function(
 
   # ppmc -----------------------------------------------------------------------
   if ("ppmc" %in% method) {
-    ppmc_list <- fit_ppmc(x, ..., force = overwrite)
+    ppmc_list <- fit_ppmc(
+      x,
+      ...,
+      ndraws = ndraws,
+      return_draws = return_draws,
+      force = overwrite
+    )
 
     if (!all(names(ppmc_list) %in% names(x@fit)) || overwrite) {
       resave <- TRUE

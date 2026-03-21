@@ -184,7 +184,24 @@ S7::method(fit_ppmc, measrdcm) <- function(
     return(list())
   } else if (!force) {
     all_ppmc <- paste0("ppmc_", all_ppmc)
-    results <- lapply(all_ppmc, \(pc) x@fit[[pc]]) |>
+    results <- lapply(
+      all_ppmc,
+      \(pc, return_draws) {
+        cur_pc <- x@fit[[pc]]
+        cur_pc <- if (is.null(cur_pc)) {
+          NULL
+        } else if (return_draws == 0) {
+          dplyr::select(cur_pc, -dplyr::matches("samples"))
+        } else {
+          cur_pc |>
+            dplyr::mutate(dplyr::across(dplyr::matches("samples"), \(x) {
+              lapply(x, sample_ppmc, n = return_draws)
+            }))
+        }
+        cur_pc
+      },
+      return_draws = return_draws
+    ) |>
       rlang::set_names(all_ppmc)
 
     if (!any(vapply(results, rlang::is_null, logical(1)))) return(results)
@@ -366,16 +383,22 @@ ppmc_raw_score <- function(spec, obs, post, probs, return_draws, ...) {
   if (return_draws > 0) {
     raw_score_res <- raw_score_res |>
       dplyr::mutate(
-        rawscore_samples = list(
-          raw_score_post |>
-            tidyr::nest(raw_scores = -".draw") |>
-            dplyr::slice_sample(n = return_draws) |>
-            dplyr::select(-".draw")
+        rawscore_samples = rlang::set_names(
+          list(
+            raw_score_post |>
+              tidyr::nest(raw_scores = -".draw") |>
+              dplyr::slice_sample(n = return_draws) |>
+              dplyr::select(-".draw")
+          ),
+          "rawscores"
         ),
-        chisq_samples = list(
-          chisq_ppmc |>
-            dplyr::slice_sample(n = return_draws) |>
-            dplyr::pull("chisq")
+        chisq_samples = rlang::set_names(
+          list(
+            chisq_ppmc |>
+              dplyr::slice_sample(n = return_draws) |>
+              dplyr::pull("chisq")
+          ),
+          "chisqs"
         ),
         .before = "ppp"
       )
@@ -500,11 +523,14 @@ ppmc_conditional_prob <- function(
   if (return_draws > 0) {
     cond_pval_res <- cond_pval_res |>
       dplyr::mutate(
-        samples = lapply(.data$cond_pval, function(.x) {
-          .x |>
-            dplyr::slice_sample(n = return_draws) |>
-            dplyr::pull("pi")
-        }),
+        samples = rlang::set_names(
+          lapply(.data$cond_pval, function(.x) {
+            .x |>
+              dplyr::slice_sample(n = return_draws) |>
+              dplyr::pull("pi")
+          }),
+          nm = glue::glue("{i}_{c}")
+        ),
         .before = "ppp"
       )
   }
@@ -572,11 +598,14 @@ ppmc_odds_ratio <- function(spec, obs, post, probs, return_draws, ...) {
     or_res <- or_res |>
       dplyr::relocate("samples", .before = "ppp") |>
       dplyr::mutate(
-        samples = lapply(.data$samples, function(.x) {
-          .x |>
-            dplyr::slice_sample(n = return_draws) |>
-            dplyr::pull("or")
-        })
+        samples = rlang::set_names(
+          lapply(.data$samples, function(.x) {
+            .x |>
+              dplyr::slice_sample(n = return_draws) |>
+              dplyr::pull("or")
+          }),
+          nm = glue::glue("{item_1}_{item_2}")
+        )
       )
   } else {
     or_res <- dplyr::select(or_res, -"samples")
@@ -630,11 +659,14 @@ ppmc_pvalue <- function(spec, obs, post, probs, return_draws, ...) {
     pval_res <- pval_res |>
       dplyr::relocate("samples", .before = "ppp") |>
       dplyr::mutate(
-        samples = lapply(.data$samples, function(x) {
-          x |>
-            dplyr::slice_sample(n = return_draws) |>
-            dplyr::pull("pvalue")
-        })
+        samples = rlang::set_names(
+          lapply(.data$samples, function(x) {
+            x |>
+              dplyr::slice_sample(n = return_draws) |>
+              dplyr::pull("pvalue")
+          }),
+          nm = glue::glue("{item}")
+        )
       )
   } else {
     pval_res <- dplyr::select(pval_res, -"samples")
