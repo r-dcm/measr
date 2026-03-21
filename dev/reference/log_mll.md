@@ -61,8 +61,8 @@ model <- dcm_estimate(
 #> Chain 1: 
 #> Chain 1: 
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.000131 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.31 seconds.
+#> Chain 1: Gradient evaluation took 0.000153 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.53 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -107,5 +107,5 @@ model <- dcm_estimate(
 #> Warning: Pareto k diagnostic value is 1.09. Resampling is disabled. Decreasing tol_rel_obj may help if variational algorithm has terminated prematurely. Otherwise consider using sampling instead.
 
 log_mll(model)
-#> [1] -349.5096
+#> [1] -349.4953
 ```
