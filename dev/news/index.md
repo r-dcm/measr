@@ -2,15 +2,18 @@
 
 ## measr (development version)
 
-- [`yens_q3()`](https://measr.r-dcm.org/dev/reference/yens_q3.md) no
-  longer errors when the pi-matrix contains rvars
-  ([\#76](https://github.com/r-dcm/measr/issues/76)).
-
 - Fix edge case that prevented that prevented the use of data with
   missing responses.
 
+- [`add_fit()`](https://measr.r-dcm.org/dev/reference/model_evaluation.md)
+  now automatically saves posterior draws when `method = "ppmc"`.
+
 - [`cdi()`](https://measr.r-dcm.org/dev/reference/cdi.md) now includes
   the real item identifiers in output.
+
+- [`yens_q3()`](https://measr.r-dcm.org/dev/reference/yens_q3.md) no
+  longer errors when the pi-matrix contains rvars
+  ([\#76](https://github.com/r-dcm/measr/issues/76)).
 
 ## measr 2.0.0
 
