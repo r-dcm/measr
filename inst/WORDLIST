@@ -69,7 +69,6 @@ blatent
 cmdstanr
 codecov
 dcmdata
-dcmstan
 de
 dichotomously
 dina
@@ -97,6 +96,7 @@ psychometrics
 resave
 rlang
 rstan
+rvars
 subtype
 subtypes
 tetrachoric
