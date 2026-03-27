@@ -1,4 +1,4 @@
-# measr (development version)
+# measr 2.0.1
 
 * Fix edge case that prevented that prevented the use of data with missing
   responses.
