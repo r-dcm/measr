@@ -77,12 +77,13 @@ However, please note that some functionality will be lost when using the optimiz
 
 library(measr)
 
-model_spec <- dcm_specify(dcmdata::dtmr_qmatrix, identifier = "item")
+model_spec <- dcm_specify(dcmdata::roarpa_qmatrix, identifier = "item")
 
 model <- dcm_estimate(
   dcm_spec = model_spec,
-  data = dcmdata::dtmr_data,
+  data = dcmdata::roarpa_data,
   identifier = "id",
+  method = "optim",
   seed = 69385,
   refresh = 0
 )

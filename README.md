@@ -90,12 +90,13 @@ criteria requires the use of MCMC).
 ``` r
 library(measr)
 
-model_spec <- dcm_specify(dcmdata::dtmr_qmatrix, identifier = "item")
+model_spec <- dcm_specify(dcmdata::roarpa_qmatrix, identifier = "item")
 
 model <- dcm_estimate(
   dcm_spec = model_spec,
-  data = dcmdata::dtmr_data,
+  data = dcmdata::roarpa_data,
   identifier = "id",
+  method = "optim",
   seed = 69385,
   refresh = 0
 )
@@ -110,16 +111,15 @@ measr_extract(model, "m2")
 #> # A tibble: 1 × 3
 #>      m2    df  pval
 #>   <dbl> <int> <dbl>
-#> 1  261.   293 0.909
+#> 1    NA  1532    NA
 
 measr_extract(model, "classification_reliability")
-#> # A tibble: 4 × 3
-#>   attribute                 accuracy consistency
-#>   <chr>                        <dbl>       <dbl>
-#> 1 referent_units               0.928       0.878
-#> 2 partitioning_iterating       0.924       0.875
-#> 3 appropriateness              0.894       0.817
-#> 4 multiplicative_comparison    0.924       0.867
+#> # A tibble: 3 × 3
+#>   attribute accuracy consistency
+#>   <chr>        <dbl>       <dbl>
+#> 1 lsm          0.984       0.969
+#> 2 del          0.967       0.939
+#> 3 fsm          0.986       0.973
 ```
 
 ------------------------------------------------------------------------
