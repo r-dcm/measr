@@ -36,7 +36,7 @@
 
     <a class="navbar-brand me-2" href="index.html">measr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">2.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">2.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,6 +59,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-news" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">News</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-news">
 <li><h6 class="dropdown-header" data-toc-skip>Releases</h6></li>
+    <li><a class="external-link dropdown-item" href="https://r-dcm.org/blog/2026-01-measr-2.0.0/">Version 2.0.0</a></li>
     <li><a class="external-link dropdown-item" href="https://r-dcm.org/blog/2024-02-measr-1.0.0/">Version 1.0.0</a></li>
     <li><a class="external-link dropdown-item" href="https://r-dcm.org/blog/2023-06-measr-0.3.1/">Version 0.3.1</a></li>
     <li><a class="external-link dropdown-item" href="https://r-dcm.org/blog/2023-04-measr-0.2.1/">Version 0.2.1</a></li>
@@ -107,12 +108,13 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://measr.r-dcm.org">measr</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">model_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dcmstan.r-dcm.org/reference/dcm_specify.html" class="external-link">dcm_specify</a></span><span class="op">(</span><span class="fu">dcmdata</span><span class="fu">::</span><span class="va"><a href="https://dcmdata.r-dcm.org/reference/dtmr.html" class="external-link">dtmr_qmatrix</a></span>, identifier <span class="op">=</span> <span class="st">"item"</span><span class="op">)</span></span>
+<span><span class="va">model_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dcmstan.r-dcm.org/reference/dcm_specify.html" class="external-link">dcm_specify</a></span><span class="op">(</span><span class="fu">dcmdata</span><span class="fu">::</span><span class="va"><a href="https://dcmdata.r-dcm.org/reference/roarpa.html" class="external-link">roarpa_qmatrix</a></span>, identifier <span class="op">=</span> <span class="st">"item"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/dcm_estimate.html">dcm_estimate</a></span><span class="op">(</span></span>
 <span>  dcm_spec <span class="op">=</span> <span class="va">model_spec</span>,</span>
-<span>  data <span class="op">=</span> <span class="fu">dcmdata</span><span class="fu">::</span><span class="va"><a href="https://dcmdata.r-dcm.org/reference/dtmr.html" class="external-link">dtmr_data</a></span>,</span>
+<span>  data <span class="op">=</span> <span class="fu">dcmdata</span><span class="fu">::</span><span class="va"><a href="https://dcmdata.r-dcm.org/reference/roarpa.html" class="external-link">roarpa_data</a></span>,</span>
 <span>  identifier <span class="op">=</span> <span class="st">"id"</span>,</span>
+<span>  method <span class="op">=</span> <span class="st">"optim"</span>,</span>
 <span>  seed <span class="op">=</span> <span class="fl">69385</span>,</span>
 <span>  refresh <span class="op">=</span> <span class="fl">0</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -122,16 +124,15 @@
 <span><span class="co">#&gt; # A tibble: 1 × 3</span></span>
 <span><span class="co">#&gt;      m2    df  pval</span></span>
 <span><span class="co">#&gt;   &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1  261.   293 0.909</span></span>
+<span><span class="co">#&gt; 1    NA  1532    NA</span></span>
 <span></span>
 <span><span class="fu"><a href="reference/measr_extract.html">measr_extract</a></span><span class="op">(</span><span class="va">model</span>, <span class="st">"classification_reliability"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 4 × 3</span></span>
-<span><span class="co">#&gt;   attribute                 accuracy consistency</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;                        &lt;dbl&gt;       &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 referent_units               0.928       0.878</span></span>
-<span><span class="co">#&gt; 2 partitioning_iterating       0.924       0.875</span></span>
-<span><span class="co">#&gt; 3 appropriateness              0.894       0.817</span></span>
-<span><span class="co">#&gt; 4 multiplicative_comparison    0.924       0.867</span></span></code></pre></div>
+<span><span class="co">#&gt; # A tibble: 3 × 3</span></span>
+<span><span class="co">#&gt;   attribute accuracy consistency</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;        &lt;dbl&gt;       &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 lsm          0.984       0.969</span></span>
+<span><span class="co">#&gt; 2 del          0.967       0.939</span></span>
+<span><span class="co">#&gt; 3 fsm          0.986       0.973</span></span></code></pre></div>
 <hr>
 <p>Contributions are welcome. To ensure a smooth process, please review the <a href="https://measr.r-dcm.org/CONTRIBUTING.html">Contributing Guide</a>. Please note that the measr project is released with a <a href="https://measr.r-dcm.org/CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
 </div>

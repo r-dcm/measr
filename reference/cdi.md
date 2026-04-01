@@ -81,18 +81,18 @@ rstn_ecpe_lcdm <- dcm_estimate(
 cdi(rstn_ecpe_lcdm)
 #> $item_discrimination
 #> # A tibble: 28 × 5
-#>     item overall morphosyntactic cohesive lexical
-#>    <int>   <dbl>           <dbl>    <dbl>   <dbl>
-#>  1     1  0.0615          0.0434   0.0619  0     
-#>  2     2  0.0483          0        0.100   0     
-#>  3     3  0.0917          0.136    0       0.0465
-#>  4     4  0.142           0        0       0.294 
-#>  5     5  0.0929          0        0       0.192 
-#>  6     6  0.0845          0        0       0.175 
-#>  7     7  0.188           0.274    0       0.0765
-#>  8     8  0.0659          0        0.136   0     
-#>  9     9  0.0720          0        0       0.149 
-#> 10    10  0.191           0.397    0       0     
+#>    item_id overall morphosyntactic cohesive lexical
+#>    <chr>     <dbl>           <dbl>    <dbl>   <dbl>
+#>  1 E1       0.0615          0.0434   0.0619  0     
+#>  2 E2       0.0483          0        0.100   0     
+#>  3 E3       0.0917          0.136    0       0.0465
+#>  4 E4       0.142           0        0       0.294 
+#>  5 E5       0.0929          0        0       0.192 
+#>  6 E6       0.0845          0        0       0.175 
+#>  7 E7       0.188           0.274    0       0.0765
+#>  8 E8       0.0659          0        0.136   0     
+#>  9 E9       0.0720          0        0       0.149 
+#> 10 E10      0.191           0.397    0       0     
 #> # ℹ 18 more rows
 #> 
 #> $test_discrimination

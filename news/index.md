@@ -1,5 +1,22 @@
 # Changelog
 
+## measr 2.0.1
+
+CRAN release: 2026-03-27
+
+- Fix edge case that prevented that prevented the use of data with
+  missing responses.
+
+- [`add_fit()`](https://measr.r-dcm.org/reference/model_evaluation.md)
+  now automatically saves posterior draws when `method = "ppmc"`.
+
+- [`cdi()`](https://measr.r-dcm.org/reference/cdi.md) now includes the
+  real item identifiers in output.
+
+- [`yens_q3()`](https://measr.r-dcm.org/reference/yens_q3.md) no longer
+  errors when the pi-matrix contains rvars
+  ([\#76](https://github.com/r-dcm/measr/issues/76)).
+
 ## measr 2.0.0
 
 CRAN release: 2026-01-14

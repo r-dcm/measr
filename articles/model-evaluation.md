@@ -444,27 +444,6 @@ lcdm <- add_fit(
   model_fit = "raw_score",
   item_fit = "odds_ratio"
 )
-#> Warning in file.remove(current_files[!current_files %in% new_paths]):
-#> cannot remove file
-#> '/Users/jakethompson/Documents/GIT/packages/measr/vignettes/articles/fits/sim-lcdm-1.csv',
-#> reason 'No such file or directory'
-#> Warning in file.remove(current_files[!current_files %in% new_paths]):
-#> cannot remove file
-#> '/Users/jakethompson/Documents/GIT/packages/measr/vignettes/articles/fits/sim-lcdm-2.csv',
-#> reason 'No such file or directory'
-#> Warning in file.remove(current_files[!current_files %in% new_paths]):
-#> cannot remove file
-#> '/Users/jakethompson/Documents/GIT/packages/measr/vignettes/articles/fits/sim-lcdm-3.csv',
-#> reason 'No such file or directory'
-#> Warning in file.remove(current_files[!current_files %in% new_paths]):
-#> cannot remove file
-#> '/Users/jakethompson/Documents/GIT/packages/measr/vignettes/articles/fits/sim-lcdm-4.csv',
-#> reason 'No such file or directory'
-#> Moved 4 files and set internal paths to new locations:
-#> - /home/runner/work/measr/measr/vignettes/articles/NA
-#> - /home/runner/work/measr/measr/vignettes/articles/NA
-#> - /home/runner/work/measr/measr/vignettes/articles/NA
-#> - /home/runner/work/measr/measr/vignettes/articles/NA
 ```
 
 Once components have been added to the model, a helper function,
