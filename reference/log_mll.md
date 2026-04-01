@@ -61,8 +61,8 @@ model <- dcm_estimate(
 #> Chain 1: 
 #> Chain 1: 
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.000131 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.31 seconds.
+#> Chain 1: Gradient evaluation took 0.000166 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.66 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
