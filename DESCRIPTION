@@ -80,7 +80,7 @@ Encoding: UTF-8
 Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c("namespace", "rd", "roxylint::roxylint"))
-RoxygenNote: 7.3.3
 Biarch: true
 SystemRequirements: GNU make
 VignetteBuilder: knitr
+Config/roxygen2/version: 8.1.1

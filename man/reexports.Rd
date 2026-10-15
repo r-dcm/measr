@@ -44,12 +44,12 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{dcm2}{\code{\link[dcm2]{fit_m2}}}
+  \item{dcm2}{\code{\link[dcm2:fit_m2]{fit_m2()}}}
 
-  \item{dcmstan}{\code{\link[dcmstan:structural-model]{bayesnet}}, \code{\link[dcmstan]{create_profiles}}, \code{\link[dcmstan:measurement-model]{crum}}, \code{\link[dcmstan]{dcm_specify}}, \code{\link[dcmstan]{default_dcm_priors}}, \code{\link[dcmstan:measurement-model]{dina}}, \code{\link[dcmstan:measurement-model]{dino}}, \code{\link[dcmstan]{get_parameters}}, \code{\link[dcmstan:structural-model]{hdcm}}, \code{\link[dcmstan:structural-model]{independent}}, \code{\link[dcmstan:measurement-model]{lcdm}}, \code{\link[dcmstan:structural-model]{loglinear}}, \code{\link[dcmstan:measurement-model]{ncrum}}, \code{\link[dcmstan:measurement-model]{nida}}, \code{\link[dcmstan:measurement-model]{nido}}, \code{\link[dcmstan]{prior}}, \code{\link[dcmstan:structural-model]{unconstrained}}}
+  \item{dcmstan}{\code{\link[dcmstan:bayesnet]{bayesnet()}}, \code{\link[dcmstan:create_profiles]{create_profiles()}}, \code{\link[dcmstan:crum]{crum()}}, \code{\link[dcmstan:dcm_specify]{dcm_specify()}}, \code{\link[dcmstan:default_dcm_priors]{default_dcm_priors()}}, \code{\link[dcmstan:dina]{dina()}}, \code{\link[dcmstan:dino]{dino()}}, \code{\link[dcmstan:get_parameters]{get_parameters()}}, \code{\link[dcmstan:hdcm]{hdcm()}}, \code{\link[dcmstan:independent]{independent()}}, \code{\link[dcmstan:lcdm]{lcdm()}}, \code{\link[dcmstan:loglinear]{loglinear()}}, \code{\link[dcmstan:ncrum]{ncrum()}}, \code{\link[dcmstan:nida]{nida()}}, \code{\link[dcmstan:nido]{nido()}}, \code{\link[dcmstan:prior]{prior()}}, \code{\link[dcmstan:unconstrained]{unconstrained()}}}
 
-  \item{loo}{\code{\link[loo]{loo}}, \code{\link[loo]{loo_compare}}, \code{\link[loo]{waic}}}
+  \item{loo}{\code{\link[loo:loo]{loo()}}, \code{\link[loo:loo_compare]{loo_compare()}}, \code{\link[loo:waic]{waic()}}}
 
-  \item{posterior}{\code{\link[posterior:draws]{as_draws}}, \code{\link[posterior:rvar-summaries-over-draws]{E}}, \code{\link[posterior:rvar-summaries-over-draws]{Pr}}, \code{\link[posterior:rvar-summaries-within-draws]{rvar_mad}}, \code{\link[posterior:rvar-summaries-within-draws]{rvar_max}}, \code{\link[posterior:rvar-summaries-within-draws]{rvar_mean}}, \code{\link[posterior:rvar-summaries-within-draws]{rvar_median}}, \code{\link[posterior:rvar-summaries-within-draws]{rvar_min}}, \code{\link[posterior:rvar-summaries-within-draws]{rvar_prod}}, \code{\link[posterior:rvar-summaries-within-draws]{rvar_sd}}, \code{\link[posterior:rvar-summaries-within-draws]{rvar_sum}}, \code{\link[posterior:rvar-summaries-within-draws]{rvar_var}}}
+  \item{posterior}{\code{\link[posterior:as_draws]{as_draws()}}, \code{\link[posterior:E]{E()}}, \code{\link[posterior:Pr]{Pr()}}, \code{\link[posterior:rvar_mad]{rvar_mad()}}, \code{\link[posterior:rvar_max]{rvar_max()}}, \code{\link[posterior:rvar_mean]{rvar_mean()}}, \code{\link[posterior:rvar_median]{rvar_median()}}, \code{\link[posterior:rvar_min]{rvar_min()}}, \code{\link[posterior:rvar_prod]{rvar_prod()}}, \code{\link[posterior:rvar_sd]{rvar_sd()}}, \code{\link[posterior:rvar_sum]{rvar_sum()}}, \code{\link[posterior:rvar_var]{rvar_var()}}}
 }}
 

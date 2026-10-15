@@ -17,7 +17,7 @@
 \item{x}{A \link[=dcm_estimate]{measrdcm} object.}
 
 \item{...}{For \code{loo()} and \code{waic()}, additional arguments passed to
-\code{\link[loo:loo]{loo::loo.array()}} or \code{\link[loo:waic]{loo::waic.array()}}, respectively.
+\code{\link[loo:loo.array]{loo::loo.array()}} or \code{\link[loo:waic.array]{loo::waic.array()}}, respectively.
 For \code{loo_compare()}, additional \link[=dcm_estimate]{measrdcm} objects to be
 compared to \code{x}.}
 
@@ -46,7 +46,7 @@ the objects passed for comparison.}
 }
 \value{
 For \code{loo()} and \code{waic()}, the information criteria returned by
-\code{\link[loo:loo]{loo::loo.array()}} or \code{\link[loo:waic]{loo::waic.array()}}, respectively.
+\code{\link[loo:loo.array]{loo::loo.array()}} or \code{\link[loo:waic.array]{loo::waic.array()}}, respectively.
 
 For \code{loo_compare()}, the criterion comparison returned by
 \code{\link[loo:loo_compare]{loo::loo_compare()}}.
