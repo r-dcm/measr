@@ -74,7 +74,7 @@ Remotes:
 Additional_repositories: https://stan-dev.r-universe.dev
 Config/testthat/edition: 3
 Config/Needs/website: r-dcm/rdcmtemplate, wjakethompson/wjake, showtext, ggdist, english
-Config/Needs/documentation: openpharma/roxylint
+Config/Needs/documentation: openpharma/roxylint, doclisting
 Config/roxylint: list(linters = roxylint::tidy)	
 Encoding: UTF-8
 Language: en-US
