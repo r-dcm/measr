@@ -10,6 +10,7 @@ To use the code in this article, you will need to install and load the
 measr package.
 
 ``` r
+
 library(measr)
 #> 
 #> Attaching package: 'measr'
@@ -30,6 +31,7 @@ using a simulated data set, we can compare the parameter estimates from
 measr to the true data generating parameters.
 
 ``` r
+
 library(tidyverse)
 
 sim_data <- read_rds("data/simulated-data.rds")
@@ -98,10 +100,10 @@ identifiers. If this variables is not present in the data, this argument
 can be omitted, and measr will assign identifiers based on the row
 number (i.e., row 1 in `qmatrix` becomes item 1). We can then specify
 the type of DCM we want to estimate. Here, we’ll choose the LCDM for our
-measurement model, and we’ll use an unconstrained structural
-model.[¹](#fn1)
+measurement model, and we’ll use an unconstrained structural model.[^1]
 
 ``` r
+
 model_spec <- dcm_specify(
   qmatrix = sim_data$q_matrix,
   identifier = "item_id",
@@ -157,6 +159,7 @@ specified `file` already exists, then the fitted model will be read back
 into R, eliminating the need to re-estimate the model.
 
 ``` r
+
 lcdm <- dcm_estimate(
   model_spec,
   data = sim_data$data,
@@ -197,6 +200,7 @@ two attributes and therefore has four parameters:
     both attributes.
 
 ``` r
+
 item_parameters <- measr_extract(lcdm, what = "item_param")
 item_parameters
 #> # A tibble: 66 × 5
@@ -243,6 +247,7 @@ distributions in the call to
 By default, measr uses the following prior distributions for the LCDM:
 
 ``` r
+
 default_dcm_priors(measurement_model = lcdm())
 #> # A tibble: 3 × 3
 #>   type        coefficient prior          
@@ -259,6 +264,7 @@ For example, we can specify a `normal(0, 10)` prior for the main effects
 with:
 
 ``` r
+
 prior(normal(0, 10), type = "maineffect")
 #> # A tibble: 1 × 3
 #>   type       coefficient prior        
@@ -276,6 +282,7 @@ can be specified, we can pass our model specification to
 [`get_parameters()`](https://dcmstan.r-dcm.org/reference/get_parameters.html).
 
 ``` r
+
 c(
   prior(chi_square(2), type = "maineffect"),
   prior(exponential(2), type = "maineffect", coefficient = "l7_11")
@@ -320,6 +327,7 @@ Note that the prior still influences the model when using
 default).
 
 ``` r
+
 new_prior <- prior(normal(0, 15), type = "maineffect", lower_bound = 0)
 
 new_spec <- dcm_specify(
@@ -357,6 +365,7 @@ still applied to the parameters for which we did not explicitly state a
 prior distribution.
 
 ``` r
+
 measr_extract(new_lcdm, "prior")
 #> # A tibble: 4 × 3
 #>   type        coefficient prior                      
@@ -405,7 +414,5 @@ Templin, J., & Henson, R. A. (2006). Measurement of psychological
 disorders using cognitive diagnosis models. *Psychological Methods*,
 *11*(3), 287–305. <https://doi.org/10.1037/1082-989X.11.3.287>
 
-------------------------------------------------------------------------
-
-1.  For more details on the modeling options, see [Estimating Other DCM
-    Sub-Types](#subtype) below.
+[^1]: For more details on the modeling options, see [Estimating Other
+    DCM Sub-Types](#subtype) below.

@@ -83,7 +83,11 @@ respectively.
 For
 [`loo_compare()`](https://mc-stan.org/loo/reference/loo_compare.html),
 the criterion comparison returned by
-[`loo::loo_compare()`](https://mc-stan.org/loo/reference/loo_compare.html).
+[`loo::loo_compare()`](https://mc-stan.org/loo/reference/loo_compare.html),
+unmodified. Models are labeled with `model_names`. Beginning with loo
+2.10.0, this is a data frame with a `model` column and additional
+diagnostic columns (e.g., `p_worse`); earlier versions of loo return a
+matrix with the model names as row names.
 
 ## References
 

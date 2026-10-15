@@ -39,6 +39,7 @@ and
 The rstan package can then be installed directly from CRAN:
 
 ``` r
+
 install.packages("rstan")
 ```
 
@@ -49,6 +50,7 @@ Started](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started)
 guide.
 
 ``` r
+
 library(rstan)
 
 example(stan_model, package = "rstan", run.dontrun = TRUE)
@@ -60,6 +62,7 @@ The cmdstanr package is not yet available on CRAN. The beta release can
 be installed from the *Stan* R package repository:
 
 ``` r
+
 install.packages(
   "cmdstanr",
   repos = c("https://stan-dev.r-universe.dev", getOption("repos"))
@@ -70,6 +73,7 @@ Or the development version can be installed from
 [GitHub](https://github.com/stan-dev/cmdstanr):
 
 ``` r
+
 # install.packages("remotes")
 remotes::install_github("stan-dev/cmdstanr")
 ```
@@ -82,6 +86,7 @@ Guide](https://mc-stan.org/docs/cmdstan-guide/cmdstan-installation.html#cpp-tool
 You can verify that the C++ toolchain is set up correctly with:
 
 ``` r
+
 library(cmdstanr)
 
 check_cmdstan_toolchain()
@@ -91,6 +96,7 @@ Finally, cmdstanr requires that CmdStan (the shell interface to *Stan*).
 Once the toolchain is properly set up, CmdStan can be installed with:
 
 ``` r
+
 install_cmdstan(cores = 2)
 ```
 
@@ -104,6 +110,7 @@ measr. The released version of measr can be installed directly from
 CRAN:
 
 ``` r
+
 install.packages("measr")
 ```
 
@@ -111,6 +118,7 @@ Or, the development version can be installed from
 [GitHub](https://github.com/r-dcm/measr):
 
 ``` r
+
 # install.packages("remotes")
 remotes::install_github("r-dcm/measr")
 ```
@@ -119,6 +127,7 @@ Once everything has been installed, we’re ready to start estimating and
 evaluating our DCMs.
 
 ``` r
+
 library(measr)
 #> 
 #> Attaching package: 'measr'
@@ -146,6 +155,7 @@ is further described in
 [`?ecpe`](https://dcmdata.r-dcm.org/reference/ecpe.html).
 
 ``` r
+
 library(dcmdata)
 
 ecpe_data
@@ -211,6 +221,7 @@ article](https://measr.r-dcm.org/articles/model-estimation.html) on the
 measr website.
 
 ``` r
+
 ecpe_spec <- dcm_specify(
   ecpe_qmatrix,
   identifier = "item_id",
@@ -237,6 +248,7 @@ has relatively low probabilities for morphosyntactic and cohesive
 attributes, and is likely only proficient in lexical rules.
 
 ``` r
+
 ecpe_lcdm <- add_respondent_estimates(ecpe_lcdm)
 measr_extract(ecpe_lcdm, "attribute_prob")
 #> # A tibble: 2,922 × 4
@@ -277,6 +289,7 @@ but overall look pretty good. For guidance on cutoff values for “good,”
 ([2018](#ref-johnson2018)).
 
 ``` r
+
 ecpe_lcdm <- add_reliability(ecpe_lcdm)
 measr_extract(ecpe_lcdm, "classification_reliability")
 #> # A tibble: 3 × 3
@@ -300,5 +313,5 @@ diagnostic assessments. *Journal of Educational Measurement*, *55*(4),
 635–664. <https://doi.org/10.1111/jedm.12196>
 
 Templin, J., & Hoffman, L. (2013). Obtaining diagnostic classification
-model estimates using Mplus. *Educational Measurement: Issues and
+model estimates using mplus. *Educational Measurement: Issues and
 Practice*, *32*(2), 37–50. <https://doi.org/10.1111/emip.12010>

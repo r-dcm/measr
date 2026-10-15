@@ -10,6 +10,7 @@ To use the code in this article, you will need to install and load the
 measr package.
 
 ``` r
+
 library(measr)
 #> 
 #> Attaching package: 'measr'
@@ -38,6 +39,7 @@ on model estimation, see [Estimating diagnostic classification
 models](https://measr.r-dcm.org/dev/articles/model-estimation.md).
 
 ``` r
+
 library(tidyverse)
 
 sim_data <- read_rds("data/simulated-data.rds")
@@ -97,6 +99,7 @@ calculate the M₂ statistics with the
 [`fit_m2()`](https://rdrr.io/pkg/dcm2/man/fit_m2.html) function.
 
 ``` r
+
 fit_m2(lcdm)
 #> # A tibble: 1 × 8
 #>      m2    df  pval rmsea ci_lower ci_upper `90% CI`     srmsr
@@ -156,6 +159,7 @@ specify which PPMCs to calculate. For example, here we estimate just the
 model-level raw score check by setting `item_fit = NULL`.
 
 ``` r
+
 fit_ppmc(lcdm, model_fit = "raw_score")
 #> $ppmc_raw_score
 #> # A tibble: 1 × 5
@@ -183,6 +187,7 @@ example, we can calculate the item-level odds ratios and request
 quantiles that will result in a 90% credible interval.
 
 ``` r
+
 fit_ppmc(lcdm, model_fit = NULL, item_fit = "odds_ratio", probs = c(0.05, 0.95))
 #> $ppmc_odds_ratio
 #> # A tibble: 190 × 7
@@ -233,10 +238,11 @@ functions from the loo package (i.e.,
 calculate the LOO for both the LCDM and DINA models.
 
 ``` r
+
 lcdm_loo <- loo(lcdm)
 lcdm_loo
 #> 
-#> Computed from 2000 by 2000 log-likelihood matrix.
+#> Computed from 2000 posterior draws and 2000 log-likelihood terms.
 #> 
 #>          Estimate    SE
 #> elpd_loo -21731.5 102.7
@@ -252,7 +258,7 @@ lcdm_loo
 dina_loo <- loo(dina)
 dina_loo
 #> 
-#> Computed from 2000 by 2000 log-likelihood matrix.
+#> Computed from 2000 posterior draws and 2000 log-likelihood terms.
 #> 
 #>          Estimate    SE
 #> elpd_loo -23539.8  79.1
@@ -277,10 +283,11 @@ preferred model. The `se_diff` column is the standard error of the
 difference between that model and the preferred model.
 
 ``` r
+
 loo_compare(list(lcdm = lcdm_loo, dina = dina_loo))
-#>      elpd_diff se_diff
-#> lcdm     0.0       0.0
-#> dina -1808.3      45.1
+#>  model elpd_diff se_diff p_worse diag_diff diag_elpd
+#>   lcdm       0.0     0.0      NA                    
+#>   dina   -1808.3    45.1    1.00
 ```
 
 Bengio & Grandvalet ([2004](#ref-bengio2004)) have recommended a cutoff
@@ -301,6 +308,7 @@ measr, estimates of reliability can be calculated using
 [`reliability()`](https://measr.r-dcm.org/dev/reference/reliability.md).
 
 ``` r
+
 reliability(lcdm)
 #> $pattern_reliability
 #>       p_a       p_c 
@@ -438,6 +446,7 @@ model- and item-level fit indices to calculate, just as we did when
 using [`fit_ppmc()`](https://measr.r-dcm.org/dev/reference/fit_ppmc.md).
 
 ``` r
+
 lcdm <- add_fit(
   lcdm,
   method = "ppmc",
@@ -452,6 +461,7 @@ can be used to pull out relevant pieces of output. For example, we can
 extract the PPMC raw score results.
 
 ``` r
+
 measr_extract(lcdm, what = "ppmc_raw_score")
 #> # A tibble: 1 × 5
 #>   obs_chisq ppmc_mean `2.5%` `97.5%`   ppp
@@ -464,6 +474,7 @@ priors that were used during estimation, or estimated parameters like
 the base rate of membership in each class.
 
 ``` r
+
 measr_extract(lcdm, what = "prior")
 #> # A tibble: 4 × 3
 #>   type        coefficient prior                      

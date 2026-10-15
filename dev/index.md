@@ -22,6 +22,7 @@ You can install the released version of measr from
 [CRAN](https://cran.r-project.org/) with:
 
 ``` r
+
 install.packages("measr")
 ```
 
@@ -29,6 +30,7 @@ To install the development version of measr from
 [GitHub](https://github.com/r-dcm/measr) use:
 
 ``` r
+
 # install.packages("remotes")
 remotes::install_github("r-dcm/measr")
 ```
@@ -70,6 +72,7 @@ optimizer (e.g., the calculation of some model fit criteria requires the
 use of MCMC).
 
 ``` r
+
 library(measr)
 
 model_spec <- dcm_specify(dcmdata::roarpa_qmatrix, identifier = "item")
@@ -90,6 +93,7 @@ extracted using
 [`measr_extract()`](https://measr.r-dcm.org/dev/reference/measr_extract.md).
 
 ``` r
+
 measr_extract(model, "m2")
 #> # A tibble: 1 × 3
 #>      m2    df  pval

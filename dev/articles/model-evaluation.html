@@ -13,8 +13,8 @@
 <link rel="manifest" href="../site.webmanifest">
 <!-- katex math --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><script src="../katex-auto.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Open_Sans-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/Open_Sans-0.4.10/font.css" rel="stylesheet">
 <link href="../deps/Fira_Code-0.4.10/font.css" rel="stylesheet">
 <link href="../deps/Playfair_Display-0.4.10/font.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -112,13 +112,14 @@ data set contains 2,000 respondents and 20 items that measure a total of
 generated from the loglinear cognitive diagnostic model (LCDM), which is
 a general model that subsumes many other DCM subtypes <span class="citation">(<a href="#ref-lcdm">Henson et al., 2009</a>)</span>.
 To demonstrate model fit functionality, we’ll first fit an LCDM and a
-deterministic-input, noisy “and” gate (DINA) model <span class="citation">(<a href="#ref-dina">de la Torre &amp; Douglas,
-2004</a>)</span> to the data set in order to compare the fit indices.
-Because the LCDM was used to generate our fake data, we expect our
-estimated LCDM model to perform well. On the other hand, the DINA model
-places heavy constraints on the LCDM, and therefore we expect worse
-performance from the DINA model. For details on model estimation, see <a href="model-estimation.html">Estimating diagnostic classification
-models</a>.</p>
+deterministic-input, noisy “and” gate (DINA) model <span class="citation">(<a href="#ref-dina"><span class="nocase">de la Torre
+&amp; Douglas</span>, 2004</a>)</span> to the data set in order to
+compare the fit indices. Because the LCDM was used to generate our fake
+data, we expect our estimated LCDM model to perform well. On the other
+hand, the DINA model places heavy constraints on the LCDM, and therefore
+we expect worse performance from the DINA model. For details on model
+estimation, see <a href="model-estimation.html">Estimating diagnostic
+classification models</a>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
 <span></span>
@@ -305,7 +306,7 @@ for both the LCDM and DINA models.</p>
 <code class="sourceCode R"><span><span class="va">lcdm_loo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/loo/reference/loo.html" class="external-link">loo</a></span><span class="op">(</span><span class="va">lcdm</span><span class="op">)</span></span>
 <span><span class="va">lcdm_loo</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Computed from 2000 by 2000 log-likelihood matrix.</span></span>
+<span><span class="co">#&gt; Computed from 2000 posterior draws and 2000 log-likelihood terms.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;          Estimate    SE</span></span>
 <span><span class="co">#&gt; elpd_loo -21731.5 102.7</span></span>
@@ -321,7 +322,7 @@ for both the LCDM and DINA models.</p>
 <span><span class="va">dina_loo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/loo/reference/loo.html" class="external-link">loo</a></span><span class="op">(</span><span class="va">dina</span><span class="op">)</span></span>
 <span><span class="va">dina_loo</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Computed from 2000 by 2000 log-likelihood matrix.</span></span>
+<span><span class="co">#&gt; Computed from 2000 posterior draws and 2000 log-likelihood terms.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;          Estimate    SE</span></span>
 <span><span class="co">#&gt; elpd_loo -23539.8  79.1</span></span>
@@ -344,9 +345,9 @@ LOO) between the model in that row and the preferred model. The
 between that model and the preferred model.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://mc-stan.org/loo/reference/loo_compare.html" class="external-link">loo_compare</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>lcdm <span class="op">=</span> <span class="va">lcdm_loo</span>, dina <span class="op">=</span> <span class="va">dina_loo</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;      elpd_diff se_diff</span></span>
-<span><span class="co">#&gt; lcdm     0.0       0.0</span></span>
-<span><span class="co">#&gt; dina -1808.3      45.1</span></span></code></pre></div>
+<span><span class="co">#&gt;  model elpd_diff se_diff p_worse diag_diff diag_elpd</span></span>
+<span><span class="co">#&gt;   lcdm       0.0     0.0      NA                    </span></span>
+<span><span class="co">#&gt;   dina   -1808.3    45.1    1.00</span></span></code></pre></div>
 <p><span class="citation">Bengio &amp; Grandvalet (<a href="#ref-bengio2004">2004</a>)</span> have recommended a cutoff of 2.5
 standard errors for identifying the preferred model. For example,
 because the absolute value of the <code>elpd_diff</code> is greater than
@@ -568,9 +569,9 @@ assessment. <em>Journal of Educational Measurement</em>, <em>49</em>(1),
 19–38. <a href="https://doi.org/10.1111/j.1745-3984.2011.00158.x" class="external-link">https://doi.org/10.1111/j.1745-3984.2011.00158.x</a>
 </div>
 <div id="ref-dina" class="csl-entry">
-de la Torre, J., &amp; Douglas, J. A. (2004). Higher-order latent trait
-models for cognitive diagnosis. <em>Psychometrika</em>, <em>69</em>(3),
-333–353. <a href="https://doi.org/10.1007/BF02295640" class="external-link">https://doi.org/10.1007/BF02295640</a>
+<span class="nocase">de la Torre, J., &amp; Douglas, J. A.</span>
+(2004). Higher-order latent trait models for cognitive diagnosis.
+<em>Psychometrika</em>, <em>69</em>(3), 333–353. <a href="https://doi.org/10.1007/BF02295640" class="external-link">https://doi.org/10.1007/BF02295640</a>
 </div>
 <div id="ref-hansen2016" class="csl-entry">
 Hansen, M., Cai, L., Monroe, S., &amp; Li, Z. (2016).
@@ -656,7 +657,7 @@ learning theory. <em>Journal of Machine Learning Research</em>,
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

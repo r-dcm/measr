@@ -2,6 +2,15 @@
 
 ## measr (development version)
 
+- `write_measrfit()` (used by the `file` argument of
+  [`dcm_estimate()`](https://measr.r-dcm.org/dev/reference/dcm_estimate.md))
+  now recognizes saved *Stan* output files from newer versions of
+  cmdstanr, which zero-pad the chain number in file names.
+
+- Tests and documentation are updated for loo 2.10.0, where
+  [`loo_compare()`](https://mc-stan.org/loo/reference/loo_compare.html)
+  returns a data frame with a `model` column instead of row names.
+
 ## measr 2.0.1
 
 CRAN release: 2026-03-27
@@ -41,6 +50,7 @@ CRAN release: 2026-01-14
   [`dcm_estimate()`](https://measr.r-dcm.org/dev/reference/dcm_estimate.md).
 
   ``` r
+
   # old
   my_model <- measr_dcm(
     data = ecpe_data,

@@ -1,12 +1,12 @@
-pandoc: 3.1.11
-pkgdown: 2.2.0
+pandoc: 3.8.3
+pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   measr: measr.html
   articles/model-estimation: model-estimation.html
   articles/model-evaluation: model-evaluation.html
   paper: paper.html
-last_built: 2026-04-01T01:25Z
+last_built: 2026-10-15T18:39Z
 urls:
   reference: https://measr.r-dcm.org/reference
   article: https://measr.r-dcm.org/articles
