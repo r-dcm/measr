@@ -14,7 +14,11 @@ expect_loo_compare <- function(object, models, criterion = c("loo", "waic")) {
   )
 
   testthat::expect_s3_class(object, "compare.loo")
-  testthat::expect_equal(loo_compare_models(object), models)
+  # models are sorted by fit, which can vary across platforms
+  testthat::expect_setequal(loo_compare_models(object), models)
+  elpd_diff <- unname(object[, "elpd_diff"])
+  testthat::expect_equal(elpd_diff[1], 0)
+  testthat::expect_false(is.unsorted(rev(elpd_diff)))
   testthat::expect_contains(
     colnames(object),
     c("elpd_diff", "se_diff", crit_cols)
