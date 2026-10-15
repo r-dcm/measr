@@ -4,16 +4,8 @@ write_measrfit <- function(model, file) {
 
   if (S7::S7_inherits(model@backend, cmdstanr)) {
     cur_files <- model@model$output_files()
-    new_files <- paste0(
-      file_path,
-      "/",
-      fs::path_ext_remove(file_name),
-      "-",
-      seq_along(cur_files),
-      ".csv"
-    )
 
-    if (!identical(cur_files, new_files)) {
+    if (!saved_output_files(cur_files, file_path, file_name)) {
       model@model$save_output_files(
         dir = file_path,
         basename = fs::path_ext_remove(file_name),
@@ -25,6 +17,26 @@ write_measrfit <- function(model, file) {
   saveRDS(
     model,
     file = fs::path_ext_set(fs::path(file_path, file_name), ".rds")
+  )
+}
+
+# Check whether cmdstanr output files have already been saved as
+# `{file_path}/{basename}-{id}.csv`. Older versions of cmdstanr name the files
+# with unpadded ids (e.g., `-1.csv`), newer versions use zero-padded ids (e.g.,
+# `-01.csv`), so match any numeric id.
+saved_output_files <- function(cur_files, file_path, file_name) {
+  if (rlang::is_empty(cur_files)) {
+    return(FALSE)
+  }
+
+  prefix <- paste0(fs::path_ext_remove(file_name), "-")
+  cur_names <- fs::path_file(cur_files)
+  ids <- substring(cur_names, nchar(prefix) + 1)
+
+  all(
+    fs::path_dir(fs::path_abs(cur_files)) == fs::path_abs(file_path),
+    startsWith(cur_names, prefix),
+    grepl("^[0-9]+\\.csv$", ids)
   )
 }
 
