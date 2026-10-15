@@ -67,7 +67,7 @@ Suggests:
     rmarkdown,
     roxygen2,
     spelling,
-    testthat (>= 3.0.0),
+    testthat (>= 3.1.9),
     withr
 Remotes:
     RConsortium/S7
