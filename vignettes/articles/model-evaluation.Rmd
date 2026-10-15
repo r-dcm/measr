@@ -15,9 +15,9 @@ library(wjake)
 library(showtext)
 library(glue)
 
-set_theme(
-  base_family = "Open Sans",
-  plot_margin = ggplot2::margin(10, 10, 10, 10)
+ggplot2::theme_set(
+  theme_wjake(base_family = "Open Sans") +
+    ggplot2::theme(plot.margin = ggplot2::margin(10, 10, 10, 10))
 )
 
 font_add_google("Open Sans")

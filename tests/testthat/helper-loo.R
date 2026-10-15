@@ -13,7 +13,10 @@ expect_loo_compare <- function(object, models, criterion = c("loo", "waic")) {
     waic = c("elpd_waic", "se_elpd_waic", "p_waic", "se_p_waic", "waic")
   )
 
-  expect_s3_class(object, "compare.loo")
-  expect_equal(loo_compare_models(object), models)
-  expect_contains(colnames(object), c("elpd_diff", "se_diff", crit_cols))
+  testthat::expect_s3_class(object, "compare.loo")
+  testthat::expect_equal(loo_compare_models(object), models)
+  testthat::expect_contains(
+    colnames(object),
+    c("elpd_diff", "se_diff", crit_cols)
+  )
 }
