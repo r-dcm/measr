@@ -33,7 +33,7 @@ Imports:
     bridgesampling,
     cli,
     dcm2,
-    dcmstan (>= 0.1.0),
+    dcmstan (>= 0.1.0.9000),
     dplyr (>= 1.1.1),
     dtplyr,
     fs,
@@ -70,6 +70,7 @@ Suggests:
     testthat (>= 3.1.9),
     withr
 Remotes:
+    r-dcm/dcmstan,
     RConsortium/S7
 Additional_repositories: https://stan-dev.r-universe.dev
 Config/testthat/edition: 3
