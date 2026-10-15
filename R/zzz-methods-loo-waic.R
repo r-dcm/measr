@@ -86,7 +86,10 @@ loo::loo_compare
 #'   the objects passed for comparison.
 #'
 #' @return For `loo_compare()`, the criterion comparison returned by
-#'  [loo::loo_compare()].
+#'  [loo::loo_compare()], unmodified. Models are labeled with `model_names`.
+#'  Beginning with loo 2.10.0, this is a data frame with a `model` column and
+#'  additional diagnostic columns (e.g., `p_worse`); earlier versions of loo
+#'  return a matrix with the model names as row names.
 #' @rdname loo-waic
 #' @export
 `loo_compare.measr::measrdcm` <- function(
