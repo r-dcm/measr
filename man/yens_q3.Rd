@@ -49,11 +49,20 @@ Alternatively, we may use a summary statistic such as the maximum
 \ifelse{html}{\out{Q<sub>3</sub>}}{\eqn{Q_3}} statistic
 (\ifelse{html}{\out{Q<sub>3,*</sub>}}{\eqn{Q_{3,*}}}; Marais, 2013).
 }
+\section{Methods}{
+\code{yens_q3()} is an S7 generic with methods available for the following
+classes:
+
+\itemize{
+\item \code{measr::measrdcm}
+}
+}
+
 \examples{
 \dontshow{if (measr_examples()) withAutoprint(\{ # examplesIf}
 model_spec <- dcm_specify(
   qmatrix = dcmdata::mdm_qmatrix,
-  dentifier = "item"
+  identifier = "item"
 )
 model <- dcm_estimate(
   dcm_spec = model_spec,

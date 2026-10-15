@@ -1,8 +1,15 @@
 #' Q-matrix validation
 #'
+#' @description
 #' Calculate Q-matrix validation metrics for a fitted model objects using
 #' methods described by de la Torre and Chiu (2016). See details for additional
 #' information.
+#'
+#' # Methods
+#' `qmatrix_validation()` is an S7 generic with methods available for the
+#' following classes:
+#'
+#' `r doclisting::methods_list("qmatrix_validation")`
 #'
 #' @param x A [measrdcm][dcm_estimate()] object.
 #' @param pvaf_threshold The threshold for proportion of variance accounted for

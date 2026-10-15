@@ -15,14 +15,14 @@ score(
 )
 }
 \arguments{
-\item{x}{An estimated model (e.g., from \code{\link[=dcm_estimate]{dcm_estimate()}}.}
+\item{x}{An estimated model (e.g., from \code{\link[=dcm_estimate]{dcm_estimate()}}).}
 
 \item{newdata}{Optional new data. If not provided, the data used to estimate
 the model is scored. If provided, \code{newdata} should be a data frame with 1
 row per respondent and 1 column per item. All items that appear in
 \code{newdata} should appear in the data used to estimate \code{x}.}
 
-\item{missing}{An \code{R} expression specifying how missing data in \code{data} is
+\item{missing}{An \code{R} expression specifying how missing data in \code{newdata} is
 coded (e.g., \code{NA}, \code{"."}, \code{-99}, etc.). The default is \code{NA}.}
 
 \item{identifier}{Optional. Variable name of a column in \code{newdata} that
@@ -64,6 +64,15 @@ Calculate posterior draws of respondent proficiency. Optionally retain all
 posterior draws or return only summaries of the distribution for each
 respondent.
 }
+\section{Methods}{
+\code{score()} is an S7 generic with methods available for the following
+classes:
+
+\itemize{
+\item \code{measr::measrdcm}
+}
+}
+
 \examples{
 \dontshow{if (measr_examples()) withAutoprint(\{ # examplesIf}
 rstn_mdm_lcdm <- dcm_estimate(
