@@ -78,6 +78,15 @@ can be interpreted as, "If the prior probability is \{\code{prior_prob_null}\},
 then the posterior is \{\code{posterior_prob_null}\}" (or 1 minus for the
 alternative model).
 }
+\section{Methods}{
+\code{bayes_factor()} is an S7 generic with methods available for the following
+classes:
+
+\itemize{
+\item \code{measr::measrdcm}
+}
+}
+
 \examples{
 \dontshow{if (measr_examples()) withAutoprint(\{ # examplesIf}
 mdm_dina <- dcm_estimate(

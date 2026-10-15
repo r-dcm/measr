@@ -16,11 +16,19 @@ A "\code{\link[posterior:draws_array]{draws_array}}" object containing the
 log-likelihood estimates for the model.
 }
 \description{
-The \code{loglik_array()} methods for \link[=dcm_estimate]{measrdcm} objects
-calculates the log-likelihood for an estimated model via the generated
-quantities functionality in \emph{Stan} and returns the draws of the \code{log_lik}
-parameter.
+\code{loglik_array()} calculates the log-likelihood for an estimated model via
+the generated quantities functionality in \emph{Stan} and returns the draws of
+the \code{log_lik} parameter.
 }
+\section{Methods}{
+\code{loglik_array()} is an S7 generic with methods available for the following
+classes:
+
+\itemize{
+\item \code{measr::measrdcm}
+}
+}
+
 \examples{
 \dontshow{if (measr_examples()) withAutoprint(\{ # examplesIf}
 rstn_mdm_lcdm <- dcm_estimate(

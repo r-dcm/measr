@@ -24,6 +24,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item W. Jake Thompson \email{wjakethompson@gmail.com} (\href{https://orcid.org/0000-0001-7339-0300}{ORCID})
   \item Jeffrey Hoover \email{jeffrey.c.hoover@gmail.com} (\href{https://orcid.org/0000-0002-0276-0308}{ORCID})
 }
 

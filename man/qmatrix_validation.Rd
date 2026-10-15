@@ -60,6 +60,15 @@ number of attributes (i.e., we prefer a more parsimonious model).
 the highest PVAF.
 }
 }
+\section{Methods}{
+\code{qmatrix_validation()} is an S7 generic with methods available for the
+following classes:
+
+\itemize{
+\item \code{measr::measrdcm}
+}
+}
+
 \examples{
 \dontshow{if (measr_examples()) withAutoprint(\{ # examplesIf}
 mod_spec <- dcm_specify(
