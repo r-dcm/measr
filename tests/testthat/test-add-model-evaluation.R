@@ -75,7 +75,9 @@ test_that("model evaluation works", {
     file = paste0(dir, "/dina"),
     file_refit = "never"
   )
-  expect_equal(dina_mod, new_mod)
+  # S7 class objects contain closures whose environments can hold lazy-load
+  # promises tied to the library S7 was installed from, so don't compare them
+  expect_equal(dina_mod, new_mod, ignore_function_env = TRUE)
 
   new_mod2 <- dcm_estimate(
     dina_spec,
@@ -87,5 +89,5 @@ test_that("model evaluation works", {
     file = paste0(dir, "/dina"),
     file_refit = "on_change"
   )
-  expect_equal(dina_mod, new_mod2)
+  expect_equal(dina_mod, new_mod2, ignore_function_env = TRUE)
 })
