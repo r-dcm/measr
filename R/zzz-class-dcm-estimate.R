@@ -54,7 +54,7 @@
 #' @concept Cmd
 #' @concept Model
 #'
-#' @returns A `measrdcm` object.
+#' @returns A [`measrdcm`][measrdcm()] S7 object.
 #' @export
 #'
 #' @examplesIf measr_examples()
@@ -216,7 +216,7 @@ dcm_estimate <- function(
 
 
 # measrfit class ---------------------------------------------------------------
-#' S7 class for measrfit objects
+#' A fitted model
 #'
 #' @param model_spec The model specification used to estimate the model.
 #' @param data The data used to estimate the model.
@@ -398,7 +398,7 @@ measrfit <- S7::new_class(
   }
 )
 
-#' S7 class for measrdcm objects
+#' A fitted diagnostic classification model
 #'
 #' The `measrdcm` constructor is exported to facilitate the conversion of other
 #' model objects (e.g., `stanfit`) to `measrdcm` objects. We do not expect or
@@ -431,7 +431,7 @@ measrfit <- S7::new_class(
 #'
 #' @concept Stan
 #'
-#' @returns A `measrdcm` object.
+#' @returns A `measrdcm` S7 object.
 #' @seealso [dcm_estimate()].
 #' @export
 #'

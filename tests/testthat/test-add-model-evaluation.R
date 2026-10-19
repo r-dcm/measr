@@ -75,7 +75,7 @@ test_that("model evaluation works", {
     file = paste0(dir, "/dina"),
     file_refit = "never"
   )
-  expect_equal(dina_mod, new_mod)
+  expect_equal(s7_contents(dina_mod), s7_contents(new_mod))
 
   new_mod2 <- dcm_estimate(
     dina_spec,
@@ -87,5 +87,5 @@ test_that("model evaluation works", {
     file = paste0(dir, "/dina"),
     file_refit = "on_change"
   )
-  expect_equal(dina_mod, new_mod2)
+  expect_equal(s7_contents(dina_mod), s7_contents(new_mod2))
 })

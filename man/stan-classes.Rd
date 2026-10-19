@@ -9,7 +9,7 @@
 \alias{variational}
 \alias{pathfinder}
 \alias{gqs}
-\title{S7 classes for estimation specifications}
+\title{Estimation back-ends and methods}
 \usage{
 rstan()
 
@@ -26,7 +26,8 @@ pathfinder()
 gqs()
 }
 \value{
-An \link[S7:S7_object]{S7 object} with the corresponding class.
+An S7 object of the corresponding class (e.g., \code{rstan()} returns
+an \code{rstan} S7 object).
 }
 \description{
 The constructors for Stan back-ends and methods are exported to support
@@ -53,26 +54,26 @@ The method classes define which estimation method should be used, or was
 used, for a model. All method classes inherit from \code{measr::stanmethod}.
 \itemize{
 \item The \code{mcmc()} class indicates the use of Markov chain Monte Carlo via
-\code{\link[rstan:stanmodel-method-sampling]{rstan::sampling()}} when using \code{{rstan}} or the
-\code{\link[cmdstanr:model-method-sample]{$sample()}} method of the
+\code{\link[rstan:sampling]{rstan::sampling()}} when using \code{{rstan}} or the
+\code{\link[cmdstanr:sample]{$sample()}} method of the
 \link[cmdstanr:CmdStanModel]{CmdStanModel} class when using \code{{cmdstanr}}.
 \item The \code{variational()} class indicated the use of Stan's variational algorithm
-for approximate posterior sampling via \code{\link[rstan:stanmodel-method-vb]{rstan::vb()}} when using \code{{rstan}} or
-the \code{\link[cmdstanr:model-method-variational]{$variational()}} method of the
+for approximate posterior sampling via \code{\link[rstan:vb]{rstan::vb()}} when using \code{{rstan}} or
+the \code{\link[cmdstanr:variational]{$variational()}} method of the
 \link[cmdstanr:CmdStanModel]{CmdStanModel} class when using \code{{cmdstanr}}.
 \item The \code{pathfinder()} class indicates the use of pathfinder variational
-inference algorithm via the \code{\link[cmdstanr:model-method-pathfinder]{$pathfinder()}} method
+inference algorithm via the \code{\link[cmdstanr:pathfinder]{$pathfinder()}} method
 of the \link[cmdstanr:CmdStanModel]{CmdStanModel}. This method is only available
 when using \code{{cmdstanr}}.
 \item The \code{optim()} class indicates the use maximum-likelihood via
-\code{\link[rstan:stanmodel-method-optimizing]{rstan::optimizing()}} when using \code{{rstan}} or the
-\code{\link[cmdstanr:model-method-optimize]{$optimize()}} method of the
+\code{\link[rstan:optimizing]{rstan::optimizing()}} when using \code{{rstan}} or the
+\code{\link[cmdstanr:optimize]{$optimize()}} method of the
 \link[cmdstanr:CmdStanModel]{CmdStanModel} class when using \code{{cmdstanr}}.
 \item Finally, there is a \code{gqs()} class for use when a model has previously been
 estimated and were are interested in calculating generated quantities (e.g.,
 \code{\link[=score]{score()}}, \code{\link[=loglik_array]{loglik_array()}}).
-The \code{gqs()} class indicates the use of \code{\link[rstan:stanmodel-method-gqs]{rstan::gqs()}} when using \code{{rstan}}
-and the \code{\link[cmdstanr:model-method-generate-quantities]{$generate_quantities()}} method of
+The \code{gqs()} class indicates the use of \code{\link[rstan:gqs]{rstan::gqs()}} when using \code{{rstan}}
+and the \code{\link[cmdstanr:generate_quantities]{$generate_quantities()}} method of
 the \link[cmdstanr:CmdStanModel]{CmdStanModel} class when using \code{{cmdstanr}}.
 }
 }

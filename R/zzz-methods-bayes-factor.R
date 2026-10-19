@@ -1,12 +1,20 @@
 #' Log marginal likelihood calculation
 #'
+#' @description
 #' Calculate the log marginal likelihood with bridge sampling (Meng & Wong,
 #' 1996). This is a wrapper around [bridgesampling::bridge_sampler()].
 #' Therefore, log marginal likelihood calculation is currently only available
 #' for models estimated with `{rstan}` using MCMC.
 #'
+#' # Methods
+#' `log_mll()` is an S7 generic with methods available for the following
+#' classes:
+#'
+#' `r doclisting::methods_list("log_mll")`
+#'
 #' @param x A [measrdcm][dcm_estimate()] object estimated with
-#'   `backend = "optim"`.
+#'   `backend = "rstan"` and a method that results in posterior distributions
+#'   (e.g., `method = "mcmc"`).
 #' @param ... Unused.
 #' @param force If the criterion has already been added to the
 #'   model object with [add_criterion()], should it be recalculated. Default is
@@ -64,12 +72,19 @@ S7::method(log_mll, measrdcm) <- function(x, force = FALSE) {
 
 #' Bayes factor for model comparisons
 #'
+#' @description
 #' Calculate the Bayes factor for model comparisons, which represents the
 #' posterior odds of the null hypothesis when the prior probability of the null
 #' model is 0.5 (Jeffreys, 1935; Kass & Raftery, 1995).
 #' Consistent with the Bayesian reporting guidelines from Kruschke (2021), we
 #' calculate the posterior probability of the null model for a variety of prior
 #' probabilities, in addition to the Bayes factor.
+#'
+#' # Methods
+#' `bayes_factor()` is an S7 generic with methods available for the following
+#' classes:
+#'
+#' `r doclisting::methods_list("bayes_factor")`
 #'
 #' @param x A [measrdcm][dcm_estimate()] object.
 #' @param ... Additional [measrdcm][dcm_estimate()] to be compared to `x`.

@@ -2,6 +2,7 @@
 % Please edit documentation in R/zzz-methods-ppmc.R
 \name{fit_ppmc}
 \alias{fit_ppmc}
+\alias{fit_ppmc,measr::measrdcm-method}
 \title{Posterior predictive model checks for assessing model fit}
 \usage{
 fit_ppmc(
@@ -14,6 +15,17 @@ fit_ppmc(
   return_draws = 0,
   force = FALSE
 )
+
+## S7 method for class <measr::measrdcm>
+\special{fit_ppmc(
+  x,
+  model_fit = NULL,
+  item_fit = NULL,
+  ndraws = NULL,
+  probs = c(0.025, 0.975),
+  return_draws = 0,
+  force = FALSE
+)}
 }
 \arguments{
 \item{x}{An estimated model object (e.g., from \code{\link[=dcm_estimate]{dcm_estimate()}}).}
@@ -101,6 +113,15 @@ as described by Thompson (2019). We can also calculate the odds ratio for
 each pair of items (\code{item_fit = "odds_ratio"}) as described by Park et al.
 (2015) and Sinharay et al. (2006).
 }
+\section{Methods}{
+\code{fit_ppmc()} is an S7 generic with methods available for the following
+classes:
+
+\itemize{
+\item \code{measr::measrdcm}
+}
+}
+
 \examples{
 \dontshow{if (measr_examples()) withAutoprint(\{ # examplesIf}
 mdm_dina <- dcm_estimate(

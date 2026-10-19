@@ -1,15 +1,22 @@
 #' Posterior draws of respondent proficiency
 #'
+#' @description
 #' Calculate posterior draws of respondent proficiency. Optionally retain all
 #' posterior draws or return only summaries of the distribution for each
 #' respondent.
 #'
-#' @param x An estimated model (e.g., from [dcm_estimate()].
+#' # Methods
+#' `score()` is an S7 generic with methods available for the following
+#' classes:
+#'
+#' `r doclisting::methods_list("score")`
+#'
+#' @param x An estimated model (e.g., from [dcm_estimate()]).
 #' @param newdata Optional new data. If not provided, the data used to estimate
 #'   the model is scored. If provided, `newdata` should be a data frame with 1
 #'   row per respondent and 1 column per item. All items that appear in
 #'   `newdata` should appear in the data used to estimate `x`.
-#' @param missing An `R` expression specifying how missing data in `data` is
+#' @param missing An `R` expression specifying how missing data in `newdata` is
 #'   coded (e.g., `NA`, `"."`, `-99`, etc.). The default is `NA`.
 #' @param identifier Optional. Variable name of a column in `newdata` that
 #'   contains respondent identifiers. `NULL` (the default) indicates that no

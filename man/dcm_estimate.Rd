@@ -65,16 +65,16 @@ not \code{file} exists.
 
 \item{...}{Additional arguments passed to Stan.
 \itemize{
-\item For \code{backend = "rstan"}, arguments are passed to \code{\link[rstan:stanmodel-method-sampling]{rstan::sampling()}}
-or \code{\link[rstan:stanmodel-method-optimizing]{rstan::optimizing()}}.
+\item For \code{backend = "rstan"}, arguments are passed to \code{\link[rstan:sampling]{rstan::sampling()}}
+or \code{\link[rstan:optimizing]{rstan::optimizing()}}.
 \item For \code{backend = "cmdstanr"}, arguments are passed to the
-\code{\link[cmdstanr:model-method-sample]{$sample()}} or
-\code{\link[cmdstanr:model-method-optimize]{$optimize()}} methods of the
+\code{\link[cmdstanr:sample]{$sample()}} or
+\code{\link[cmdstanr:optimize]{$optimize()}} methods of the
 \link[cmdstanr:CmdStanModel]{CmdStanModel} class.
 }}
 }
 \value{
-A \code{measrdcm} object.
+A \code{\link{measrdcm}} S7 object.
 }
 \description{
 Estimate diagnostic classification models (\acronym{DCM}s; also known as

@@ -1,12 +1,21 @@
 #' Maximum likelihood based information criteria
 #'
+#' @description
 #' Calculate information criteria for diagnostic models not estimated with full
 #' Markov chain Monte Carlo (i.e., with `method = "optim"`). Available
 #' information include the Akaike information criterion (AIC; Akaike, 1973) and
 #' the Bayesian information criterion (BIC; Schwarz, 1978).
 #'
+#' # Methods
+#' `aic()` and `bic()` are S7 generics with methods available for the
+#' following classes:
+#'
+#' `aic()`: `r doclisting::methods_list("aic")`
+#'
+#' `bic()`: `r doclisting::methods_list("bic")`
+#'
 #' @param x A [measrdcm][dcm_estimate()] object estimated with
-#'   `backend = "optim"`.
+#'   `method = "optim"`.
 #' @param ... Unused.
 #' @param force If the criterion has already been added to the
 #'   model object with [add_criterion()], should it be recalculated. Default is
