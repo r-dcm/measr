@@ -78,48 +78,56 @@ import(rlang)
 importFrom(RcppParallel,RcppParallelLibs)
 importFrom(bridgesampling,bridge_sampler)
 importFrom(dcm2,fit_m2)
-importFrom(dcmstan,bayesnet)
-importFrom(dcmstan,create_profiles)
-importFrom(dcmstan,crum)
-importFrom(dcmstan,dcm_specify)
-importFrom(dcmstan,default_dcm_priors)
-importFrom(dcmstan,dina)
-importFrom(dcmstan,dino)
-importFrom(dcmstan,get_parameters)
-importFrom(dcmstan,hdcm)
-importFrom(dcmstan,independent)
-importFrom(dcmstan,lcdm)
-importFrom(dcmstan,loglinear)
-importFrom(dcmstan,ncrum)
-importFrom(dcmstan,nida)
-importFrom(dcmstan,nido)
-importFrom(dcmstan,prior)
-importFrom(dcmstan,stan_data)
-importFrom(dcmstan,unconstrained)
+importFrom(dcmstan,
+  bayesnet,
+  create_profiles,
+  crum,
+  dcm_specify,
+  default_dcm_priors,
+  dina,
+  dino,
+  get_parameters,
+  hdcm,
+  independent,
+  lcdm,
+  loglinear,
+  ncrum,
+  nida,
+  nido,
+  prior,
+  stan_data,
+  unconstrained
+)
 importFrom(glue,glue)
 importFrom(lifecycle,deprecated)
-importFrom(loo,loo)
-importFrom(loo,loo_compare)
-importFrom(loo,waic)
-importFrom(posterior,E)
-importFrom(posterior,Pr)
-importFrom(posterior,as_draws)
-importFrom(posterior,rvar_mad)
-importFrom(posterior,rvar_max)
-importFrom(posterior,rvar_mean)
-importFrom(posterior,rvar_median)
-importFrom(posterior,rvar_min)
-importFrom(posterior,rvar_prod)
-importFrom(posterior,rvar_sd)
-importFrom(posterior,rvar_sum)
-importFrom(posterior,rvar_var)
+importFrom(loo,
+  loo,
+  loo_compare,
+  waic
+)
+importFrom(posterior,
+  E,
+  Pr,
+  as_draws,
+  rvar_mad,
+  rvar_max,
+  rvar_mean,
+  rvar_median,
+  rvar_min,
+  rvar_prod,
+  rvar_sd,
+  rvar_sum,
+  rvar_var
+)
 importFrom(psych,tetrachoric)
-importFrom(rlang,":=")
-importFrom(rlang,.data)
-importFrom(rlang,as_label)
-importFrom(rlang,as_name)
-importFrom(rlang,enquo)
-importFrom(rlang,enquos)
+importFrom(rlang,
+  ":=",
+  .data,
+  as_label,
+  as_name,
+  enquo,
+  enquos
+)
 importFrom(rstan,sampling)
 importFrom(rstantools,rstan_config)
 importFrom(tibble,tibble)

@@ -1,5 +1,14 @@
 # measr (development version)
 
+* measr is now compatible with S7 1.0.0. S7 methods are registered with
+  `S7::S7_on_load()`, and measr now requires the development versions of S7
+  and dcmstan.
+
+* Documentation is updated for roxygen2 8.0.0. The help pages for S7 generics
+  (e.g., `reliability()`, `score()`, `fit_ppmc()`) now list the classes with
+  available methods, and method-specific arguments are documented on the
+  generic's help page.
+
 * `write_measrfit()` (used by the `file` argument of `dcm_estimate()`) now
   recognizes saved *Stan* output files from newer versions of cmdstanr, which
   zero-pad the chain number in file names.

@@ -1,9 +1,16 @@
 #' Extract components of a `measrfit` object
 #'
+#' @description
 #' Extract model metadata, parameter estimates, and model evaluation results.
 #'
-#' @param model The estimated to extract information from.
-#' @param ... Additional arguments passed to specific methods.
+#' # Methods
+#' `measr_extract()` is an S7 generic with methods available for the following
+#' classes:
+#'
+#' `r doclisting::methods_list("measr_extract")`
+#'
+#' @param model The estimated model to extract information from (e.g., a
+#'   [`measrdcm`][dcm_estimate()] object).
 #'
 #' @export
 measr_extract <- S7::new_generic(
@@ -147,8 +154,7 @@ measr_extract <- S7::new_generic(
 #'   diagnostic classification model examinee estimates. *Journal of
 #'   Classification, 30*(2), 251-275. \doi{10.1007/s00357-013-9129-4}
 #'
-#' @export
-#' @name measr_extract
+#' @rdname measr_extract
 #' @examplesIf measr_examples()
 #' rstn_mdm_lcdm <- dcm_estimate(
 #'   dcm_specify(dcmdata::mdm_qmatrix, identifier = "item"),

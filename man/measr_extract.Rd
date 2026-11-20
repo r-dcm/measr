@@ -2,12 +2,17 @@
 % Please edit documentation in R/zzz-methods-extract.R
 \name{measr_extract}
 \alias{measr_extract}
+\alias{measr_extract,measr::measrdcm-method}
 \title{Extract components of a \code{measrfit} object}
 \usage{
 measr_extract(model, what, ...)
+
+## S7 method for class <measr::measrdcm>
+\special{measr_extract(model, what, ...)}
 }
 \arguments{
-\item{model}{The estimated to extract information from.}
+\item{model}{The estimated model to extract information from (e.g., a
+\code{\link[=dcm_estimate]{measrdcm}} object).}
 
 \item{what}{Character string. The information to be extracted. See details
 for available options.}
@@ -146,6 +151,15 @@ proficiency on each attribute, as described by Johnson & Sinharay (2020).
 }
 }
 }
+\section{Methods}{
+\code{measr_extract()} is an S7 generic with methods available for the following
+classes:
+
+\itemize{
+\item \code{measr::measrdcm}
+}
+}
+
 \examples{
 \dontshow{if (measr_examples()) withAutoprint(\{ # examplesIf}
 rstn_mdm_lcdm <- dcm_estimate(

@@ -97,8 +97,8 @@ not \code{file} exists.
 
 \item{...}{Additional arguments passed to Stan.
 \itemize{
-\item For \code{backend = "rstan"}, arguments are passed to \code{\link[rstan:stanmodel-method-sampling]{rstan::sampling()}}
-or \code{\link[rstan:stanmodel-method-optimizing]{rstan::optimizing()}}.
+\item For \code{backend = "rstan"}, arguments are passed to \code{\link[rstan:sampling]{rstan::sampling()}}
+or \code{\link[rstan:optimizing]{rstan::optimizing()}}.
 \item For \code{backend = "cmdstanr"}, arguments are passed to the
 \href{https://mc-stan.org/cmdstanr/reference/model-method-sample.html}{sample}
 or

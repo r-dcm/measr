@@ -2,10 +2,10 @@
 % Please edit documentation in R/zzz-class-dcm-estimate.R
 \name{measrdcm}
 \alias{measrdcm}
-\title{S7 class for measrdcm objects}
+\title{A fitted diagnostic classification model}
 \usage{
 measrdcm(
-  model_spec = NULL,
+  model_spec = dcmstan::dcm_specification(),
   data = list(),
   stancode = character(0),
   method = stanmethod(),
@@ -57,7 +57,7 @@ or loaded from.}
 used to fit the model.}
 }
 \value{
-A \code{measrdcm} object.
+A \code{measrdcm} S7 object.
 }
 \description{
 The \code{measrdcm} constructor is exported to facilitate the conversion of other

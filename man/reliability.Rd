@@ -2,12 +2,17 @@
 % Please edit documentation in R/zzz-methods-reliability.R
 \name{reliability}
 \alias{reliability}
+\alias{reliability,measr::measrdcm-method}
 \title{Estimate the reliability of a diagnostic classification model}
 \usage{
 reliability(x, ..., threshold = 0.5, force = FALSE)
+
+## S7 method for class <measr::measrdcm>
+\special{reliability(x, threshold = 0.5, force = FALSE)}
 }
 \arguments{
-\item{x}{The estimated model to be evaluated.}
+\item{x}{The estimated model to be evaluated (e.g., a
+\code{\link[=dcm_estimate]{measrdcm}} object).}
 
 \item{...}{Unused. For future extensions.}
 
@@ -55,8 +60,17 @@ described in Cui et al. (2012). Attribute-level classification reliability
 statistics (\code{map_reliability}) are described in Johnson & Sinharay (2018).
 Reliability statistics for the posterior mean of the skill indicators (i.e.,
 the mastery or proficiency probabilities; \code{eap_reliability}) are described in
-Johnson & Sinharay (2019).
+Johnson & Sinharay (2020).
 }
+\section{Methods}{
+\code{reliability()} is an S7 generic with methods available for the following
+classes:
+
+\itemize{
+\item \code{measr::measrdcm}
+}
+}
+
 \examples{
 \dontshow{if (measr_examples()) withAutoprint(\{ # examplesIf}
 rstn_mdm_lcdm <- dcm_estimate(

@@ -1,23 +1,6 @@
 #' Estimate the reliability of a diagnostic classification model
 #'
-#' @param x The estimated model to be evaluated.
-#' @param ... Unused. For future extensions.
-#' @param force If reliability information has already been added to the model
-#'   object with [add_reliability()], should it be recalculated. Default is
-#'   `FALSE`.
-#'
-#' @importFrom psych tetrachoric
-#' @export
-reliability <- S7::new_generic(
-  "reliability",
-  "x",
-  function(x, ..., threshold = 0.5, force = FALSE) {
-    S7::S7_dispatch()
-  }
-)
-
-#' Estimate the reliability of a diagnostic classification model
-#'
+#' @description
 #' For diagnostic classification models, reliability can be estimated at the
 #' pattern or attribute level. Pattern-level reliability represents the
 #' classification consistency and accuracy of placing students into an overall
@@ -31,6 +14,15 @@ reliability <- S7::new_generic(
 #' probability should be reported. This is the *expected a posteriori* (EAP)
 #' reliability.
 #'
+#' # Methods
+#' `reliability()` is an S7 generic with methods available for the following
+#' classes:
+#'
+#' `r doclisting::methods_list("reliability")`
+#'
+#' @param x The estimated model to be evaluated (e.g., a
+#'   [`measrdcm`][dcm_estimate()] object).
+#' @param ... Unused. For future extensions.
 #' @param threshold For `map_reliability`, the threshold applied to the
 #'  attribute-level probabilities for determining the binary attribute
 #'  classifications. Should be a numeric vector of length 1 (the same threshold
@@ -38,13 +30,16 @@ reliability <- S7::new_generic(
 #'  If a named vector is supplied, names should match the attribute names in the
 #'  Q-matrix used to estimate the model. If unnamed, thresholds should be in the
 #'  order the attributes were defined in the Q-matrix.
+#' @param force If reliability information has already been added to the model
+#'   object with [add_reliability()], should it be recalculated. Default is
+#'   `FALSE`.
 #'
 #' @details The pattern-level reliability (`pattern_reliability`) statistics are
 #' described in Cui et al. (2012). Attribute-level classification reliability
 #' statistics (`map_reliability`) are described in Johnson & Sinharay (2018).
 #' Reliability statistics for the posterior mean of the skill indicators (i.e.,
 #' the mastery or proficiency probabilities; `eap_reliability`) are described in
-#' Johnson & Sinharay (2019).
+#' Johnson & Sinharay (2020).
 #'
 #' @returns For class `measrdcm`, a list with 3 elements:
 #'   * `pattern_reliability`: The pattern-level accuracy (`p_a`) and consistency
@@ -68,9 +63,8 @@ reliability <- S7::new_generic(
 #'   models. *Journal of Educational and Behavioral Statistics, 45*(1), 5-31.
 #'   \doi{10.3102/1076998619864550}
 #'
+#' @importFrom psych tetrachoric
 #' @export
-#' @name reliability
-#' @aliases reliability
 #' @examplesIf measr_examples()
 #' rstn_mdm_lcdm <- dcm_estimate(
 #'   dcm_specify(dcmdata::mdm_qmatrix, identifier = "item"),
@@ -83,6 +77,15 @@ reliability <- S7::new_generic(
 #' )
 #'
 #' reliability(rstn_mdm_lcdm)
+reliability <- S7::new_generic(
+  "reliability",
+  "x",
+  function(x, ..., threshold = 0.5, force = FALSE) {
+    S7::S7_dispatch()
+  }
+)
+
+#' @rdname reliability
 S7::method(reliability, measrdcm) <- function(
   x,
   threshold = 0.5,

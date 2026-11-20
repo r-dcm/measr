@@ -1,4 +1,4 @@
-#' S7 classes for estimation specifications
+#' Estimation back-ends and methods
 #'
 #' The constructors for Stan back-ends and methods are exported to support
 #' extensions to measr, for example converting other models to `measrfit`
@@ -44,7 +44,8 @@
 #' and the [`$generate_quantities()`][cmdstanr::generate_quantities()] method of
 #' the [CmdStanModel][cmdstanr::CmdStanModel] class when using `{cmdstanr}`.
 #'
-#' @return An [S7 object][S7::S7_object()] with the corresponding class.
+#' @returns An S7 object of the corresponding class (e.g., `rstan()` returns
+#'   an `rstan` S7 object).
 #' @rdname stan-classes
 #' @name stan-classes
 #' @examples

@@ -1,8 +1,15 @@
 #' Yen's \ifelse{html}{\out{Q<sub>3</sub>}}{\eqn{Q_3}} statistic for local item
 #' dependence
 #'
+#' @description
 #' Calculate the \ifelse{html}{\out{Q<sub>3</sub>}}{\eqn{Q_3}} statistic to
 #' evaluate the assumption of independent items.
+#'
+#' # Methods
+#' `yens_q3()` is an S7 generic with methods available for the following
+#' classes:
+#'
+#' `r doclisting::methods_list("yens_q3")`
 #'
 #' @param x A [measrdcm][dcm_estimate()] object.
 #' @param ... Unused.
@@ -58,7 +65,7 @@
 #' @examplesIf measr_examples()
 #' model_spec <- dcm_specify(
 #'   qmatrix = dcmdata::mdm_qmatrix,
-#'   dentifier = "item"
+#'   identifier = "item"
 #' )
 #' model <- dcm_estimate(
 #'   dcm_spec = model_spec,

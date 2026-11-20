@@ -8,7 +8,8 @@ log_mll(x, ..., force = FALSE)
 }
 \arguments{
 \item{x}{A \link[=dcm_estimate]{measrdcm} object estimated with
-\code{backend = "optim"}.}
+\code{backend = "rstan"} and a method that results in posterior distributions
+(e.g., \code{method = "mcmc"}).}
 
 \item{...}{Unused.}
 
@@ -25,6 +26,15 @@ Calculate the log marginal likelihood with bridge sampling (Meng & Wong,
 Therefore, log marginal likelihood calculation is currently only available
 for models estimated with \code{{rstan}} using MCMC.
 }
+\section{Methods}{
+\code{log_mll()} is an S7 generic with methods available for the following
+classes:
+
+\itemize{
+\item \code{measr::measrdcm}
+}
+}
+
 \examples{
 \dontshow{if (measr_examples()) withAutoprint(\{ # examplesIf}
 model_spec <- dcm_specify(

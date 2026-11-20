@@ -11,7 +11,7 @@ bic(x, ..., force = FALSE)
 }
 \arguments{
 \item{x}{A \link[=dcm_estimate]{measrdcm} object estimated with
-\code{backend = "optim"}.}
+\code{method = "optim"}.}
 
 \item{...}{Unused.}
 
@@ -28,6 +28,19 @@ Markov chain Monte Carlo (i.e., with \code{method = "optim"}). Available
 information include the Akaike information criterion (AIC; Akaike, 1973) and
 the Bayesian information criterion (BIC; Schwarz, 1978).
 }
+\section{Methods}{
+\code{aic()} and \code{bic()} are S7 generics with methods available for the
+following classes:
+
+\code{aic()}: \itemize{
+\item \code{measr::measrdcm}
+}
+
+\code{bic()}: \itemize{
+\item \code{measr::measrdcm}
+}
+}
+
 \examples{
 \dontshow{if (measr_examples()) withAutoprint(\{ # examplesIf}
 model_spec <- dcm_specify(

@@ -1,9 +1,16 @@
 #' Posterior predictive model checks for assessing model fit
 #'
+#' @description
 #' For models estimated with a method that results in posterior distributions
 #' (e.g., "mcmc", "variational"), use the posterior distributions to compute
 #' expected distributions for fit statistics and compare to values in the
 #' observed data.
+#'
+#' # Methods
+#' `fit_ppmc()` is an S7 generic with methods available for the following
+#' classes:
+#'
+#' `r doclisting::methods_list("fit_ppmc")`
 #'
 #' @param x An estimated model object (e.g., from [dcm_estimate()]).
 #' @param model_fit The posterior predictive model checks to compute for an
@@ -152,7 +159,7 @@ dcm_item_ppmc <- c("conditional_prob", "odds_ratio", "pvalue")
 #' as described by Thompson (2019). We can also calculate the odds ratio for
 #' each pair of items (`item_fit = "odds_ratio"`) as described by Park et al.
 #' (2015) and Sinharay et al. (2006).
-#' @name fit_ppmc
+#' @rdname fit_ppmc
 S7::method(fit_ppmc, measrdcm) <- function(
   x,
   model_fit = NULL,

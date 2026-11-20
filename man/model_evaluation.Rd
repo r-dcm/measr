@@ -56,7 +56,7 @@ the \code{R} object. If \code{FALSE}, the new criteria will be added to the \cod
 object, but the saved file will not be updated.}
 
 \item{...}{
-  Arguments passed on to \code{\link[=fit_ppmc]{fit_ppmc}}
+  Arguments passed on to \code{\link{fit_ppmc}}
   \describe{
     \item{\code{model_fit}}{The posterior predictive model checks to compute for an
 evaluation of model-level fit. If \code{NULL}, no model-level checks are
