@@ -1,5 +1,12 @@
 # measr (development version)
 
+* `write_measrfit()` (used by the `file` argument of `dcm_estimate()`) now
+  recognizes saved *Stan* output files from newer versions of cmdstanr, which
+  zero-pad the chain number in file names.
+
+* Tests and documentation are updated for loo 2.10.0, where `loo_compare()`
+  returns a data frame with a `model` column instead of row names.
+
 # measr 2.0.1
 
 * Fix edge case that prevented that prevented the use of data with missing

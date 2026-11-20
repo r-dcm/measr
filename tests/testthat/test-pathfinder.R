@@ -212,42 +212,14 @@ test_that("model comparisons work", {
   skip_on_cran()
 
   no_save <- suppressWarnings(loo_compare(cmds_dtmr_lcdm, cmds_dtmr_dina))
-  expect_s3_class(no_save, "compare.loo")
-  expect_equal(rownames(no_save), c("cmds_dtmr_lcdm", "cmds_dtmr_dina"))
-  expect_equal(
-    colnames(no_save),
-    c(
-      "elpd_diff",
-      "se_diff",
-      "elpd_loo",
-      "se_elpd_loo",
-      "p_loo",
-      "se_p_loo",
-      "looic",
-      "se_looic"
-    )
-  )
+  expect_loo_compare(no_save, c("cmds_dtmr_lcdm", "cmds_dtmr_dina"), "loo")
 
   lcdm_compare <- suppressWarnings(add_criterion(
     cmds_dtmr_lcdm,
     criterion = c("loo", "waic")
   ))
   lcdm_save <- suppressWarnings(loo_compare(lcdm_compare, cmds_dtmr_dina))
-  expect_s3_class(lcdm_save, "compare.loo")
-  expect_equal(rownames(lcdm_save), c("lcdm_compare", "cmds_dtmr_dina"))
-  expect_equal(
-    colnames(lcdm_save),
-    c(
-      "elpd_diff",
-      "se_diff",
-      "elpd_loo",
-      "se_elpd_loo",
-      "p_loo",
-      "se_p_loo",
-      "looic",
-      "se_looic"
-    )
-  )
+  expect_loo_compare(lcdm_save, c("lcdm_compare", "cmds_dtmr_dina"), "loo")
 
   dina_compare <- suppressWarnings(add_criterion(
     cmds_dtmr_dina,
@@ -258,38 +230,10 @@ test_that("model comparisons work", {
     dina_compare,
     criterion = "waic"
   ))
-  expect_s3_class(dina_save, "compare.loo")
-  expect_equal(rownames(dina_save), c("cmds_dtmr_lcdm", "dina_compare"))
-  expect_equal(
-    colnames(dina_save),
-    c(
-      "elpd_diff",
-      "se_diff",
-      "elpd_waic",
-      "se_elpd_waic",
-      "p_waic",
-      "se_p_waic",
-      "waic",
-      "se_waic"
-    )
-  )
+  expect_loo_compare(dina_save, c("cmds_dtmr_lcdm", "dina_compare"), "waic")
 
   all_save <- loo_compare(lcdm_compare, dina_compare, criterion = "loo")
-  expect_s3_class(all_save, "compare.loo")
-  expect_equal(rownames(all_save), c("lcdm_compare", "dina_compare"))
-  expect_equal(
-    colnames(all_save),
-    c(
-      "elpd_diff",
-      "se_diff",
-      "elpd_loo",
-      "se_elpd_loo",
-      "p_loo",
-      "se_p_loo",
-      "looic",
-      "se_looic"
-    )
-  )
+  expect_loo_compare(all_save, c("lcdm_compare", "dina_compare"), "loo")
 
   err <- rlang::catch_cnd(loo_compare(
     lcdm_compare,
@@ -309,21 +253,7 @@ test_that("model comparisons work", {
     criterion = "waic",
     model_names = c("first_model", "second_model")
   )
-  expect_s3_class(waic_comp, "compare.loo")
-  expect_equal(rownames(waic_comp), c("first_model", "second_model"))
-  expect_equal(
-    colnames(waic_comp),
-    c(
-      "elpd_diff",
-      "se_diff",
-      "elpd_waic",
-      "se_elpd_waic",
-      "p_waic",
-      "se_p_waic",
-      "waic",
-      "se_waic"
-    )
-  )
+  expect_loo_compare(waic_comp, c("first_model", "second_model"), "waic")
 })
 
 # aic/bic ----------------------------------------------------------------------

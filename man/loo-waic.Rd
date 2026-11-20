@@ -49,7 +49,10 @@ For \code{loo()} and \code{waic()}, the information criteria returned by
 \code{\link[loo:loo]{loo::loo.array()}} or \code{\link[loo:waic]{loo::waic.array()}}, respectively.
 
 For \code{loo_compare()}, the criterion comparison returned by
-\code{\link[loo:loo_compare]{loo::loo_compare()}}.
+\code{\link[loo:loo_compare]{loo::loo_compare()}}, unmodified. Models are labeled with \code{model_names}.
+Beginning with loo 2.10.0, this is a data frame with a \code{model} column and
+additional diagnostic columns (e.g., \code{p_worse}); earlier versions of loo
+return a matrix with the model names as row names.
 }
 \description{
 For models estimated with MCMC, relative model fit comparisons can be made

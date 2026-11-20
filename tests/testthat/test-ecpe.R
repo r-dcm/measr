@@ -449,11 +449,23 @@ test_that("read/write with cmdstanr", {
     write_measrfit(cmds_ecpe_lcdm, file = file)
   )
   expect_true(fs::file_exists(fs::path_ext_set(file, "rds")))
-  expect_true(fs::file_exists(fs::path_ext_set(paste0(file, "-1"), "csv")))
+
+  # cmdstanr >= 0.9.0.9002 zero-pads the chain id (e.g., `-01.csv`)
+  csv_file <- cmds_ecpe_lcdm@model$output_files()
+  expect_length(csv_file, 1)
+  expect_true(fs::file_exists(csv_file))
   expect_identical(
-    cmds_ecpe_lcdm@model$output_files(),
-    as.character(fs::path_ext_set(paste0(file, "-1"), "csv"))
+    fs::path_dir(fs::path_abs(csv_file)),
+    fs::path_dir(fs::path_abs(file))
   )
+  expect_match(
+    fs::path_file(csv_file),
+    paste0("^", fs::path_file(file), "-0?1\\.csv$")
+  )
+
+  # writing again does not move the already saved output files
+  expect_no_message(write_measrfit(cmds_ecpe_lcdm, file = file))
+  expect_identical(cmds_ecpe_lcdm@model$output_files(), csv_file)
 
   # read with new specs -----
   clean_data <- rdcmchecks::clean_data(
