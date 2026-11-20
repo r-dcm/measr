@@ -18,7 +18,7 @@ bic(x, ..., force = FALSE)
 - x:
 
   A [measrdcm](https://measr.r-dcm.org/dev/reference/dcm_estimate.md)
-  object estimated with `backend = "optim"`.
+  object estimated with `method = "optim"`.
 
 - ...:
 
@@ -33,6 +33,19 @@ bic(x, ..., force = FALSE)
 ## Value
 
 The numeric value of the information criterion.
+
+## Methods
+
+`aic()` and `bic()` are S7 generics with methods available for the
+following classes:
+
+`aic()`:
+
+- [`measr::measrdcm`](https://measr.r-dcm.org/dev/reference/measrdcm.md)
+
+`bic()`:
+
+- [`measr::measrdcm`](https://measr.r-dcm.org/dev/reference/measrdcm.md)
 
 ## References
 

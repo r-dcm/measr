@@ -107,7 +107,8 @@ dcm_estimate(
 
 ## Value
 
-A `measrdcm` object.
+A [`measrdcm`](https://measr.r-dcm.org/dev/reference/measrdcm.md) S7
+object.
 
 ## Examples
 

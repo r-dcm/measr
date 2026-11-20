@@ -23,7 +23,7 @@ score(
 - x:
 
   An estimated model (e.g., from
-  [`dcm_estimate()`](https://measr.r-dcm.org/dev/reference/dcm_estimate.md).
+  [`dcm_estimate()`](https://measr.r-dcm.org/dev/reference/dcm_estimate.md)).
 
 - newdata:
 
@@ -34,7 +34,7 @@ score(
 
 - missing:
 
-  An `R` expression specifying how missing data in `data` is coded
+  An `R` expression specifying how missing data in `newdata` is coded
   (e.g., `NA`, `"."`, `-99`, etc.). The default is `NA`.
 
 - identifier:
@@ -84,6 +84,13 @@ If summary is `TRUE`, each element is a tibble with one row per
 respondent and class or attribute. The columns include the respondent
 identifier, `class` or `attribute`, `mean`, and one column for every
 value specified in `probs`.
+
+## Methods
+
+`score()` is an S7 generic with methods available for the following
+classes:
+
+- [`measr::measrdcm`](https://measr.r-dcm.org/dev/reference/measrdcm.md)
 
 ## Examples
 

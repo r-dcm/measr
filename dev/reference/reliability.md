@@ -17,13 +17,18 @@ reliability of the posterior probability should be reported. This is the
 
 ``` r
 reliability(x, ..., threshold = 0.5, force = FALSE)
+
+## S7 method for class <measr::measrdcm>
+reliability(x, threshold = 0.5, force = FALSE)
 ```
 
 ## Arguments
 
 - x:
 
-  The estimated model to be evaluated.
+  The estimated model to be evaluated (e.g., a
+  [`measrdcm`](https://measr.r-dcm.org/dev/reference/dcm_estimate.md)
+  object).
 
 - ...:
 
@@ -67,7 +72,14 @@ described in Cui et al. (2012). Attribute-level classification
 reliability statistics (`map_reliability`) are described in Johnson &
 Sinharay (2018). Reliability statistics for the posterior mean of the
 skill indicators (i.e., the mastery or proficiency probabilities;
-`eap_reliability`) are described in Johnson & Sinharay (2019).
+`eap_reliability`) are described in Johnson & Sinharay (2020).
+
+## Methods
+
+`reliability()` is an S7 generic with methods available for the
+following classes:
+
+- [`measr::measrdcm`](https://measr.r-dcm.org/dev/reference/measrdcm.md)
 
 ## References
 

@@ -1,4 +1,4 @@
-# S7 class for measrdcm objects
+# A fitted diagnostic classification model
 
 The `measrdcm` constructor is exported to facilitate the conversion of
 other model objects (e.g., `stanfit`) to `measrdcm` objects. We do not
@@ -11,7 +11,7 @@ creating a method for converting to `measrdcm`. Rather, to create a
 
 ``` r
 measrdcm(
-  model_spec = NULL,
+  model_spec = dcmstan::dcm_specification(),
   data = list(),
   stancode = character(0),
   method = stanmethod(),
@@ -92,7 +92,7 @@ measrdcm(
 
 ## Value
 
-A `measrdcm` object.
+A `measrdcm` S7 object.
 
 ## See also
 

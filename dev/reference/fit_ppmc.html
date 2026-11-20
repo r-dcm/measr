@@ -72,6 +72,17 @@ observed data.</p>
 <span>  probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.025</span>, <span class="fl">0.975</span><span class="op">)</span>,</span>
 <span>  return_draws <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  force <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## S7 method for class &lt;measr::measrdcm&gt;</span></span>
+<span><span class="fu">fit_ppmc</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  model_fit <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  item_fit <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ndraws <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.025</span>, <span class="fl">0.975</span><span class="op">)</span>,</span>
+<span>  return_draws <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  force <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -172,6 +183,12 @@ as described by Thompson (2019). We can also calculate the odds ratio for
 each pair of items (<code>item_fit = "odds_ratio"</code>) as described by Park et al.
 (2015) and Sinharay et al. (2006).</p>
     </div>
+    <div class="section level2">
+    <h2 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a></h2>
+    <p><code>fit_ppmc()</code> is an S7 generic with methods available for the following
+classes:</p>
+<ul><li><p><code><a href="measrdcm.html">measr::measrdcm</a></code></p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>Park, J. Y., Johnson, M. S., Lee, Y-S. (2015). Posterior

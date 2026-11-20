@@ -17,7 +17,8 @@ log_mll(x, ..., force = FALSE)
 - x:
 
   A [measrdcm](https://measr.r-dcm.org/dev/reference/dcm_estimate.md)
-  object estimated with `backend = "optim"`.
+  object estimated with `backend = "rstan"` and a method that results in
+  posterior distributions (e.g., `method = "mcmc"`).
 
 - ...:
 
@@ -32,6 +33,13 @@ log_mll(x, ..., force = FALSE)
 ## Value
 
 The estimate of the log marginal likelihood.
+
+## Methods
+
+`log_mll()` is an S7 generic with methods available for the following
+classes:
+
+- [`measr::measrdcm`](https://measr.r-dcm.org/dev/reference/measrdcm.md)
 
 ## References
 
@@ -61,8 +69,8 @@ model <- dcm_estimate(
 #> Chain 1: 
 #> Chain 1: 
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.000126 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.26 seconds.
+#> Chain 1: Gradient evaluation took 0.000162 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.62 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 

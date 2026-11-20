@@ -53,6 +53,13 @@ a summary statistic such as the maximum Q₃ statistic (Q_(3,max);
 Christensen et al., 2017), or the mean-adjusted maximum Q₃ statistic
 (Q_(3,\*); Marais, 2013).
 
+## Methods
+
+`yens_q3()` is an S7 generic with methods available for the following
+classes:
+
+- [`measr::measrdcm`](https://measr.r-dcm.org/dev/reference/measrdcm.md)
+
 ## References
 
 Chen, W.-H., & Thissen, D. (1997). Local dependence indexes for item
@@ -79,9 +86,8 @@ Psychological Measurement, 8*(2), 125-145.
 ``` r
 model_spec <- dcm_specify(
   qmatrix = dcmdata::mdm_qmatrix,
-  dentifier = "item"
+  identifier = "item"
 )
-#> Error in dcm_specify(qmatrix = dcmdata::mdm_qmatrix, dentifier = "item"): unused argument (dentifier = "item")
 model <- dcm_estimate(
   dcm_spec = model_spec,
   data = dcmdata::mdm_data,
@@ -89,8 +95,15 @@ model <- dcm_estimate(
   method = "optim",
   seed = 63277
 )
-#> Error: object 'model_spec' not found
 
 yens_q3(model)
-#> Error: object 'model' not found
+#> # A tibble: 6 × 4
+#>   item_1 item_2 resid_corr flag 
+#>   <chr>  <chr>       <dbl> <lgl>
+#> 1 mdm1   mdm2      -0.132  FALSE
+#> 2 mdm1   mdm3      -0.0910 FALSE
+#> 3 mdm1   mdm4      -0.123  FALSE
+#> 4 mdm2   mdm3      -0.110  FALSE
+#> 5 mdm2   mdm4      -0.249  TRUE 
+#> 6 mdm3   mdm4      -0.0989 FALSE
 ```

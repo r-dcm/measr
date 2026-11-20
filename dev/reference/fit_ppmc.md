@@ -18,6 +18,17 @@ fit_ppmc(
   return_draws = 0,
   force = FALSE
 )
+
+## S7 method for class <measr::measrdcm>
+fit_ppmc(
+  x,
+  model_fit = NULL,
+  item_fit = NULL,
+  ndraws = NULL,
+  probs = c(0.025, 0.975),
+  return_draws = 0,
+  force = FALSE
+)
 ```
 
 ## Arguments
@@ -126,6 +137,13 @@ Sinharay & Almond (2007) or the overall proportion correct for an item
 calculate the odds ratio for each pair of items
 (`item_fit = "odds_ratio"`) as described by Park et al. (2015) and
 Sinharay et al. (2006).
+
+## Methods
+
+`fit_ppmc()` is an S7 generic with methods available for the following
+classes:
+
+- [`measr::measrdcm`](https://measr.r-dcm.org/dev/reference/measrdcm.md)
 
 ## References
 

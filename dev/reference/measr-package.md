@@ -29,6 +29,9 @@ Useful links:
 
 Authors:
 
+- W. Jake Thompson <wjakethompson@gmail.com>
+  ([ORCID](https://orcid.org/0000-0001-7339-0300))
+
 - Jeffrey Hoover <jeffrey.c.hoover@gmail.com>
   ([ORCID](https://orcid.org/0000-0002-0276-0308))
 

@@ -79,6 +79,13 @@ following steps for each item:
 5.  If there is more than one Q-matrix entry remaining, select the entry
     with the highest PVAF.
 
+## Methods
+
+`qmatrix_validation()` is an S7 generic with methods available for the
+following classes:
+
+- [`measr::measrdcm`](https://measr.r-dcm.org/dev/reference/measrdcm.md)
+
 ## References
 
 de la Torre, J., & Chiu, C.-Y. (2016). A general method of empirical

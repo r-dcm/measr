@@ -95,6 +95,13 @@ Kruschke's (2021) Figure 1. These probabilities can be interpreted as,
 "If the prior probability is {`prior_prob_null`}, then the posterior is
 {`posterior_prob_null`}" (or 1 minus for the alternative model).
 
+## Methods
+
+`bayes_factor()` is an S7 generic with methods available for the
+following classes:
+
+- [`measr::measrdcm`](https://measr.r-dcm.org/dev/reference/measrdcm.md)
+
 ## References
 
 Jeffreys, H. (1935). Some tests of significance, treated by the theory

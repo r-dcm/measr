@@ -1,4 +1,4 @@
-# S7 classes for estimation specifications
+# Estimation back-ends and methods
 
 The constructors for Stan back-ends and methods are exported to support
 extensions to measr, for example converting other models to `measrfit`
@@ -26,9 +26,8 @@ gqs()
 
 ## Value
 
-An [S7
-object](https://rconsortium.github.io/S7/reference/S7_object.html) with
-the corresponding class.
+An S7 object of the corresponding class (e.g., `rstan()` returns an
+`rstan` S7 object).
 
 ## Details
 

@@ -54,7 +54,10 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">measr_extract</span><span class="op">(</span><span class="va">model</span>, <span class="va">what</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">measr_extract</span><span class="op">(</span><span class="va">model</span>, <span class="va">what</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## S7 method for class &lt;measr::measrdcm&gt;</span></span>
+<span><span class="fu">measr_extract</span><span class="op">(</span><span class="va">model</span>, <span class="va">what</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -62,7 +65,8 @@
 
 
 <dl><dt id="arg-model">model<a class="anchor" aria-label="anchor" href="#arg-model"></a></dt>
-<dd><p>The estimated to extract information from.</p></dd>
+<dd><p>The estimated model to extract information from (e.g., a
+<code><a href="dcm_estimate.html">measrdcm</a></code> object).</p></dd>
 
 
 <dt id="arg-what">what<a class="anchor" aria-label="anchor" href="#arg-what"></a></dt>
@@ -206,6 +210,12 @@ proficiency on each attribute, as described by Johnson &amp; Sinharay (2020).</p
 </ul></div>
 
     </div>
+    <div class="section level2">
+    <h2 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a></h2>
+    <p><code>measr_extract()</code> is an S7 generic with methods available for the following
+classes:</p>
+<ul><li><p><code><a href="measrdcm.html">measr::measrdcm</a></code></p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>Cui, Y., Gierl, M. J., &amp; Chang, H.-H. (2012). Estimating

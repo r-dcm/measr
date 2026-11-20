@@ -74,7 +74,7 @@ the Bayesian information criterion (BIC; Schwarz, 1978).</p>
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
 <dd><p>A <a href="dcm_estimate.html">measrdcm</a> object estimated with
-<code>backend = "optim"</code>.</p></dd>
+<code>method = "optim"</code>.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -91,6 +91,13 @@ model object with <code><a href="model_evaluation.html">add_criterion()</a></cod
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>The numeric value of the information criterion.</p>
     </div>
+    <div class="section level2">
+    <h2 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a></h2>
+    <p><code>aic()</code> and <code>bic()</code> are S7 generics with methods available for the
+following classes:</p>
+<p><code>aic()</code>:</p><ul><li><p><code><a href="measrdcm.html">measr::measrdcm</a></code></p></li>
+</ul><p><code>bic()</code>:</p><ul><li><p><code><a href="measrdcm.html">measr::measrdcm</a></code></p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>Akaike, H. (1973). Information theory and an extension of the

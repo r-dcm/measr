@@ -76,7 +76,7 @@ respondent.</p>
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>An estimated model (e.g., from <code><a href="dcm_estimate.html">dcm_estimate()</a></code>.</p></dd>
+<dd><p>An estimated model (e.g., from <code><a href="dcm_estimate.html">dcm_estimate()</a></code>).</p></dd>
 
 
 <dt id="arg-newdata">newdata<a class="anchor" aria-label="anchor" href="#arg-newdata"></a></dt>
@@ -87,7 +87,7 @@ row per respondent and 1 column per item. All items that appear in
 
 
 <dt id="arg-missing">missing<a class="anchor" aria-label="anchor" href="#arg-missing"></a></dt>
-<dd><p>An <code>R</code> expression specifying how missing data in <code>data</code> is
+<dd><p>An <code>R</code> expression specifying how missing data in <code>newdata</code> is
 coded (e.g., <code>NA</code>, <code>"."</code>, <code>-99</code>, etc.). The default is <code>NA</code>.</p></dd>
 
 
@@ -132,6 +132,12 @@ and class or attribute. The columns include the respondent identifier,
 <code>class</code> or <code>attribute</code>, <code>mean</code>, and one column for every value specified in
 <code>probs</code>.</p>
     </div>
+    <div class="section level2">
+    <h2 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a></h2>
+    <p><code>score()</code> is an S7 generic with methods available for the following
+classes:</p>
+<ul><li><p><code><a href="measrdcm.html">measr::measrdcm</a></code></p></li>
+</ul></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>

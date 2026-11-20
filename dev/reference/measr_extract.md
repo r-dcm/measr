@@ -7,13 +7,18 @@ results.
 
 ``` r
 measr_extract(model, what, ...)
+
+## S7 method for class <measr::measrdcm>
+measr_extract(model, what, ...)
 ```
 
 ## Arguments
 
 - model:
 
-  The estimated to extract information from.
+  The estimated model to extract information from (e.g., a
+  [`measrdcm`](https://measr.r-dcm.org/dev/reference/dcm_estimate.md)
+  object).
 
 - what:
 
@@ -181,6 +186,13 @@ information:
 - `probability_reliability`: Reliability estimates for the probability
   of proficiency on each attribute, as described by Johnson & Sinharay
   (2020).
+
+## Methods
+
+`measr_extract()` is an S7 generic with methods available for the
+following classes:
+
+- [`measr::measrdcm`](https://measr.r-dcm.org/dev/reference/measrdcm.md)
 
 ## References
 
