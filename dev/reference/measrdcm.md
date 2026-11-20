@@ -113,12 +113,12 @@ spec <- dcm_specify(qmatrix = qmatrix)
 measrdcm(spec)
 #> <measr::measrdcm>
 #>  @ model_spec          : <dcmstan::dcm_specification>
-#>  .. @ qmatrix          : tibble [15 × 4] (S3: tbl_df/tbl/data.frame)
+#>  .. @ qmatrix          :  tibble [15 × 4] (S3: tbl_df/tbl/data.frame)
 #>  $ att1: int [1:15] 1 1 0 1 0 1 1 0 1 0 ...
 #>  $ att2: int [1:15] 1 1 0 0 0 0 1 0 1 1 ...
 #>  $ att3: int [1:15] 1 1 1 0 0 1 0 1 1 0 ...
 #>  $ att4: int [1:15] 0 0 1 0 1 0 1 0 0 1 ...
-#>  .. @ qmatrix_meta     :List of 3
+#>  .. @ qmatrix_meta     : List of 3
 #>  .. .. $ attribute_names: Named chr [1:4] "att1" "att2" "att3" "att4"
 #>  .. ..  ..- attr(*, "names")= chr [1:4] "att1" "att2" "att3" "att4"
 #>  .. .. $ item_identifier: NULL
@@ -126,7 +126,7 @@ measrdcm(spec)
 #>  .. ..  ..- attr(*, "names")= chr [1:15] "1" "2" "3" "4" ...
 #>  .. @ measurement_model: <dcmstan::LCDM>
 #>  .. .. @ model     : chr "lcdm"
-#>  .. .. @ model_args:List of 1
+#>  .. .. @ model_args: List of 1
 #>  .. .. .. $ max_interaction: num Inf
 #>  .. @ structural_model : <dcmstan::UNCONSTRAINED>
 #>  .. .. @ model     : chr "unconstrained"
