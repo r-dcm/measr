@@ -1,6 +1,5 @@
 {
     "recommendations": [
-        "Posit.air-vscode",
-        "anthropic.claude-code"
+        "Posit.air-vscode"
     ]
 }
