@@ -808,6 +808,14 @@ test_that("respondent probabilities are correct", {
     nrow(mdm_preds$attribute_probabilities),
     nrow(dcmdata::mdm_data) * 1
   )
+  expect_equal(
+    mdm_preds$class_probabilities$respondent,
+    rep(as.character(dcmdata::mdm_data$resp_id), each = 2^1)
+  )
+  expect_equal(
+    mdm_preds$attribute_probabilities$respondent,
+    rep(as.character(dcmdata::mdm_data$resp_id), each = 1)
+  )
 
   expect_equal(
     names(mdm_full_preds),
@@ -828,6 +836,14 @@ test_that("respondent probabilities are correct", {
   expect_equal(
     nrow(mdm_full_preds$attribute_probabilities),
     nrow(dcmdata::mdm_data)
+  )
+  expect_equal(
+    mdm_full_preds$class_probabilities$respondent,
+    dcmdata::mdm_data$respondent
+  )
+  expect_equal(
+    mdm_full_preds$attribute_probabilities$respondent,
+    dcmdata::mdm_data$respondent
   )
 
   # extract works -----

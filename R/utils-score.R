@@ -31,16 +31,16 @@ extract_attr_probs <- function(model, gq) {
     tibble::rowid_to_column(var = "resp_id")
 }
 
-calculate_probs <- function(model, gq, resp_id) {
+calculate_probs <- function(model, gq, resp_id, resp_names) {
   class_probs <- extract_class_probs(model, gq) |>
     dplyr::mutate(
-      resp_id = names(model@data$respondent_names)[.data$resp_id]
+      resp_id = names(resp_names)[.data$resp_id]
     ) |>
     dplyr::rename(!!resp_id := "resp_id")
 
   attr_probs <- extract_attr_probs(model, gq) |>
     dplyr::mutate(
-      resp_id = names(model@data$respondent_names)[.data$resp_id]
+      resp_id = names(resp_names)[.data$resp_id]
     ) |>
     dplyr::rename(!!resp_id := "resp_id")
 
