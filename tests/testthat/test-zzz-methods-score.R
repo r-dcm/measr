@@ -141,7 +141,7 @@ test_that("dina probabilities are accurate", {
 
 test_that("score new data", {
   newdata_10 <- dplyr::slice_sample(dina_data, n = 10) |>
-    dplyr::mutate(id = paste0("nd_", 1:dplyr::n())) |>
+    dplyr::mutate(id = paste0("nd_", seq_len(dplyr::n()))) |>
     dplyr::select("id", dplyr::starts_with("item_"))
 
   mod_preds <- score(
