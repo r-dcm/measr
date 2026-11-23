@@ -156,3 +156,47 @@ test_that("score new data", {
   expect_equal(mod_preds$class_probabilities$id, newdata_10$id)
   expect_equal(mod_preds$attribute_probabilities$id, newdata_10$id)
 })
+
+test_that("score new data", {
+  newdata_10 <- dplyr::slice_sample(dina_data, n = 10) |>
+    dplyr::mutate(id = paste0("nd_", seq_len(dplyr::n()))) |>
+    dplyr::select("id", dplyr::starts_with("item_"))
+
+  mod_preds <- score(
+    rstn_dina,
+    newdata = newdata_10,
+    identifier = "id",
+    summary = FALSE
+  )
+
+  expect_equal(nrow(newdata_10), nrow(mod_preds$class_probabilities))
+  expect_equal(nrow(newdata_10), nrow(mod_preds$attribute_probabilities))
+  expect_equal(mod_preds$class_probabilities$id, newdata_10$id)
+  expect_equal(mod_preds$attribute_probabilities$id, newdata_10$id)
+})
+
+test_that("score 1 row", {
+  newdata_1 <- dplyr::slice_sample(dina_data, n = 1) |>
+    dplyr::mutate(
+      person = dcmdata::generate_ids(n = 1, character = 5, prop_numeric = .5)
+    ) |>
+    dplyr::select("person", dplyr::starts_with("item_"))
+
+  mod_preds <- score(
+    rstn_dina,
+    newdata = newdata_1,
+    identifier = "person",
+    summary = FALSE
+  )
+
+  expect_equal(nrow(newdata_1), nrow(mod_preds$class_probabilities))
+  expect_equal(nrow(newdata_1), nrow(mod_preds$attribute_probabilities))
+  expect_equal(
+    mod_preds$class_probabilities$person,
+    as.character(newdata_1$person)
+  )
+  expect_equal(
+    mod_preds$attribute_probabilities$person,
+    as.character(newdata_1$person)
+  )
+})
