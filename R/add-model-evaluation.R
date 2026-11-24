@@ -202,7 +202,9 @@ add_reliability <- function(x, overwrite = FALSE, save = TRUE, ...) {
     }
   } else {
     threshold <- rlang::list2(...)$threshold
-    if (is.null(threshold)) threshold <- 0.5
+    if (is.null(threshold)) {
+      threshold <- 0.5
+    }
     att_names <- names(x@model_spec@qmatrix_meta$attribute_names)
     threshold <- validate_threshold(threshold, att_names)
     check_reli_threshold(
