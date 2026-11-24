@@ -566,6 +566,17 @@ test_that("respondent probabilities are correct", {
     nrow(dtmr_preds$attribute_probabilities),
     nrow(dcmdata::dtmr_data) * 4
   )
+  expect_equal(
+    dtmr_preds$class_probabilities$id,
+    rep(
+      as.character(dcmdata::dtmr_data$id),
+      each = nrow(create_profiles(lcdm_spec))
+    )
+  )
+  expect_equal(
+    dtmr_preds$attribute_probabilities$id,
+    rep(as.character(dcmdata::dtmr_data$id), each = 4)
+  )
 
   expect_equal(
     names(dtmr_full_preds),
@@ -592,6 +603,14 @@ test_that("respondent probabilities are correct", {
   expect_equal(
     nrow(dtmr_full_preds$attribute_probabilities),
     nrow(dcmdata::dtmr_data)
+  )
+  expect_equal(
+    dtmr_full_preds$class_probabilities$id,
+    as.character(dcmdata::dtmr_data$id)
+  )
+  expect_equal(
+    dtmr_full_preds$attribute_probabilities$id,
+    as.character(dcmdata::dtmr_data$id)
   )
 
   # extract works -----

@@ -62,6 +62,12 @@
   * Accuracy and consistency statistics are now correct when `threshold` is a
     named vector in a different order than the attributes in the Q-matrix.
 
+* `score()` now returns the correct respondent identifiers when `newdata` is
+  supplied. Previously, respondents in `newdata` were labeled with identifiers
+  from the data used to estimate the model.
+
+* `score()` no longer errors when `newdata` contains only one respondent.
+
 # measr 2.0.1
 
 * Fix edge case that prevented that prevented the use of data with missing

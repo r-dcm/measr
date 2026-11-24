@@ -22,11 +22,11 @@ S7::method(stan_data, measrdcm) <- function(x, clean_data = NULL) {
     N = nrow(clean_data$clean_data),
     C = nrow(profiles),
     A = ncol(x@model_spec@qmatrix),
-    ii = as.numeric(clean_data$clean_data$item_id),
-    rr = as.numeric(clean_data$clean_data$resp_id),
-    y = clean_data$clean_data$score,
-    start = ragged_array$start,
-    num = ragged_array$num,
+    ii = as.array(as.numeric(clean_data$clean_data$item_id)),
+    rr = as.array(as.numeric(clean_data$clean_data$resp_id)),
+    y = as.array(clean_data$clean_data$score),
+    start = as.array(ragged_array$start),
+    num = as.array(ragged_array$num),
     Alpha = as.matrix(profiles)
   )
 

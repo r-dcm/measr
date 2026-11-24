@@ -141,7 +141,8 @@ S7::method(score, measrdcm) <-
     res_list <- calculate_probs(
       model = x,
       gq = mod,
-      resp_id = clean_data$respondent_identifier
+      resp_id = clean_data$respondent_identifier,
+      resp_names = clean_data$respondent_names
     )
 
     # return results -----------------------------------------------------------

@@ -203,6 +203,14 @@ test_that("ecpe probabilities are accurate", {
     nrow(ecpe_preds$attribute_probabilities),
     nrow(dcmdata::ecpe_data) * 3
   )
+  expect_equal(
+    ecpe_preds$class_probabilities$resp_id,
+    rep(as.character(dcmdata::ecpe_data$resp_id), each = 2^3)
+  )
+  expect_equal(
+    ecpe_preds$attribute_probabilities$resp_id,
+    rep(as.character(dcmdata::ecpe_data$resp_id), each = 3)
+  )
 
   # extract works (unsaved) -----
   expect_equal(cmds_ecpe_lcdm@respondent_estimates, list())
