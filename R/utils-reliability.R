@@ -200,13 +200,19 @@ create_reli_list <- function(
   return(ret_list)
 }
 
+# Johnson & Sinharay (2018, Eq. 30)
+cohens_kappa <- function(m) {
+  m <- m / sum(m)
+  chance <- sum(rowSums(m) * colSums(m))
+  (sum(diag(m)) - chance) / (1 - chance)
+}
+
 reli_list <- function(model, threshold) {
   n_resp <- length(model@data$respondent_names)
   n_att <- length(model@model_spec@qmatrix_meta$attribute_names)
   n_class <- nrow(create_profiles(model@model_spec))
   profile_vec <- create_profiles(model@model_spec) |>
     as.matrix() |>
-    t() |>
     as.vector()
   class_att <- double(n_class * n_att)
 

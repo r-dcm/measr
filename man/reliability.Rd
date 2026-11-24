@@ -61,6 +61,9 @@ reliability.
 The pattern-level reliability (\code{pattern_reliability}) statistics are
 described in Cui et al. (2012). Attribute-level classification reliability
 statistics (\code{map_reliability}) are described in Johnson & Sinharay (2018).
+Following Johnson & Sinharay (2018), the tetrachoric correlation is squared
+when used as a measure of accuracy (\code{tetra_a}), but not when used as a measure
+of consistency (\code{tetra_c}).
 Reliability statistics for the posterior mean of the skill indicators (i.e.,
 the mastery or proficiency probabilities; \code{eap_reliability}) are described in
 Johnson & Sinharay (2020).

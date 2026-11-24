@@ -301,3 +301,103 @@ test_that("stored reliability warns when threshold differs", {
     dina_mod@reliability$pattern_reliability
   )
 })
+
+test_that("consistency kappa follows Johnson & Sinharay (2018, Eq. 30)", {
+  for (threshold in c(0.2, 0.5, 0.8)) {
+    consistency <- reliability(
+      rstn_dino,
+      threshold = threshold
+    )$map_reliability$consistency
+
+    # the consistency table is symmetric, so it can be rebuilt from the observed
+    # agreement and the TP and TN rates
+    p1 <- (consistency$consist - consistency$tn_c) /
+      (consistency$tp_c - consistency$tn_c)
+    p_e <- p1^2 + (1 - p1)^2
+    expect_equal(
+      consistency$kappa_c,
+      (consistency$consist - p_e) / (1 - p_e)
+    )
+
+    # for a symmetric 2x2 table, kappa is equal to Youden's statistic
+    expect_equal(consistency$kappa_c, consistency$youden_c)
+  }
+})
+
+test_that("accuracy kappa follows Johnson & Sinharay (2018, Eq. 30)", {
+  for (threshold in c(0.2, 0.5, 0.8)) {
+    accuracy <- reliability(
+      rstn_dino,
+      threshold = threshold
+    )$map_reliability$accuracy
+
+    # rebuild the margins of the accuracy table from the observed agreement and
+    # the TP and TN rates
+    p_true <- (accuracy$acc - accuracy$tn_a) / (accuracy$tp_a - accuracy$tn_a)
+    p_est <- p_true * accuracy$tp_a + (1 - p_true) * (1 - accuracy$tn_a)
+    p_e <- p_true * p_est + (1 - p_true) * (1 - p_est)
+    expect_equal(accuracy$kappa_a, (accuracy$acc - p_e) / (1 - p_e))
+  }
+})
+
+test_that("accuracy tetrachoric correlation is squared", {
+  att_names <- colnames(q_matrix)[-1]
+  obj <- reli_list(
+    rstn_dino,
+    threshold = rlang::set_names(rep(0.5, 4), att_names)
+  )
+  reli <- reliability(rstn_dino, threshold = 0.5)$map_reliability
+  rho <- function(m) psych::tetrachoric(m)$rho
+
+  expect_equal(reli$accuracy$tetra_a, unname(apply(obj$acc, 3, rho))^2)
+  # consistency is not squared
+  expect_equal(reli$consistency$tetra_c, unname(apply(obj$consist, 3, rho)))
+})
+
+test_that("pc_prime follows Johnson & Sinharay (2018, Eqs. 17-18)", {
+  att_names <- colnames(q_matrix)[-1]
+  obj <- reli_list(
+    rstn_dino,
+    threshold = rlang::set_names(rep(0.5, 4), att_names)
+  )
+  profiles <- as.matrix(create_profiles(rstn_dino@model_spec))
+
+  # prevalence is the sum of the base rates for classes with the attribute
+  prev <- vapply(
+    att_names,
+    \(att) sum(obj$strc[profiles[, att] == 1]),
+    double(1)
+  )
+  expect_equal(obj$prev, unname(prev))
+  expect_equal(unname(prev), colMeans(obj$eap), tolerance = 0.001)
+
+  # probability of the same profile on two forms, given the true profile
+  map_class <- apply(obj$posterior, 1, which.max)
+  same <- vapply(
+    seq_len(nrow(profiles)),
+    \(a) {
+      sum(vapply(
+        seq_len(nrow(profiles)),
+        \(l) (mean(obj$posterior[, a] * (map_class == l)) / obj$strc[a])^2,
+        double(1)
+      ))
+    },
+    double(1)
+  )
+  expected <- vapply(
+    att_names,
+    \(att) {
+      has <- profiles[, att] == 1
+      pck1 <- sum((same * obj$strc)[has]) / sum(obj$strc[has])
+      pck0 <- sum((same * obj$strc)[!has]) / sum(obj$strc[!has])
+      pck1^2 * prev[[att]] + pck0^2 * (1 - prev[[att]])
+    },
+    double(1)
+  )
+
+  # does not depend on the threshold
+  for (threshold in c(0.2, 0.5, 0.8)) {
+    reli <- reliability(rstn_dino, threshold = threshold)
+    expect_equal(reli$map_reliability$consistency$pc_prime, unname(expected))
+  }
+})

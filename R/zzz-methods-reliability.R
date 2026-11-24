@@ -39,6 +39,9 @@
 #' @details The pattern-level reliability (`pattern_reliability`) statistics are
 #' described in Cui et al. (2012). Attribute-level classification reliability
 #' statistics (`map_reliability`) are described in Johnson & Sinharay (2018).
+#' Following Johnson & Sinharay (2018), the tetrachoric correlation is squared
+#' when used as a measure of accuracy (`tetra_a`), but not when used as a measure
+#' of consistency (`tetra_c`).
 #' Reliability statistics for the posterior mean of the skill indicators (i.e.,
 #' the mastery or proficiency probabilities; `eap_reliability`) are described in
 #' Johnson & Sinharay (2020).
@@ -113,7 +116,6 @@ S7::method(reliability, measrdcm) <- function(
   obj <- reli_list(model = x, threshold = threshold)
 
   tbl <- obj$acc
-  p <- obj$prev
   acc <- apply(tbl, 3, function(m) {
     sum(diag(m)) / sum(m)
   })
@@ -128,11 +130,12 @@ S7::method(reliability, measrdcm) <- function(
     max(apply(m / sum(m), 2, sum))
   })
   lambda_a <- (acc - mx) / (1 - mx)
+  # for accuracy, the tetrachoric correlation is squared (Johnson & Sinharay,
+  # 2018, p. 644)
   tetra_a <- apply(tbl, 3, function(m) {
-    psych::tetrachoric(m)$rho
+    psych::tetrachoric(m)$rho^2
   })
-  kap_base <- p * p + (1 - p) * (1 - p)
-  kappa_a <- (acc - kap_base) / kap_base
+  kappa_a <- apply(tbl, 3, cohens_kappa)
 
   tbl <- obj$consist
 
@@ -159,11 +162,10 @@ S7::method(reliability, measrdcm) <- function(
     m[m < 1e-10] <- 0
     psych::tetrachoric(m)$rho
   })
-  p <- apply(tbl, 3, function(m) {
-    sum(m[2, ])
+  kappa_c <- apply(tbl, 3, function(m) {
+    m[m < 1e-10] <- 0
+    cohens_kappa(m)
   })
-  kap_base <- p * p + (1 - p) * (1 - p)
-  kappa_c <- (acc - kap_base) / kap_base
 
   all_a <- as.matrix(create_profiles(x@model_spec))
   p_prime <- apply(
@@ -183,6 +185,7 @@ S7::method(reliability, measrdcm) <- function(
     sum
   )
   pc <- sum(p_prime * obj$strc)
+  p <- obj$prev
   pc1 <- p_prime %*% (obj$strc * all_a) / p
   pc0 <- p_prime %*% (obj$strc * (1 - all_a)) / (1 - p)
   pc_prime <- as.vector(pc1 * pc1 * p + pc0 * pc0 * (1 - p))
