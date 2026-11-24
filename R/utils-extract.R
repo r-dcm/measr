@@ -298,6 +298,18 @@ dcm_extract_prof_class <- function(model, call) {
     dplyr::select(-"prob")
 }
 
+dcm_extract_att_class <- function(model, threshold = 0.5, call) {
+  att_names <- names(model@model_spec@qmatrix_meta$attribute_names)
+  threshold <- validate_threshold(threshold, att_names, call = call)
+
+  att_prob <- dcm_extract_attr_prob(model, call)
+
+  att_prob |>
+    dplyr::mutate(dplyr::across(dplyr::all_of(att_names), \(x) {
+      as.integer(x >= threshold[[dplyr::cur_column()]])
+    }))
+}
+
 dcm_extract_ppmc_cond_prob <- function(model, ppmc_interval = 0.95, call) {
   check_number_decimal(
     ppmc_interval,

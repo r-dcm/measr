@@ -117,6 +117,9 @@ class).
 attribute.
 \item \code{profile_classification}: The profile-level classification, defined as
 the profile with the highest \code{class_prob}.
+\item \code{attribute_classification}: The attribute-level classifications, as
+determined by applying a \code{threshold} to the estimated attribute
+probabilities (i.e., \code{what = "attribute_prob"}).
 }
 }
 

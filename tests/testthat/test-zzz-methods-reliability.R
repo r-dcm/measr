@@ -255,10 +255,12 @@ test_that("stored reliability warns when threshold differs", {
   )
 
   # extract warning points to the extract-level fix
-  expect_warning(
+  w <- rlang::catch_cnd(
     measr_extract(dina_mod, "classification_reliability"),
-    "force = TRUE.*measr_extract"
+    classes = "warning"
   )
+  expect_match(conditionMessage(w), "force = TRUE")
+  expect_no_match(conditionMessage(w), "overwrite|add_reliability")
 
   # force = TRUE in measr_extract recalculates without touching the cache
   stored <- dina_mod@reliability

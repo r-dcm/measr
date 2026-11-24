@@ -111,6 +111,9 @@ measr_extract <- S7::new_generic(
 #'     attribute.
 #'   * `profile_classification`: The profile-level classification, defined as
 #'     the profile with the highest `class_prob`.
+#'   * `attribute_classification`: The attribute-level classifications, as
+#'     determined by applying a `threshold` to the estimated attribute
+#'     probabilities (i.e., `what = "attribute_prob"`).
 #'
 #' ## Model fit
 #'
@@ -213,6 +216,7 @@ S7::method(measr_extract, measrdcm) <- function(model, what, ...) {
     class_prob = dcm_extract_class_prob(model, call = call),
     attribute_prob = dcm_extract_attr_prob(model, call = call),
     profile_classification = dcm_extract_prof_class(model, call = call),
+    attribute_classification = dcm_extract_att_class(model, ..., call = call),
 
     # absolute fit -------------------------------------------------------------
     m2 = extract_m2(model, call = call),
