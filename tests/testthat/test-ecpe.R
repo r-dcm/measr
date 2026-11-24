@@ -286,6 +286,7 @@ test_that("ecpe reliability", {
     names(ecpe_reli$map_reliability$accuracy),
     c(
       "attribute",
+      "threshold",
       "acc",
       "lambda_a",
       "kappa_a",
@@ -299,6 +300,7 @@ test_that("ecpe reliability", {
     names(ecpe_reli$map_reliability$consistency),
     c(
       "attribute",
+      "threshold",
       "consist",
       "lambda_c",
       "kappa_c",
@@ -338,14 +340,14 @@ test_that("ecpe reliability", {
   expect_lt(median(patt_diff), .01)
 
   map_acc_diff <- abs(
-    round(as.matrix(ecpe_reli$map_reliability$accuracy[, -1]), digits = 4) -
+    round(as.matrix(ecpe_reli$map_reliability$accuracy[, -(1:2)]), digits = 4) -
       round(as.matrix(ecpe_lldcm_reli[[2]][1:7]), digits = 4)
   )
   expect_lt(mean(map_acc_diff), .02)
   expect_lt(median(map_acc_diff), .01)
 
   map_con_diff <- abs(
-    round(as.matrix(ecpe_reli$map_reliability$consistency[, -1]), digits = 4) -
+    round(as.matrix(ecpe_reli$map_reliability$consistency[, -(1:2)]), digits = 4) -
       round(as.matrix(ecpe_lldcm_reli[[2]][8:16]), digits = 4)
   )
   expect_lt(mean(map_con_diff), .01)

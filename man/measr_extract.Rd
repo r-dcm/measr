@@ -42,6 +42,28 @@ Johnson & Sinharay (2020) is returned. Additional metrics that can be
 specified to \code{agreement} are the point biserial reliability index (\code{bs}),
 parallel forms reliability index (\code{pf}), and the tetrachoric reliability
 index (\code{tb}), which was originally defined by Templin & Bradshaw (2013).
+\item \code{threshold}:
+
+For \code{what = "attribute_classification"} and
+\code{what = "classification_reliability"}, the threshold applied to the
+attribute-level probabilities for determining the binary attribute
+classifications.
+Attributes with probabilities greater than or equal to
+the \code{threshold} will be classified as \code{1} and as \code{0} otherwise.
+\code{threshold} should be a numeric vector of length1 (the same threshold is
+applied to all attributes), or length equal to the number of attributes.
+If a named vector is supplied, names should match the attribute names in
+the Q-matrix used to estimate the model.
+If unnamed, thresholds should be in the order the attributes were defined
+in the Q-matrix.
+\item \code{force}:
+
+For \code{what = "classification_reliability"}, whether to recalculate the
+reliability statistics even if reliability information has already been
+added to the model with \code{\link[=add_reliability]{add_reliability()}}. Default is \code{FALSE}, which
+returns the stored results (with a warning if they were calculated with
+a different \code{threshold}). If \code{TRUE}, the statistics are recalculated
+using \code{threshold}.
 }}
 }
 \value{

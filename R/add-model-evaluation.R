@@ -19,7 +19,9 @@
 #'   object.
 #' @param overwrite Logical. Indicates whether specified elements that have
 #'   already been added to the estimated model should be overwritten. Default is
-#'   `FALSE`.
+#'   `FALSE`. For `add_reliability()`, if `FALSE` and the stored reliability
+#'   information was calculated with a different `threshold`, a warning is
+#'   issued and the model is returned unchanged.
 #' @param save Logical. Only relevant if a file was specified in the
 #'   [measrdcm][dcm_estimate()] object passed to `x`. If `TRUE` (the default),
 #'   the model is re-saved to the specified file when new criteria are added to
@@ -198,6 +200,16 @@ add_reliability <- function(x, overwrite = FALSE, save = TRUE, ...) {
     if (!rlang::is_empty(x@file) && save) {
       write_measrfit(x, file = x@file)
     }
+  } else {
+    threshold <- rlang::list2(...)$threshold
+    if (is.null(threshold)) threshold <- 0.5
+    att_names <- names(x@model_spec@qmatrix_meta$attribute_names)
+    threshold <- validate_threshold(threshold, att_names)
+    check_reli_threshold(
+      x@reliability,
+      threshold,
+      hint = "To recalculate, use {.code overwrite = TRUE}."
+    )
   }
 
   x

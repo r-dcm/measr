@@ -49,6 +49,30 @@ measr_extract <- S7::new_generic(
 #'     parallel forms reliability index (`pf`), and the tetrachoric reliability
 #'     index (`tb`), which was originally defined by Templin & Bradshaw (2013).
 #'
+#'   * `threshold`:
+#'
+#'     For `what = "attribute_classification"` and
+#'     `what = "classification_reliability"`, the threshold applied to the
+#'     attribute-level probabilities for determining the binary attribute
+#'     classifications.
+#'     Attributes with probabilities greater than or equal to
+#'     the `threshold` will be classified as `1` and as `0` otherwise.
+#'     `threshold` should be a numeric vector of length1 (the same threshold is
+#'     applied to all attributes), or length equal to the number of attributes.
+#'     If a named vector is supplied, names should match the attribute names in
+#'     the Q-matrix used to estimate the model.
+#'     If unnamed, thresholds should be in the order the attributes were defined
+#'     in the Q-matrix.
+#'
+#'   * `force`:
+#'
+#'     For `what = "classification_reliability"`, whether to recalculate the
+#'     reliability statistics even if reliability information has already been
+#'     added to the model with [add_reliability()]. Default is `FALSE`, which
+#'     returns the stored results (with a warning if they were calculated with
+#'     a different `threshold`). If `TRUE`, the statistics are recalculated
+#'     using `threshold`.
+#'
 #' @details
 #' For diagnostic classification models, we can extract the following
 #' information:

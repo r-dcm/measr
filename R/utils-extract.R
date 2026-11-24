@@ -354,9 +354,30 @@ dcm_extract_patt_reli <- function(model, call) {
     dplyr::rename(accuracy = "p_a", consistency = "p_c")
 }
 
-dcm_extract_map_reli <- function(model, agreement = NULL, call) {
-  if (rlang::is_empty(model@reliability)) {
-    model <- add_reliability(model, save = FALSE)
+dcm_extract_map_reli <- function(
+  model,
+  agreement = NULL,
+  threshold = 0.5,
+  force = FALSE,
+  call
+) {
+  check_bool(force, call = call)
+  att_names <- names(model@model_spec@qmatrix_meta$attribute_names)
+  threshold <- validate_threshold(threshold, att_names, call = call)
+
+  # recalculate if requested or nothing is cached; the model object itself is
+  # never modified, so cached results are left untouched
+  if (force || rlang::is_empty(model@reliability)) {
+    map_reli <- reliability(model, threshold = threshold, force = TRUE)
+    map_reli <- map_reli$map_reliability
+  } else {
+    check_reli_threshold(
+      model@reliability,
+      threshold,
+      hint = "To recalculate, use {.code force = TRUE}.",
+      call = call
+    )
+    map_reli <- model@reliability$map_reliability
   }
 
   if (is.null(agreement)) {
@@ -373,12 +394,12 @@ dcm_extract_map_reli <- function(model, agreement = NULL, call) {
 
   dplyr::full_join(
     dplyr::select(
-      model@reliability$map_reliability$accuracy,
+      map_reli$accuracy,
       "attribute",
       dplyr::any_of(dplyr::matches(agreement))
     ),
     dplyr::select(
-      model@reliability$map_reliability$consistency,
+      map_reli$consistency,
       "attribute",
       dplyr::any_of(dplyr::matches(agreement))
     ),

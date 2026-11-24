@@ -286,3 +286,67 @@ reli_list <- function(model, threshold) {
 
   return(res)
 }
+
+validate_threshold <- function(threshold, att_names, call = rlang::caller_env()) {
+  for (i in seq_along(threshold)) {
+    check_number_decimal(threshold[i], arg = "threshold", call = call)
+  }
+
+  if (length(threshold) == 1) {
+    threshold <- rep(threshold, length(att_names))
+  } else if (length(threshold) != length(att_names)) {
+    msg <- cli::cli_fmt(
+      cli::cli_text(
+        "{.arg threshold} must be length 1 or ",
+        "{length(att_names)} (the number of attributes), ",
+        "not {length(threshold)}"
+      )
+    )
+    cli::cli_abort(msg, call = call)
+  }
+
+  if (is.null(names(threshold))) {
+    threshold <- rlang::set_names(threshold, att_names)
+  } else if (!identical(sort(att_names), sort(names(threshold)))) {
+    bad_names <- setdiff(names(threshold), att_names) # nolint
+    msg <- cli::cli_fmt(
+      cli::cli_text(
+        "{.arg threshold} contains unknown attribute names: ",
+        "{cli::cli_vec(bad_names)}"
+      )
+    )
+    cli::cli_abort(msg, call = call)
+  }
+
+  threshold[att_names]
+}
+
+check_reli_threshold <- function(
+  reli,
+  threshold,
+  hint,
+  call = rlang::caller_env()
+) {
+  map_acc <- reli$map_reliability$accuracy
+  if (!"threshold" %in% names(map_acc)) {
+    return(invisible(TRUE))
+  }
+
+  stored <- rlang::set_names(map_acc$threshold, map_acc$attribute)
+  if (isTRUE(all.equal(stored[names(threshold)], threshold))) {
+    return(invisible(TRUE))
+  }
+
+  cli::cli_warn(
+    c(
+      "!" = paste(
+        "The stored reliability information was calculated with a different",
+        "{.arg threshold} than the one requested."
+      ),
+      "i" = "Returning the stored results.",
+      "i" = hint
+    ),
+    call = call
+  )
+  invisible(FALSE)
+}
