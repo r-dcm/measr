@@ -438,15 +438,16 @@ test_that("ecpe reliability", {
 
   # reliability thresholds -----
   expect_equal(ecpe_reli$pattern_reliability, ecpe_reli8$pattern_reliability)
-  expect_equal(ecpe_reli$eap_reliability, ecpe_reli$eap_reliability)
-  expect_false(identical(
-    ecpe_reli$map_reliability$accuracy,
-    ecpe_reli8$map_reliability$accuracy
-  ))
-  expect_false(identical(
-    ecpe_reli$map_reliability$consistency,
-    ecpe_reli8$map_reliability$consistency
-  ))
+  expect_equal(ecpe_reli$eap_reliability, ecpe_reli8$eap_reliability)
+  # exclude the threshold column, which always differs
+  expect_false(isTRUE(all.equal(
+    dplyr::select(ecpe_reli$map_reliability$accuracy, -"threshold"),
+    dplyr::select(ecpe_reli8$map_reliability$accuracy, -"threshold")
+  )))
+  expect_false(isTRUE(all.equal(
+    dplyr::select(ecpe_reli$map_reliability$consistency, -"threshold"),
+    dplyr::select(ecpe_reli8$map_reliability$consistency, -"threshold")
+  )))
 })
 
 test_that("m2 calculation is correct", {
