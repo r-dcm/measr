@@ -40,8 +40,8 @@
 #' described in Cui et al. (2012). Attribute-level classification reliability
 #' statistics (`map_reliability`) are described in Johnson & Sinharay (2018).
 #' Following Johnson & Sinharay (2018), the tetrachoric correlation is squared
-#' when used as a measure of accuracy (`tetra_a`), but not when used as a measure
-#' of consistency (`tetra_c`).
+#' when used as a measure of accuracy (`tetra_a`), but not when used as a
+#' measure of consistency (`tetra_c`).
 #' Reliability statistics for the posterior mean of the skill indicators (i.e.,
 #' the mastery or proficiency probabilities; `eap_reliability`) are described in
 #' Johnson & Sinharay (2020).

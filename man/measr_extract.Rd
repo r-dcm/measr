@@ -50,7 +50,7 @@ attribute-level probabilities for determining the binary attribute
 classifications.
 Attributes with probabilities greater than or equal to
 the \code{threshold} will be classified as \code{1} and as \code{0} otherwise.
-\code{threshold} should be a numeric vector of length1 (the same threshold is
+\code{threshold} should be a numeric vector of length 1 (the same threshold is
 applied to all attributes), or length equal to the number of attributes.
 If a named vector is supplied, names should match the attribute names in
 the Q-matrix used to estimate the model.

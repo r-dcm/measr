@@ -290,7 +290,9 @@ test_that("stored reliability warns when threshold differs", {
   expect_match(err$message, "force")
 
   # force = TRUE recalculates without a warning
-  expect_no_warning(reli <- reliability(dina_mod, threshold = 0.5, force = TRUE))
+  expect_no_warning(
+    reli <- reliability(dina_mod, threshold = 0.5, force = TRUE)
+  )
   expect_equal(reli$map_reliability$accuracy$threshold, rep(0.5, 4))
 
   # eap and pattern reliability do not depend on the threshold

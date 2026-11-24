@@ -293,7 +293,11 @@ reli_list <- function(model, threshold) {
   return(res)
 }
 
-validate_threshold <- function(threshold, att_names, call = rlang::caller_env()) {
+validate_threshold <- function(
+  threshold,
+  att_names,
+  call = rlang::caller_env()
+) {
   for (i in seq_along(threshold)) {
     check_number_decimal(threshold[i], arg = "threshold", call = call)
   }

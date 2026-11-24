@@ -57,7 +57,7 @@ measr_extract <- S7::new_generic(
 #'     classifications.
 #'     Attributes with probabilities greater than or equal to
 #'     the `threshold` will be classified as `1` and as `0` otherwise.
-#'     `threshold` should be a numeric vector of length1 (the same threshold is
+#'     `threshold` should be a numeric vector of length 1 (the same threshold is
 #'     applied to all attributes), or length equal to the number of attributes.
 #'     If a named vector is supplied, names should match the attribute names in
 #'     the Q-matrix used to estimate the model.
