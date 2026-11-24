@@ -109,6 +109,8 @@ measr_extract <- S7::new_generic(
 #'     (i.e., has the given pattern of proficiency).
 #'   * `attribute_prob`: The proficiency probability for each respondent and
 #'     attribute.
+#'   * `profile_classification`: The profile-level classification, defined as
+#'     the profile with the highest `class_prob`.
 #'
 #' ## Model fit
 #'
@@ -210,6 +212,7 @@ S7::method(measr_extract, measrdcm) <- function(model, what, ...) {
     # respondent results -------------------------------------------------------
     class_prob = dcm_extract_class_prob(model, call = call),
     attribute_prob = dcm_extract_attr_prob(model, call = call),
+    profile_classification = dcm_extract_prof_class(model, call = call),
 
     # absolute fit -------------------------------------------------------------
     m2 = extract_m2(model, call = call),

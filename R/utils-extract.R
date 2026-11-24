@@ -280,6 +280,24 @@ dcm_extract_attr_prob <- function(model, call) {
     tidyr::pivot_wider(names_from = "attribute", values_from = "probability")
 }
 
+dcm_extract_prof_class <- function(model, call) {
+  class_prob <- dcm_extract_class_prob(model, call)
+
+  class_prob |>
+    tidyr::pivot_longer(
+      cols = -model@data$respondent_identifier,
+      names_to = "class",
+      values_to = "prob"
+    ) |>
+    dplyr::slice_max(
+      order_by = .data$prob,
+      n = 1,
+      with_ties = FALSE,
+      by = model@data$respondent_identifier
+    ) |>
+    dplyr::select(-"prob")
+}
+
 dcm_extract_ppmc_cond_prob <- function(model, ppmc_interval = 0.95, call) {
   check_number_decimal(
     ppmc_interval,

@@ -115,6 +115,8 @@ class).
 (i.e., has the given pattern of proficiency).
 \item \code{attribute_prob}: The proficiency probability for each respondent and
 attribute.
+\item \code{profile_classification}: The profile-level classification, defined as
+the profile with the highest \code{class_prob}.
 }
 }
 
