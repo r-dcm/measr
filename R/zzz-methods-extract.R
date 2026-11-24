@@ -130,6 +130,7 @@ measr_extract <- S7::new_generic(
 #'     proficiency on each attribute, as described by Johnson & Sinharay (2020).
 #'
 #' @concept Sinharay
+#' @concept Johnson
 #' @concept Goodman
 #' @concept Templin
 #' @concept Bradshaw
