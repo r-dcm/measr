@@ -163,3 +163,39 @@ test_that("extract attribute classifications", {
   ))
   expect_match(err$message, "threshold")
 })
+
+test_that("extract profile classifications", {
+  class_names <- dplyr::pull(profile_labels(4), "class")
+
+  for (model in list(rstn_dina, rstn_dino)) {
+    class_prob <- measr_extract(model, "class_prob")
+    prob_mat <- as.matrix(class_prob[, class_names])
+
+    prof_class <- measr_extract(model, "profile_classification")
+    expect_equal(names(prof_class), c("resp_id", "class"))
+    expect_equal(prof_class$resp_id, class_prob$resp_id)
+    expect_equal(
+      prof_class$class,
+      class_names[max.col(prob_mat, ties.method = "first")]
+    )
+  }
+})
+
+test_that("profile classifications are unique when probabilities are tied", {
+  tied_prob <- tibble::tibble(
+    resp_id = factor(c("b", "a", "c")),
+    `[0,0]` = c(0.4, 0.1, 0.2),
+    `[1,0]` = c(0.1, 0.4, 0.6),
+    `[0,1]` = c(0.4, 0.4, 0.1),
+    `[1,1]` = c(0.1, 0.1, 0.1)
+  )
+  local_mocked_bindings(dcm_extract_class_prob = \(...) tied_prob)
+
+  expect_equal(
+    measr_extract(rstn_dina, "profile_classification"),
+    tibble::tibble(
+      resp_id = factor(c("b", "a", "c")),
+      class = c("[0,0]", "[1,0]", "[1,0]")
+    )
+  )
+})

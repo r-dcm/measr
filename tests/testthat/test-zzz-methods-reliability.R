@@ -481,3 +481,44 @@ test_that("pc_prime follows Johnson & Sinharay (2018, Eqs. 17-18)", {
     expect_equal(reli$map_reliability$consistency$pc_prime, unname(expected))
   }
 })
+
+test_that("reliability stored without a threshold does not warn", {
+  # results stored by previous versions of measr do not include the threshold
+  old_mod <- add_reliability(rstn_dina, threshold = 0.6)
+  old_reli <- old_mod@reliability
+  old_reli$map_reliability <- lapply(
+    old_reli$map_reliability,
+    \(x) dplyr::select(x, -"threshold")
+  )
+  old_mod@reliability <- old_reli
+
+  expect_no_warning(reli <- reliability(old_mod, threshold = 0.8))
+  expect_identical(reli, old_reli)
+
+  expect_no_warning(new_mod <- add_reliability(old_mod, threshold = 0.8))
+  expect_identical(new_mod@reliability, old_reli)
+
+  expect_no_warning(
+    map_reli <- measr_extract(
+      old_mod,
+      "classification_reliability",
+      threshold = 0.8
+    )
+  )
+  expect_equal(map_reli$accuracy, old_reli$map_reliability$accuracy$acc)
+})
+
+test_that("reliability works when all respondents have the same profile", {
+  # if every posterior is equal to the structural parameters, all respondents
+  # have the same most likely profile, and would on any replication
+  threshold <- rlang::set_names(rep(0.5, 4), colnames(q_matrix)[-1])
+  obj <- reli_list(rstn_dina, threshold = threshold)
+  obj$posterior[] <- rep(obj$strc, each = nrow(obj$posterior))
+  expect_length(unique(apply(obj$posterior, 1, which.max)), 1)
+  local_mocked_bindings(reli_list = \(...) obj)
+
+  reli <- reliability(rstn_dina)
+  expect_equal(reli$pattern_reliability[["p_a"]], max(obj$strc))
+  expect_equal(reli$pattern_reliability[["p_c"]], 1)
+  expect_equal(reli$map_reliability$consistency$pc_prime, rep(1, 4))
+})
