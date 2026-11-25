@@ -472,6 +472,7 @@ test_that("reliability works", {
     names(reli$map_reliability$accuracy),
     c(
       "attribute",
+      "threshold",
       "acc",
       "lambda_a",
       "kappa_a",
@@ -485,6 +486,7 @@ test_that("reliability works", {
     names(reli$map_reliability$consistency),
     c(
       "attribute",
+      "threshold",
       "consist",
       "lambda_c",
       "kappa_c",

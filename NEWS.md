@@ -16,6 +16,61 @@
 * Tests and documentation are updated for loo 2.10.0, where `loo_compare()`
   returns a data frame with a `model` column instead of row names.
 
+* `measr_extract()` can now extract respondent classifications.
+
+  * `what = "profile_classification"` returns the most likely profile for each
+    respondent.
+
+  * `what = "attribute_classification"` returns a binary classification for each
+    respondent and attribute, determined by applying a `threshold` to the
+    attribute probabilities. The `threshold` can be a single value for all
+    attributes or a separate value for each attribute.
+
+* `measr_extract(what = "classification_reliability")` gains two arguments.
+  `threshold` specifies the threshold for classifying attributes, and
+  `force = TRUE` calculates new reliability estimates without altering any
+  results stored in the model.
+
+* `measr_extract(what = "probability_reliability")` now returns the point
+  biserial reliability index by default, in addition to the informational
+  reliability index.
+
+* When extracting `"classification_reliability"` or `"probability_reliability"`
+  with `measr_extract()`, `agreement` now accepts the metrics that are
+  always returned (i.e., `"acc"` and `"consist"`, or `"i"` and `"bs"`,
+  respectively). These do not change the output.
+
+* The `map_reliability` accuracy and consistency tables returned by
+  `reliability()` now include a `threshold` column with the threshold used to
+  classify each attribute.
+
+* `reliability()`, `add_reliability()`, and
+  `measr_extract(what = "classification_reliability")` now warn when the stored
+  reliability information was calculated with a different `threshold` than the
+  one requested (including the default of 0.5). The stored results are still
+  used, unless recalculation is requested with `force = TRUE` (or
+  `overwrite = TRUE` for `add_reliability()`). No warning is issued for
+  reliability information stored by previous versions of measr, which did not
+  record the `threshold`.
+
+* Fixed errors in the `map_reliability` statistics returned by `reliability()`.
+  These values will differ from previous versions. Reliability information
+  stored in a saved model is not updated automatically; use
+  `add_reliability(overwrite = TRUE)` to recalculate.
+
+  * `kappa_a` and `kappa_c` are now calculated as defined by Johnson & Sinharay
+    (2018, Eq. 30). Note that the kappa values reported for the ECPE data in
+    that article do not follow Eq. 30, and will not match the values from measr.
+
+  * `tetra_a` is now the squared tetrachoric correlation, following Johnson &
+    Sinharay (2018).
+
+  * `pc_prime` now uses the attribute prevalence, and no longer depends on the
+    `threshold`.
+
+  * Accuracy and consistency statistics are now correct when `threshold` is a
+    named vector in a different order than the attributes in the Q-matrix.
+
 * `score()` now returns the correct respondent identifiers when `newdata` is
   supplied. Previously, respondents in `newdata` were labeled with identifiers
   from the data used to estimate the model.

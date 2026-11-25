@@ -32,11 +32,16 @@
 #'  order the attributes were defined in the Q-matrix.
 #' @param force If reliability information has already been added to the model
 #'   object with [add_reliability()], should it be recalculated. Default is
-#'   `FALSE`.
+#'   `FALSE`. If `FALSE` and the stored reliability information was calculated
+#'   with a different `threshold`, a warning is issued and the stored results
+#'   are returned.
 #'
 #' @details The pattern-level reliability (`pattern_reliability`) statistics are
 #' described in Cui et al. (2012). Attribute-level classification reliability
 #' statistics (`map_reliability`) are described in Johnson & Sinharay (2018).
+#' Following Johnson & Sinharay (2018), the tetrachoric correlation is squared
+#' when used as a measure of accuracy (`tetra_a`), but not when used as a
+#' measure of consistency (`tetra_c`).
 #' Reliability statistics for the posterior mean of the skill indicators (i.e.,
 #' the mastery or proficiency probabilities; `eap_reliability`) are described in
 #' Johnson & Sinharay (2020).
@@ -46,7 +51,8 @@
 #'     (`p_c`) described by Cui et al. (2012).
 #'   * `map_reliability`: A list with 2 elements: `accuracy` and `consistency`,
 #'     which include the attribute-level classification reliability statistics
-#'     described by Johnson & Sinharay (2018).
+#'     described by Johnson & Sinharay (2018). Both also include a `threshold`
+#'     column with the probability threshold used to classify each attribute.
 #'   * `eap_reliability`: The attribute-level posterior probability reliability
 #'     statistics described by Johnson & Sinharay (2020).
 #'
@@ -91,48 +97,25 @@ S7::method(reliability, measrdcm) <- function(
   threshold = 0.5,
   force = FALSE
 ) {
-  # check for existing reliability ---------------------------------------------
-  check_bool(force)
-  if (!rlang::is_empty(x@reliability) && !force) {
-    return(x@reliability)
-  }
-
   # check arguments ------------------------------------------------------------
-  for (i in seq_along(threshold)) {
-    check_number_decimal(threshold[i], arg = "threshold")
-  }
-
+  check_bool(force)
   att_names <- names(x@model_spec@qmatrix_meta$attribute_names)
-  if (length(threshold) == 1) {
-    threshold <- rep(threshold, length(att_names))
-  } else if (length(threshold) != length(att_names)) {
-    msg <- cli::cli_fmt(
-      cli::cli_text(
-        "{.arg threshold} must be length 1 or ",
-        "{length(att_names)} (the number of attributes), ",
-        "not {length(threshold)}"
-      )
+  threshold <- validate_threshold(threshold, att_names)
+
+  # check for existing reliability ---------------------------------------------
+  if (!rlang::is_empty(x@reliability) && !force) {
+    check_reli_threshold(
+      x@reliability,
+      threshold,
+      hint = "To recalculate, use {.code force = TRUE}."
     )
-    cli::cli_abort(msg)
-  }
-  if (is.null(names(threshold))) {
-    threshold <- rlang::set_names(threshold, att_names)
-  } else if (!identical(sort(att_names), sort(names(threshold)))) {
-    bad_names <- setdiff(names(threshold), att_names) # nolint
-    msg <- cli::cli_fmt(
-      cli::cli_text(
-        "{.arg threshold} contains unknown attribute names: ",
-        "{cli::cli_vec(bad_names)}"
-      )
-    )
-    cli::cli_abort(msg)
+    return(x@reliability)
   }
 
   # coerce model into a list of values required for reliability -----
   obj <- reli_list(model = x, threshold = threshold)
 
   tbl <- obj$acc
-  p <- obj$prev
   acc <- apply(tbl, 3, function(m) {
     sum(diag(m)) / sum(m)
   })
@@ -147,11 +130,12 @@ S7::method(reliability, measrdcm) <- function(
     max(apply(m / sum(m), 2, sum))
   })
   lambda_a <- (acc - mx) / (1 - mx)
+  # for accuracy, the tetrachoric correlation is squared (Johnson & Sinharay,
+  # 2018, p. 644)
   tetra_a <- apply(tbl, 3, function(m) {
-    psych::tetrachoric(m)$rho
+    psych::tetrachoric(m)$rho^2
   })
-  kap_base <- p * p + (1 - p) * (1 - p)
-  kappa_a <- (acc - kap_base) / kap_base
+  kappa_a <- apply(tbl, 3, cohens_kappa)
 
   tbl <- obj$consist
 
@@ -178,11 +162,10 @@ S7::method(reliability, measrdcm) <- function(
     m[m < 1e-10] <- 0
     psych::tetrachoric(m)$rho
   })
-  p <- apply(tbl, 3, function(m) {
-    sum(m[2, ])
+  kappa_c <- apply(tbl, 3, function(m) {
+    m[m < 1e-10] <- 0
+    cohens_kappa(m)
   })
-  kap_base <- p * p + (1 - p) * (1 - p)
-  kappa_c <- (acc - kap_base) / kap_base
 
   all_a <- as.matrix(create_profiles(x@model_spec))
   p_prime <- apply(
@@ -202,12 +185,21 @@ S7::method(reliability, measrdcm) <- function(
     sum
   )
   pc <- sum(p_prime * obj$strc)
+  p <- obj$prev
   pc1 <- p_prime %*% (obj$strc * all_a) / p
   pc0 <- p_prime %*% (obj$strc * (1 - all_a)) / (1 - p)
   pc_prime <- as.vector(pc1 * pc1 * p + pc0 * pc0 * (1 - p))
   pa <- mean(apply(obj$posterior, 1, max))
 
+  res_threshold <- tibble::enframe(
+    threshold,
+    name = "attribute",
+    value = "threshold"
+  )
+
   res_map_acc <- tibble::enframe(acc, name = "attribute", value = "acc") |>
+    dplyr::full_join(res_threshold, by = "attribute") |>
+    dplyr::relocate("threshold", .after = "attribute") |>
     dplyr::full_join(
       tibble::enframe(lambda_a, name = "attribute", value = "lambda_a"),
       by = "attribute"
@@ -242,6 +234,8 @@ S7::method(reliability, measrdcm) <- function(
     name = "attribute",
     value = "consist"
   ) |>
+    dplyr::full_join(res_threshold, by = "attribute") |>
+    dplyr::relocate("threshold", .after = "attribute") |>
     dplyr::full_join(
       tibble::enframe(lambda_c, name = "attribute", value = "lambda_c"),
       by = "attribute"

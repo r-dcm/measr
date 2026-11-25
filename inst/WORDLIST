@@ -15,6 +15,7 @@ DCM
 DCMs
 EAP
 ECPE
+Eq
 GDINA
 Gabry
 Gelman
@@ -69,6 +70,7 @@ blatent
 cmdstanr
 codecov
 dcmdata
+dcmstan
 de
 dichotomously
 dina
@@ -95,6 +97,7 @@ pre
 psychometrics
 resave
 rlang
+roxygen
 rstan
 rvars
 subtype

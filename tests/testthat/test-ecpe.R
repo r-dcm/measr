@@ -294,6 +294,7 @@ test_that("ecpe reliability", {
     names(ecpe_reli$map_reliability$accuracy),
     c(
       "attribute",
+      "threshold",
       "acc",
       "lambda_a",
       "kappa_a",
@@ -307,6 +308,7 @@ test_that("ecpe reliability", {
     names(ecpe_reli$map_reliability$consistency),
     c(
       "attribute",
+      "threshold",
       "consist",
       "lambda_c",
       "kappa_c",
@@ -345,19 +347,55 @@ test_that("ecpe reliability", {
   expect_lt(mean(patt_diff), .01)
   expect_lt(median(patt_diff), .01)
 
+  # the lldcm values do not follow the definition of kappa in Johnson & Sinharay
+  # (2018, Eq. 30), and the tetrachoric correlation for accuracy is not squared
+  map_acc <- dplyr::select(
+    ecpe_reli$map_reliability$accuracy,
+    -c("attribute", "threshold", "kappa_a")
+  )
+  lldcm_acc <- ecpe_lldcm_reli[[2]][1:7] |>
+    dplyr::select(-"kappa.a") |>
+    dplyr::mutate(tetra.a = .data$tetra.a^2)
   map_acc_diff <- abs(
-    round(as.matrix(ecpe_reli$map_reliability$accuracy[, -1]), digits = 4) -
-      round(as.matrix(ecpe_lldcm_reli[[2]][1:7]), digits = 4)
+    round(as.matrix(map_acc), digits = 4) -
+      round(as.matrix(lldcm_acc), digits = 4)
   )
   expect_lt(mean(map_acc_diff), .02)
   expect_lt(median(map_acc_diff), .01)
 
+  # kappa is compared to Eq. 30 calculated from the other lldcm values
+  lldcm_kappa_a <- with(ecpe_lldcm_reli[[2]], {
+    p_true <- (acc - TN.a) / (TP.a - TN.a)
+    p_est <- p_true * TP.a + (1 - p_true) * (1 - TN.a)
+    p_e <- p_true * p_est + (1 - p_true) * (1 - p_est)
+    (acc - p_e) / (1 - p_e)
+  })
+  expect_lt(
+    max(abs(ecpe_reli$map_reliability$accuracy$kappa_a - lldcm_kappa_a)),
+    .01
+  )
+
+  # kappa.c is excluded because the lldcm values do not follow the definition of
+  # kappa in Johnson & Sinharay (2018, Eq. 30). The consistency table is
+  # symmetric, so kappa is equal to Youden's statistic and can be compared to
+  # the lldcm Youden.c values instead.
+  map_con <- dplyr::select(
+    ecpe_reli$map_reliability$consistency,
+    -c("attribute", "threshold", "kappa_c")
+  )
+  lldcm_con <- dplyr::select(ecpe_lldcm_reli[[2]][8:16], -"kappa.c")
   map_con_diff <- abs(
-    round(as.matrix(ecpe_reli$map_reliability$consistency[, -1]), digits = 4) -
-      round(as.matrix(ecpe_lldcm_reli[[2]][8:16]), digits = 4)
+    round(as.matrix(map_con), digits = 4) -
+      round(as.matrix(lldcm_con), digits = 4)
   )
   expect_lt(mean(map_con_diff), .01)
   expect_lt(median(map_con_diff), .01)
+
+  kappa_c_diff <- abs(
+    ecpe_reli$map_reliability$consistency$kappa_c -
+      ecpe_lldcm_reli[[2]]$Youden.c
+  )
+  expect_lt(max(kappa_c_diff), .01)
 
   eap_diff <- abs(
     round(as.matrix(ecpe_reli$eap_reliability[, -1]), digits = 4) -
@@ -408,15 +446,16 @@ test_that("ecpe reliability", {
 
   # reliability thresholds -----
   expect_equal(ecpe_reli$pattern_reliability, ecpe_reli8$pattern_reliability)
-  expect_equal(ecpe_reli$eap_reliability, ecpe_reli$eap_reliability)
-  expect_false(identical(
-    ecpe_reli$map_reliability$accuracy,
-    ecpe_reli8$map_reliability$accuracy
-  ))
-  expect_false(identical(
-    ecpe_reli$map_reliability$consistency,
-    ecpe_reli8$map_reliability$consistency
-  ))
+  expect_equal(ecpe_reli$eap_reliability, ecpe_reli8$eap_reliability)
+  # exclude the threshold column, which always differs
+  expect_false(isTRUE(all.equal(
+    dplyr::select(ecpe_reli$map_reliability$accuracy, -"threshold"),
+    dplyr::select(ecpe_reli8$map_reliability$accuracy, -"threshold")
+  )))
+  expect_false(isTRUE(all.equal(
+    dplyr::select(ecpe_reli$map_reliability$consistency, -"threshold"),
+    dplyr::select(ecpe_reli8$map_reliability$consistency, -"threshold")
+  )))
 })
 
 test_that("m2 calculation is correct", {

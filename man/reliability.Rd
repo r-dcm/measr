@@ -26,7 +26,9 @@ order the attributes were defined in the Q-matrix.}
 
 \item{force}{If reliability information has already been added to the model
 object with \code{\link[=add_reliability]{add_reliability()}}, should it be recalculated. Default is
-\code{FALSE}.}
+\code{FALSE}. If \code{FALSE} and the stored reliability information was calculated
+with a different \code{threshold}, a warning is issued and the stored results
+are returned.}
 }
 \value{
 For class \code{measrdcm}, a list with 3 elements:
@@ -35,7 +37,8 @@ For class \code{measrdcm}, a list with 3 elements:
 (\code{p_c}) described by Cui et al. (2012).
 \item \code{map_reliability}: A list with 2 elements: \code{accuracy} and \code{consistency},
 which include the attribute-level classification reliability statistics
-described by Johnson & Sinharay (2018).
+described by Johnson & Sinharay (2018). Both also include a \code{threshold}
+column with the probability threshold used to classify each attribute.
 \item \code{eap_reliability}: The attribute-level posterior probability reliability
 statistics described by Johnson & Sinharay (2020).
 }
@@ -58,6 +61,9 @@ reliability.
 The pattern-level reliability (\code{pattern_reliability}) statistics are
 described in Cui et al. (2012). Attribute-level classification reliability
 statistics (\code{map_reliability}) are described in Johnson & Sinharay (2018).
+Following Johnson & Sinharay (2018), the tetrachoric correlation is squared
+when used as a measure of accuracy (\code{tetra_a}), but not when used as a
+measure of consistency (\code{tetra_c}).
 Reliability statistics for the posterior mean of the skill indicators (i.e.,
 the mastery or proficiency probabilities; \code{eap_reliability}) are described in
 Johnson & Sinharay (2020).

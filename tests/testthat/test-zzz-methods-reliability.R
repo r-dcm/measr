@@ -29,6 +29,7 @@ test_that("dino reliability", {
     names(dino_reli$map_reliability$accuracy),
     c(
       "attribute",
+      "threshold",
       "acc",
       "lambda_a",
       "kappa_a",
@@ -42,6 +43,7 @@ test_that("dino reliability", {
     names(dino_reli$map_reliability$consistency),
     c(
       "attribute",
+      "threshold",
       "consist",
       "lambda_c",
       "kappa_c",
@@ -138,12 +140,45 @@ test_that("reliability can be added to model object", {
     )
   )
 
+  # accuracy and consistency are always returned, but can still be requested
+  for (agreement in list("acc", "consist", c("consist", "acc"))) {
+    expect_equal(
+      measr_extract(
+        dina_mod,
+        "classification_reliability",
+        agreement = agreement
+      ),
+      measr_extract(dina_mod, "classification_reliability")
+    )
+  }
+  expect_equal(
+    measr_extract(
+      dina_mod,
+      "classification_reliability",
+      agreement = c("consist", "lambda", "acc")
+    ),
+    measr_extract(
+      dina_mod,
+      "classification_reliability",
+      agreement = "lambda"
+    )
+  )
+
+  err <- rlang::catch_cnd(measr_extract(
+    dina_mod,
+    "classification_reliability",
+    agreement = "bs"
+  ))
+  expect_s3_class(err, "rlang_error")
+  expect_match(err$message, "agreement")
+
   expect_equal(
     measr_extract(dina_mod, "probability_reliability"),
     dplyr::select(
       dina_mod@reliability$eap_reliability,
       "attribute",
-      informational = "rho_i"
+      informational = "rho_i",
+      point_biserial = "rho_bs"
     )
   )
   expect_equal(
@@ -152,14 +187,338 @@ test_that("reliability can be added to model object", {
   )
 
   expect_equal(
-    measr_extract(dina_mod, "probability_reliability", agreement = "bs"),
+    measr_extract(dina_mod, "probability_reliability", agreement = "tb"),
     dplyr::select(
       dina_mod@reliability$eap_reliability,
       "attribute",
       informational = "rho_i",
-      point_biserial = "rho_bs"
+      point_biserial = "rho_bs",
+      templin_bradshaw = "rho_tb"
+    )
+  )
+  expect_equal(
+    measr_extract(
+      dina_mod,
+      "probability_reliability",
+      agreement = c("pf", "tb")
+    ),
+    dplyr::select(
+      dina_mod@reliability$eap_reliability,
+      "attribute",
+      informational = "rho_i",
+      point_biserial = "rho_bs",
+      parallel_forms = "rho_pf",
+      templin_bradshaw = "rho_tb"
     )
   )
 
+  # informational and point biserial are always returned, but can still be
+  # requested
+  for (agreement in list("i", "bs", c("bs", "i"))) {
+    expect_equal(
+      measr_extract(
+        dina_mod,
+        "probability_reliability",
+        agreement = agreement
+      ),
+      measr_extract(dina_mod, "probability_reliability")
+    )
+  }
+  expect_equal(
+    measr_extract(
+      dina_mod,
+      "probability_reliability",
+      agreement = c("bs", "tb", "i")
+    ),
+    measr_extract(dina_mod, "probability_reliability", agreement = "tb")
+  )
+
+  err <- rlang::catch_cnd(measr_extract(
+    dina_mod,
+    "probability_reliability",
+    agreement = "kappa"
+  ))
+  expect_s3_class(err, "rlang_error")
+  expect_match(err$message, "agreement")
+
   expect_identical(dina_mod@reliability, reliability(dina_mod))
+})
+
+test_that("reliability records the threshold used", {
+  att_names <- colnames(q_matrix)[-1]
+
+  reli <- reliability(rstn_dino, threshold = 0.7)
+  expect_equal(reli$map_reliability$accuracy$attribute, att_names)
+  expect_equal(reli$map_reliability$accuracy$threshold, rep(0.7, 4))
+  expect_equal(reli$map_reliability$consistency$threshold, rep(0.7, 4))
+
+  # named thresholds supplied out of order are matched to attributes
+  thr <- rlang::set_names(c(0.4, 0.5, 0.6, 0.7), rev(att_names))
+  reli <- reliability(rstn_dino, threshold = thr)
+  expect_equal(
+    rlang::set_names(
+      reli$map_reliability$accuracy$threshold,
+      reli$map_reliability$accuracy$attribute
+    ),
+    thr[att_names]
+  )
+  expect_equal(
+    reli$map_reliability$consistency$threshold,
+    reli$map_reliability$accuracy$threshold
+  )
+
+  # thresholds are applied to the matching attribute, regardless of order
+  thr_ordered <- c(0.2, 0.9, 0.3, 0.8)
+  thr_reversed <- rlang::set_names(rev(thr_ordered), rev(att_names))
+  reli_ordered <- reliability(rstn_dino, threshold = thr_ordered)
+  reli_reversed <- reliability(rstn_dino, threshold = thr_reversed)
+  expect_equal(reli_reversed$map_reliability, reli_ordered$map_reliability)
+
+  # sanity check: misapplied thresholds give different results, so the
+  # comparison above can detect an ordering bug
+  reli_misapplied <- reliability(rstn_dino, threshold = rev(thr_ordered))
+  expect_false(isTRUE(all.equal(
+    reli_misapplied$map_reliability$accuracy[, -(1:2)],
+    reli_ordered$map_reliability$accuracy[, -(1:2)]
+  )))
+
+  # unnamed vectors are used in q-matrix order
+  reli <- reliability(rstn_dino, threshold = c(0.4, 0.5, 0.6, 0.7))
+  expect_equal(reli$map_reliability$accuracy$threshold, c(0.4, 0.5, 0.6, 0.7))
+})
+
+test_that("stored reliability warns when threshold differs", {
+  dina_mod <- add_reliability(rstn_dina, threshold = 0.6)
+
+  # same threshold: no warning, stored results returned
+  expect_no_warning(reli <- reliability(dina_mod, threshold = 0.6))
+  expect_identical(reli, dina_mod@reliability)
+  expect_no_warning(
+    measr_extract(dina_mod, "classification_reliability", threshold = 0.6)
+  )
+
+  # different threshold: warning, stored results still returned
+  expect_warning(
+    reli <- reliability(dina_mod, threshold = 0.5),
+    "different `threshold`"
+  )
+  expect_identical(reli, dina_mod@reliability)
+  expect_warning(
+    measr_extract(dina_mod, "classification_reliability"),
+    "different `threshold`"
+  )
+
+  # each function's warning points only to its own fix
+  w <- rlang::catch_cnd(reliability(dina_mod), classes = "warning")
+  expect_match(conditionMessage(w), "force = TRUE")
+  expect_no_match(conditionMessage(w), "overwrite|add_reliability")
+
+  w <- rlang::catch_cnd(add_reliability(dina_mod), classes = "warning")
+  expect_match(conditionMessage(w), "different `threshold`")
+  expect_match(conditionMessage(w), "overwrite = TRUE")
+  expect_no_match(conditionMessage(w), "force")
+
+  # add_reliability: mismatch leaves the model unchanged
+  expect_identical(suppressWarnings(add_reliability(dina_mod)), dina_mod)
+  expect_no_warning(same <- add_reliability(dina_mod, threshold = 0.6))
+  expect_identical(same, dina_mod)
+
+  # add_reliability: overwrite = TRUE recalculates without a warning
+  expect_no_warning(
+    updated <- add_reliability(dina_mod, threshold = 0.5, overwrite = TRUE)
+  )
+  expect_equal(
+    updated@reliability$map_reliability$accuracy$threshold,
+    rep(0.5, 4)
+  )
+
+  # extract warning points to the extract-level fix
+  w <- rlang::catch_cnd(
+    measr_extract(dina_mod, "classification_reliability"),
+    classes = "warning"
+  )
+  expect_match(conditionMessage(w), "force = TRUE")
+  expect_no_match(conditionMessage(w), "overwrite|add_reliability")
+
+  # force = TRUE in measr_extract recalculates without touching the cache
+  stored <- dina_mod@reliability
+  expect_no_warning(
+    forced <- measr_extract(
+      dina_mod,
+      "classification_reliability",
+      threshold = 0.5,
+      force = TRUE
+    )
+  )
+  expect_identical(dina_mod@reliability, stored)
+  expect_equal(
+    forced,
+    measr_extract(rstn_dina, "classification_reliability", threshold = 0.5)
+  )
+  expect_false(isTRUE(all.equal(
+    forced,
+    measr_extract(dina_mod, "classification_reliability", threshold = 0.6)
+  )))
+
+  err <- rlang::catch_cnd(measr_extract(
+    dina_mod,
+    "classification_reliability",
+    force = "yes"
+  ))
+  expect_match(err$message, "force")
+
+  # force = TRUE recalculates without a warning
+  expect_no_warning(
+    reli <- reliability(dina_mod, threshold = 0.5, force = TRUE)
+  )
+  expect_equal(reli$map_reliability$accuracy$threshold, rep(0.5, 4))
+
+  # eap and pattern reliability do not depend on the threshold
+  expect_no_warning(measr_extract(dina_mod, "probability_reliability"))
+  expect_equal(reli$eap_reliability, dina_mod@reliability$eap_reliability)
+  expect_equal(
+    reli$pattern_reliability,
+    dina_mod@reliability$pattern_reliability
+  )
+})
+
+test_that("consistency kappa follows Johnson & Sinharay (2018, Eq. 30)", {
+  for (threshold in c(0.2, 0.5, 0.8)) {
+    consistency <- reliability(
+      rstn_dino,
+      threshold = threshold
+    )$map_reliability$consistency
+
+    # the consistency table is symmetric, so it can be rebuilt from the observed
+    # agreement and the TP and TN rates
+    p1 <- (consistency$consist - consistency$tn_c) /
+      (consistency$tp_c - consistency$tn_c)
+    p_e <- p1^2 + (1 - p1)^2
+    expect_equal(
+      consistency$kappa_c,
+      (consistency$consist - p_e) / (1 - p_e)
+    )
+
+    # for a symmetric 2x2 table, kappa is equal to Youden's statistic
+    expect_equal(consistency$kappa_c, consistency$youden_c)
+  }
+})
+
+test_that("accuracy kappa follows Johnson & Sinharay (2018, Eq. 30)", {
+  for (threshold in c(0.2, 0.5, 0.8)) {
+    accuracy <- reliability(
+      rstn_dino,
+      threshold = threshold
+    )$map_reliability$accuracy
+
+    # rebuild the margins of the accuracy table from the observed agreement and
+    # the TP and TN rates
+    p_true <- (accuracy$acc - accuracy$tn_a) / (accuracy$tp_a - accuracy$tn_a)
+    p_est <- p_true * accuracy$tp_a + (1 - p_true) * (1 - accuracy$tn_a)
+    p_e <- p_true * p_est + (1 - p_true) * (1 - p_est)
+    expect_equal(accuracy$kappa_a, (accuracy$acc - p_e) / (1 - p_e))
+  }
+})
+
+test_that("accuracy tetrachoric correlation is squared", {
+  att_names <- colnames(q_matrix)[-1]
+  obj <- reli_list(
+    rstn_dino,
+    threshold = rlang::set_names(rep(0.5, 4), att_names)
+  )
+  reli <- reliability(rstn_dino, threshold = 0.5)$map_reliability
+  rho <- function(m) psych::tetrachoric(m)$rho
+
+  expect_equal(reli$accuracy$tetra_a, unname(apply(obj$acc, 3, rho))^2)
+  # consistency is not squared
+  expect_equal(reli$consistency$tetra_c, unname(apply(obj$consist, 3, rho)))
+})
+
+test_that("pc_prime follows Johnson & Sinharay (2018, Eqs. 17-18)", {
+  att_names <- colnames(q_matrix)[-1]
+  obj <- reli_list(
+    rstn_dino,
+    threshold = rlang::set_names(rep(0.5, 4), att_names)
+  )
+  profiles <- as.matrix(create_profiles(rstn_dino@model_spec))
+
+  # prevalence is the sum of the base rates for classes with the attribute
+  prev <- vapply(
+    att_names,
+    \(att) sum(obj$strc[profiles[, att] == 1]),
+    double(1)
+  )
+  expect_equal(obj$prev, unname(prev))
+  expect_equal(unname(prev), colMeans(obj$eap), tolerance = 0.001)
+
+  # probability of the same profile on two forms, given the true profile
+  map_class <- apply(obj$posterior, 1, which.max)
+  same <- vapply(
+    seq_len(nrow(profiles)),
+    \(a) {
+      sum(vapply(
+        seq_len(nrow(profiles)),
+        \(l) (mean(obj$posterior[, a] * (map_class == l)) / obj$strc[a])^2,
+        double(1)
+      ))
+    },
+    double(1)
+  )
+  expected <- vapply(
+    att_names,
+    \(att) {
+      has <- profiles[, att] == 1
+      pck1 <- sum((same * obj$strc)[has]) / sum(obj$strc[has])
+      pck0 <- sum((same * obj$strc)[!has]) / sum(obj$strc[!has])
+      pck1^2 * prev[[att]] + pck0^2 * (1 - prev[[att]])
+    },
+    double(1)
+  )
+
+  # does not depend on the threshold
+  for (threshold in c(0.2, 0.5, 0.8)) {
+    reli <- reliability(rstn_dino, threshold = threshold)
+    expect_equal(reli$map_reliability$consistency$pc_prime, unname(expected))
+  }
+})
+
+test_that("reliability stored without a threshold does not warn", {
+  # results stored by previous versions of measr do not include the threshold
+  old_mod <- add_reliability(rstn_dina, threshold = 0.6)
+  old_reli <- old_mod@reliability
+  old_reli$map_reliability <- lapply(
+    old_reli$map_reliability,
+    \(x) dplyr::select(x, -"threshold")
+  )
+  old_mod@reliability <- old_reli
+
+  expect_no_warning(reli <- reliability(old_mod, threshold = 0.8))
+  expect_identical(reli, old_reli)
+
+  expect_no_warning(new_mod <- add_reliability(old_mod, threshold = 0.8))
+  expect_identical(new_mod@reliability, old_reli)
+
+  expect_no_warning(
+    map_reli <- measr_extract(
+      old_mod,
+      "classification_reliability",
+      threshold = 0.8
+    )
+  )
+  expect_equal(map_reli$accuracy, old_reli$map_reliability$accuracy$acc)
+})
+
+test_that("reliability works when all respondents have the same profile", {
+  # if every posterior is equal to the structural parameters, all respondents
+  # have the same most likely profile, and would on any replication
+  threshold <- rlang::set_names(rep(0.5, 4), colnames(q_matrix)[-1])
+  obj <- reli_list(rstn_dina, threshold = threshold)
+  obj$posterior[] <- rep(obj$strc, each = nrow(obj$posterior))
+  expect_length(unique(apply(obj$posterior, 1, which.max)), 1)
+  local_mocked_bindings(reli_list = \(...) obj)
+
+  reli <- reliability(rstn_dina)
+  expect_equal(reli$pattern_reliability[["p_a"]], max(obj$strc))
+  expect_equal(reli$pattern_reliability[["p_c"]], 1)
+  expect_equal(reli$map_reliability$consistency$pc_prime, rep(1, 4))
 })

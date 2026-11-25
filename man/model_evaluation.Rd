@@ -47,7 +47,9 @@ optimizer.}
 
 \item{overwrite}{Logical. Indicates whether specified elements that have
 already been added to the estimated model should be overwritten. Default is
-\code{FALSE}.}
+\code{FALSE}. For \code{add_reliability()}, if \code{FALSE} and the stored reliability
+information was calculated with a different \code{threshold}, a warning is
+issued and the model is returned unchanged.}
 
 \item{save}{Logical. Only relevant if a file was specified in the
 \link[=dcm_estimate]{measrdcm} object passed to \code{x}. If \code{TRUE} (the default),

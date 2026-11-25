@@ -280,6 +280,36 @@ dcm_extract_attr_prob <- function(model, call) {
     tidyr::pivot_wider(names_from = "attribute", values_from = "probability")
 }
 
+dcm_extract_prof_class <- function(model, call) {
+  class_prob <- dcm_extract_class_prob(model, call)
+
+  class_prob |>
+    tidyr::pivot_longer(
+      cols = -model@data$respondent_identifier,
+      names_to = "class",
+      values_to = "prob"
+    ) |>
+    dplyr::slice_max(
+      order_by = .data$prob,
+      n = 1,
+      with_ties = FALSE,
+      by = model@data$respondent_identifier
+    ) |>
+    dplyr::select(-"prob")
+}
+
+dcm_extract_att_class <- function(model, threshold = 0.5, call) {
+  att_names <- names(model@model_spec@qmatrix_meta$attribute_names)
+  threshold <- validate_threshold(threshold, att_names, call = call)
+
+  att_prob <- dcm_extract_attr_prob(model, call)
+
+  att_prob |>
+    dplyr::mutate(dplyr::across(dplyr::all_of(att_names), \(x) {
+      as.integer(x >= threshold[[dplyr::cur_column()]])
+    }))
+}
+
 dcm_extract_ppmc_cond_prob <- function(model, ppmc_interval = 0.95, call) {
   check_number_decimal(
     ppmc_interval,
@@ -354,31 +384,61 @@ dcm_extract_patt_reli <- function(model, call) {
     dplyr::rename(accuracy = "p_a", consistency = "p_c")
 }
 
-dcm_extract_map_reli <- function(model, agreement = NULL, call) {
-  if (rlang::is_empty(model@reliability)) {
-    model <- add_reliability(model, save = FALSE)
+dcm_extract_map_reli <- function(
+  model,
+  agreement = NULL,
+  threshold = 0.5,
+  force = FALSE,
+  call
+) {
+  check_bool(force, call = call)
+  att_names <- names(model@model_spec@qmatrix_meta$attribute_names)
+  threshold <- validate_threshold(threshold, att_names, call = call)
+
+  # recalculate if requested or nothing is cached; the model object itself is
+  # never modified, so cached results are left untouched
+  if (force || rlang::is_empty(model@reliability)) {
+    map_reli <- reliability(model, threshold = threshold, force = TRUE)
+    map_reli <- map_reli$map_reliability
+  } else {
+    check_reli_threshold(
+      model@reliability,
+      threshold,
+      hint = "To recalculate, use {.code force = TRUE}.",
+      call = call
+    )
+    map_reli <- model@reliability$map_reliability
   }
 
-  if (is.null(agreement)) {
+  if (rlang::is_empty(agreement)) {
     agreement <- c("acc", "consist")
   } else {
     agreement <- rlang::arg_match(
       agreement,
-      values = c("lambda", "kappa", "youden", "tetra", "tp", "tn"),
+      values = c(
+        "acc",
+        "consist",
+        "lambda",
+        "kappa",
+        "youden",
+        "tetra",
+        "tp",
+        "tn"
+      ),
       multiple = TRUE,
       error_call = call
     )
-    agreement <- c("acc", "consist", agreement)
+    agreement <- unique(c("acc", "consist", agreement))
   }
 
   dplyr::full_join(
     dplyr::select(
-      model@reliability$map_reliability$accuracy,
+      map_reli$accuracy,
       "attribute",
       dplyr::any_of(dplyr::matches(agreement))
     ),
     dplyr::select(
-      model@reliability$map_reliability$consistency,
+      map_reli$consistency,
       "attribute",
       dplyr::any_of(dplyr::matches(agreement))
     ),
@@ -397,15 +457,18 @@ dcm_extract_eap_reli <- function(model, agreement = NULL, call) {
   }
 
   if (rlang::is_empty(agreement)) {
-    agreement <- c("rho_i")
+    agreement <- c("rho_i", "rho_bs")
   } else {
-    agreement <- rlang::arg_match(
-      agreement,
-      values = c("pf", "bs", "tb"),
-      multiple = TRUE,
-      error_call = call
+    agreement <- paste0(
+      "rho_",
+      rlang::arg_match(
+        agreement,
+        values = c("i", "bs", "pf", "tb"),
+        multiple = TRUE,
+        error_call = call
+      )
     )
-    agreement <- c("rho_i", agreement)
+    agreement <- unique(c("rho_i", "rho_bs", agreement))
   }
 
   dplyr::select(
@@ -413,10 +476,9 @@ dcm_extract_eap_reli <- function(model, agreement = NULL, call) {
     "attribute",
     dplyr::any_of(dplyr::matches(agreement))
   ) |>
-    dplyr::rename(informational = "rho_i") |>
+    dplyr::rename(informational = "rho_i", point_biserial = "rho_bs") |>
     dplyr::rename_with(\(x) {
       x <- gsub("rho_pf", "parallel_forms", x)
-      x <- gsub("rho_bs", "point_biserial", x)
       x <- gsub("rho_tb", "templin_bradshaw", x)
     })
 }

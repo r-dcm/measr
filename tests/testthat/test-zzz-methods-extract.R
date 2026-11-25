@@ -104,3 +104,98 @@ test_that("extract classes", {
     dplyr::pull("new_label")
   expect_equal(dino_param$class, exp_label)
 })
+
+test_that("extract attribute classifications", {
+  att_names <- colnames(q_matrix)[-1]
+  att_prob <- measr_extract(rstn_dino, "attribute_prob")
+
+  # single threshold applied to all attributes (default 0.5)
+  att_class <- measr_extract(rstn_dino, "attribute_classification")
+  expect_equal(names(att_class), c("resp_id", att_names))
+  expect_equal(att_class$resp_id, att_prob$resp_id)
+  for (att in att_names) {
+    expect_type(att_class[[att]], "integer")
+    expect_equal(att_class[[att]], as.integer(att_prob[[att]] >= 0.5))
+  }
+
+  # unnamed vector applied in q-matrix order
+  thr <- c(0.2, 0.9, 0.3, 0.8)
+  att_class <- measr_extract(
+    rstn_dino,
+    "attribute_classification",
+    threshold = thr
+  )
+  for (i in seq_along(att_names)) {
+    expect_equal(
+      att_class[[att_names[i]]],
+      as.integer(att_prob[[att_names[i]]] >= thr[i])
+    )
+  }
+
+  # named vector in a different order is matched to attributes by name
+  thr_reversed <- rlang::set_names(rev(thr), rev(att_names))
+  expect_equal(
+    measr_extract(
+      rstn_dino,
+      "attribute_classification",
+      threshold = thr_reversed
+    ),
+    att_class
+  )
+
+  # threshold validation
+  err <- rlang::catch_cnd(measr_extract(
+    rstn_dino,
+    "attribute_classification",
+    threshold = c(att1 = 0.5, asdf = 0.8, test = 0.7, att4 = 0.5)
+  ))
+  expect_match(err$message, "unknown attribute names")
+  err <- rlang::catch_cnd(measr_extract(
+    rstn_dino,
+    "attribute_classification",
+    threshold = c(0.5, 0.8)
+  ))
+  expect_match(err$message, "must be length 1 or 4")
+  err <- rlang::catch_cnd(measr_extract(
+    rstn_dino,
+    "attribute_classification",
+    threshold = "a"
+  ))
+  expect_match(err$message, "threshold")
+})
+
+test_that("extract profile classifications", {
+  class_names <- dplyr::pull(profile_labels(4), "class")
+
+  for (model in list(rstn_dina, rstn_dino)) {
+    class_prob <- measr_extract(model, "class_prob")
+    prob_mat <- as.matrix(class_prob[, class_names])
+
+    prof_class <- measr_extract(model, "profile_classification")
+    expect_equal(names(prof_class), c("resp_id", "class"))
+    expect_equal(prof_class$resp_id, class_prob$resp_id)
+    expect_equal(
+      prof_class$class,
+      class_names[max.col(prob_mat, ties.method = "first")]
+    )
+  }
+})
+
+test_that("profile classifications are unique when probabilities are tied", {
+  tied_prob <- tibble::tibble(
+    resp_id = factor(c("b", "a", "c")),
+    `[0,0]` = c(0.4, 0.1, 0.2),
+    `[1,0]` = c(0.1, 0.4, 0.6),
+    `[0,1]` = c(0.4, 0.4, 0.1),
+    `[1,1]` = c(0.1, 0.1, 0.1)
+  )
+  local_mocked_bindings(dcm_extract_class_prob = \(...) tied_prob)
+
+  expect_equal(
+    measr_extract(rstn_dina, "profile_classification"),
+    tibble::tibble(
+      resp_id = factor(c("b", "a", "c")),
+      class = c("[0,0]", "[1,0]", "[1,0]")
+    )
+  )
+})
