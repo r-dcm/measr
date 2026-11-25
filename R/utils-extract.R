@@ -410,16 +410,25 @@ dcm_extract_map_reli <- function(
     map_reli <- model@reliability$map_reliability
   }
 
-  if (is.null(agreement)) {
+  if (rlang::is_empty(agreement)) {
     agreement <- c("acc", "consist")
   } else {
     agreement <- rlang::arg_match(
       agreement,
-      values = c("lambda", "kappa", "youden", "tetra", "tp", "tn"),
+      values = c(
+        "acc",
+        "consist",
+        "lambda",
+        "kappa",
+        "youden",
+        "tetra",
+        "tp",
+        "tn"
+      ),
       multiple = TRUE,
       error_call = call
     )
-    agreement <- c("acc", "consist", agreement)
+    agreement <- unique(c("acc", "consist", agreement))
   }
 
   dplyr::full_join(
@@ -448,15 +457,18 @@ dcm_extract_eap_reli <- function(model, agreement = NULL, call) {
   }
 
   if (rlang::is_empty(agreement)) {
-    agreement <- c("rho_i")
+    agreement <- c("rho_i", "rho_bs")
   } else {
-    agreement <- rlang::arg_match(
-      agreement,
-      values = c("pf", "bs", "tb"),
-      multiple = TRUE,
-      error_call = call
+    agreement <- paste0(
+      "rho_",
+      rlang::arg_match(
+        agreement,
+        values = c("i", "bs", "pf", "tb"),
+        multiple = TRUE,
+        error_call = call
+      )
     )
-    agreement <- c("rho_i", agreement)
+    agreement <- unique(c("rho_i", "rho_bs", agreement))
   }
 
   dplyr::select(
@@ -464,10 +476,9 @@ dcm_extract_eap_reli <- function(model, agreement = NULL, call) {
     "attribute",
     dplyr::any_of(dplyr::matches(agreement))
   ) |>
-    dplyr::rename(informational = "rho_i") |>
+    dplyr::rename(informational = "rho_i", point_biserial = "rho_bs") |>
     dplyr::rename_with(\(x) {
       x <- gsub("rho_pf", "parallel_forms", x)
-      x <- gsub("rho_bs", "point_biserial", x)
       x <- gsub("rho_tb", "templin_bradshaw", x)
     })
 }

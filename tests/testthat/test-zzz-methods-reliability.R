@@ -140,12 +140,45 @@ test_that("reliability can be added to model object", {
     )
   )
 
+  # accuracy and consistency are always returned, but can still be requested
+  for (agreement in list("acc", "consist", c("consist", "acc"))) {
+    expect_equal(
+      measr_extract(
+        dina_mod,
+        "classification_reliability",
+        agreement = agreement
+      ),
+      measr_extract(dina_mod, "classification_reliability")
+    )
+  }
+  expect_equal(
+    measr_extract(
+      dina_mod,
+      "classification_reliability",
+      agreement = c("consist", "lambda", "acc")
+    ),
+    measr_extract(
+      dina_mod,
+      "classification_reliability",
+      agreement = "lambda"
+    )
+  )
+
+  err <- rlang::catch_cnd(measr_extract(
+    dina_mod,
+    "classification_reliability",
+    agreement = "bs"
+  ))
+  expect_s3_class(err, "rlang_error")
+  expect_match(err$message, "agreement")
+
   expect_equal(
     measr_extract(dina_mod, "probability_reliability"),
     dplyr::select(
       dina_mod@reliability$eap_reliability,
       "attribute",
-      informational = "rho_i"
+      informational = "rho_i",
+      point_biserial = "rho_bs"
     )
   )
   expect_equal(
@@ -154,14 +187,59 @@ test_that("reliability can be added to model object", {
   )
 
   expect_equal(
-    measr_extract(dina_mod, "probability_reliability", agreement = "bs"),
+    measr_extract(dina_mod, "probability_reliability", agreement = "tb"),
     dplyr::select(
       dina_mod@reliability$eap_reliability,
       "attribute",
       informational = "rho_i",
-      point_biserial = "rho_bs"
+      point_biserial = "rho_bs",
+      templin_bradshaw = "rho_tb"
     )
   )
+  expect_equal(
+    measr_extract(
+      dina_mod,
+      "probability_reliability",
+      agreement = c("pf", "tb")
+    ),
+    dplyr::select(
+      dina_mod@reliability$eap_reliability,
+      "attribute",
+      informational = "rho_i",
+      point_biserial = "rho_bs",
+      parallel_forms = "rho_pf",
+      templin_bradshaw = "rho_tb"
+    )
+  )
+
+  # informational and point biserial are always returned, but can still be
+  # requested
+  for (agreement in list("i", "bs", c("bs", "i"))) {
+    expect_equal(
+      measr_extract(
+        dina_mod,
+        "probability_reliability",
+        agreement = agreement
+      ),
+      measr_extract(dina_mod, "probability_reliability")
+    )
+  }
+  expect_equal(
+    measr_extract(
+      dina_mod,
+      "probability_reliability",
+      agreement = c("bs", "tb", "i")
+    ),
+    measr_extract(dina_mod, "probability_reliability", agreement = "tb")
+  )
+
+  err <- rlang::catch_cnd(measr_extract(
+    dina_mod,
+    "probability_reliability",
+    agreement = "kappa"
+  ))
+  expect_s3_class(err, "rlang_error")
+  expect_match(err$message, "agreement")
 
   expect_identical(dina_mod@reliability, reliability(dina_mod))
 })

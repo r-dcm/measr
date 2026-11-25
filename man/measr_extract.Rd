@@ -37,9 +37,9 @@ statistic (\code{youden}), the tetrachoric correlation (\code{tetra}), true
 positive rate (\code{tp}), and the true negative rate (\code{tn}).
 
 For \code{what = "probability_reliability"}, additional measures of agreement
-to include. By default, the informational reliability index defined by
-Johnson & Sinharay (2020) is returned. Additional metrics that can be
-specified to \code{agreement} are the point biserial reliability index (\code{bs}),
+to include. By default, the informational and point biserial reliability
+indices defined by Johnson & Sinharay (2020) are returned.
+Additional metrics that can be specified to \code{agreement} are the
 parallel forms reliability index (\code{pf}), and the tetrachoric reliability
 index (\code{tb}), which was originally defined by Templin & Bradshaw (2013).
 \item \code{threshold}:

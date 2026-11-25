@@ -43,9 +43,9 @@ measr_extract <- S7::new_generic(
 #'     positive rate (`tp`), and the true negative rate (`tn`).
 #'
 #'     For `what = "probability_reliability"`, additional measures of agreement
-#'     to include. By default, the informational reliability index defined by
-#'     Johnson & Sinharay (2020) is returned. Additional metrics that can be
-#'     specified to `agreement` are the point biserial reliability index (`bs`),
+#'     to include. By default, the informational and point biserial reliability
+#'     indices defined by Johnson & Sinharay (2020) are returned.
+#'     Additional metrics that can be specified to `agreement` are the
 #'     parallel forms reliability index (`pf`), and the tetrachoric reliability
 #'     index (`tb`), which was originally defined by Templin & Bradshaw (2013).
 #'

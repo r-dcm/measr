@@ -31,6 +31,15 @@
   `force = TRUE` calculates new reliability estimates without altering any
   results stored in the model.
 
+* `measr_extract(what = "probability_reliability")` now returns the point
+  biserial reliability index by default, in addition to the informational
+  reliability index.
+
+* When extracting `"classification_reliability"` or `"probability_reliability"`
+  with `measr_extract()`, `agreement` now accepts the metrics that are
+  always returned (i.e., `"acc"` and `"consist"`, or `"i"` and `"bs"`,
+  respectively). These do not change the output.
+
 * The `map_reliability` accuracy and consistency tables returned by
   `reliability()` now include a `threshold` column with the threshold used to
   classify each attribute.
