@@ -90,11 +90,31 @@ Goodman &amp; Kruskal's lambda (<code>lambda</code>), Cohen's kappa (<code>kappa
 statistic (<code>youden</code>), the tetrachoric correlation (<code>tetra</code>), true
 positive rate (<code>tp</code>), and the true negative rate (<code>tn</code>).</p>
 <p>For <code>what = "probability_reliability"</code>, additional measures of agreement
-to include. By default, the informational reliability index defined by
-Johnson &amp; Sinharay (2020) is returned. Additional metrics that can be
-specified to <code>agreement</code> are the point biserial reliability index (<code>bs</code>),
+to include. By default, the informational and point biserial reliability
+indices defined by Johnson &amp; Sinharay (2020) are returned.
+Additional metrics that can be specified to <code>agreement</code> are the
 parallel forms reliability index (<code>pf</code>), and the tetrachoric reliability
 index (<code>tb</code>), which was originally defined by Templin &amp; Bradshaw (2013).</p></li>
+<li><p><code>threshold</code>:</p>
+<p>For <code>what = "attribute_classification"</code> and
+<code>what = "classification_reliability"</code>, the threshold applied to the
+attribute-level probabilities for determining the binary attribute
+classifications.
+Attributes with probabilities greater than or equal to
+the <code>threshold</code> will be classified as <code>1</code> and as <code>0</code> otherwise.
+<code>threshold</code> should be a numeric vector of length 1 (the same threshold is
+applied to all attributes), or length equal to the number of attributes.
+If a named vector is supplied, names should match the attribute names in
+the Q-matrix used to estimate the model.
+If unnamed, thresholds should be in the order the attributes were defined
+in the Q-matrix.</p></li>
+<li><p><code>force</code>:</p>
+<p>For <code>what = "classification_reliability"</code>, whether to recalculate the
+reliability statistics even if reliability information has already been
+added to the model with <code><a href="model_evaluation.html">add_reliability()</a></code>. Default is <code>FALSE</code>, which
+returns the stored results (with a warning if they were calculated with
+a different <code>threshold</code>). If <code>TRUE</code>, the statistics are recalculated
+using <code>threshold</code>.</p></li>
 </ul></dd>
 
 </dl></div>
@@ -148,6 +168,11 @@ class).</p></li>
 (i.e., has the given pattern of proficiency).</p></li>
 <li><p><code>attribute_prob</code>: The proficiency probability for each respondent and
 attribute.</p></li>
+<li><p><code>profile_classification</code>: The profile-level classification, defined as
+the profile with the highest <code>class_prob</code>.</p></li>
+<li><p><code>attribute_classification</code>: The attribute-level classifications, as
+determined by applying a <code>threshold</code> to the estimated attribute
+probabilities (i.e., <code>what = "attribute_prob"</code>).</p></li>
 </ul></div>
 
 

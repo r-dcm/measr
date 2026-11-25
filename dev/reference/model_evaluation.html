@@ -114,7 +114,9 @@ optimizer.</p></dd>
 <dt id="arg-overwrite">overwrite<a class="anchor" aria-label="anchor" href="#arg-overwrite"></a></dt>
 <dd><p>Logical. Indicates whether specified elements that have
 already been added to the estimated model should be overwritten. Default is
-<code>FALSE</code>.</p></dd>
+<code>FALSE</code>. For <code>add_reliability()</code>, if <code>FALSE</code> and the stored reliability
+information was calculated with a different <code>threshold</code>, a warning is
+issued and the model is returned unchanged.</p></dd>
 
 
 <dt id="arg-save">save<a class="anchor" aria-label="anchor" href="#arg-save"></a></dt>

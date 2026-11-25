@@ -49,7 +49,9 @@ reliability(x, threshold = 0.5, force = FALSE)
   If reliability information has already been added to the model object
   with
   [`add_reliability()`](https://measr.r-dcm.org/dev/reference/model_evaluation.md),
-  should it be recalculated. Default is `FALSE`.
+  should it be recalculated. Default is `FALSE`. If `FALSE` and the
+  stored reliability information was calculated with a different
+  `threshold`, a warning is issued and the stored results are returned.
 
 ## Value
 
@@ -60,7 +62,9 @@ For class `measrdcm`, a list with 3 elements:
 
 - `map_reliability`: A list with 2 elements: `accuracy` and
   `consistency`, which include the attribute-level classification
-  reliability statistics described by Johnson & Sinharay (2018).
+  reliability statistics described by Johnson & Sinharay (2018). Both
+  also include a `threshold` column with the probability threshold used
+  to classify each attribute.
 
 - `eap_reliability`: The attribute-level posterior probability
   reliability statistics described by Johnson & Sinharay (2020).
@@ -70,9 +74,12 @@ For class `measrdcm`, a list with 3 elements:
 The pattern-level reliability (`pattern_reliability`) statistics are
 described in Cui et al. (2012). Attribute-level classification
 reliability statistics (`map_reliability`) are described in Johnson &
-Sinharay (2018). Reliability statistics for the posterior mean of the
-skill indicators (i.e., the mastery or proficiency probabilities;
-`eap_reliability`) are described in Johnson & Sinharay (2020).
+Sinharay (2018). Following Johnson & Sinharay (2018), the tetrachoric
+correlation is squared when used as a measure of accuracy (`tetra_a`),
+but not when used as a measure of consistency (`tetra_c`). Reliability
+statistics for the posterior mean of the skill indicators (i.e., the
+mastery or proficiency probabilities; `eap_reliability`) are described
+in Johnson & Sinharay (2020).
 
 ## Methods
 
@@ -118,17 +125,17 @@ reliability(rstn_mdm_lcdm)
 #> 
 #> $map_reliability
 #> $map_reliability$accuracy
-#> # A tibble: 1 × 8
-#>   attribute        acc lambda_a kappa_a youden_a tetra_a  tp_a  tn_a
-#>   <chr>          <dbl>    <dbl>   <dbl>    <dbl>   <dbl> <dbl> <dbl>
-#> 1 multiplication 0.912    0.820   0.823    0.824   0.962 0.923 0.901
+#> # A tibble: 1 × 9
+#>   attribute  threshold   acc lambda_a kappa_a youden_a tetra_a  tp_a  tn_a
+#>   <chr>          <dbl> <dbl>    <dbl>   <dbl>    <dbl>   <dbl> <dbl> <dbl>
+#> 1 multiplic…       0.5 0.912    0.820   0.824    0.824   0.926 0.923 0.901
 #> 
 #> $map_reliability$consistency
-#> # A tibble: 1 × 10
-#>   attribute   consist lambda_c kappa_c youden_c tetra_c  tp_c  tn_c gammak
-#>   <chr>         <dbl>    <dbl>   <dbl>    <dbl>   <dbl> <dbl> <dbl>  <dbl>
-#> 1 multiplica…   0.840    0.666   0.821    0.680   0.876 0.847 0.833  0.870
-#> # ℹ 1 more variable: pc_prime <dbl>
+#> # A tibble: 1 × 11
+#>   attribute      threshold consist lambda_c kappa_c youden_c tetra_c  tp_c
+#>   <chr>              <dbl>   <dbl>    <dbl>   <dbl>    <dbl>   <dbl> <dbl>
+#> 1 multiplication       0.5   0.840    0.666   0.680    0.680   0.876 0.847
+#> # ℹ 3 more variables: tn_c <dbl>, gammak <dbl>, pc_prime <dbl>
 #> 
 #> 
 #> $eap_reliability

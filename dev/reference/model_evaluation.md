@@ -57,7 +57,9 @@ add_respondent_estimates(
 
   Logical. Indicates whether specified elements that have already been
   added to the estimated model should be overwritten. Default is
-  `FALSE`.
+  `FALSE`. For `add_reliability()`, if `FALSE` and the stored
+  reliability information was calculated with a different `threshold`, a
+  warning is issued and the model is returned unchanged.
 
 - save:
 

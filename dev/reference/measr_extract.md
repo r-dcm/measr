@@ -49,12 +49,36 @@ measr_extract(model, what, ...)
     positive rate (`tp`), and the true negative rate (`tn`).
 
     For `what = "probability_reliability"`, additional measures of
-    agreement to include. By default, the informational reliability
-    index defined by Johnson & Sinharay (2020) is returned. Additional
-    metrics that can be specified to `agreement` are the point biserial
-    reliability index (`bs`), parallel forms reliability index (`pf`),
-    and the tetrachoric reliability index (`tb`), which was originally
-    defined by Templin & Bradshaw (2013).
+    agreement to include. By default, the informational and point
+    biserial reliability indices defined by Johnson & Sinharay (2020)
+    are returned. Additional metrics that can be specified to
+    `agreement` are the parallel forms reliability index (`pf`), and the
+    tetrachoric reliability index (`tb`), which was originally defined
+    by Templin & Bradshaw (2013).
+
+  - `threshold`:
+
+    For `what = "attribute_classification"` and
+    `what = "classification_reliability"`, the threshold applied to the
+    attribute-level probabilities for determining the binary attribute
+    classifications. Attributes with probabilities greater than or equal
+    to the `threshold` will be classified as `1` and as `0` otherwise.
+    `threshold` should be a numeric vector of length 1 (the same
+    threshold is applied to all attributes), or length equal to the
+    number of attributes. If a named vector is supplied, names should
+    match the attribute names in the Q-matrix used to estimate the
+    model. If unnamed, thresholds should be in the order the attributes
+    were defined in the Q-matrix.
+
+  - `force`:
+
+    For `what = "classification_reliability"`, whether to recalculate
+    the reliability statistics even if reliability information has
+    already been added to the model with
+    [`add_reliability()`](https://measr.r-dcm.org/dev/reference/model_evaluation.md).
+    Default is `FALSE`, which returns the stored results (with a warning
+    if they were calculated with a different `threshold`). If `TRUE`,
+    the statistics are recalculated using `threshold`.
 
 ## Value
 
@@ -109,6 +133,13 @@ information:
 
 - `attribute_prob`: The proficiency probability for each respondent and
   attribute.
+
+- `profile_classification`: The profile-level classification, defined as
+  the profile with the highest `class_prob`.
+
+- `attribute_classification`: The attribute-level classifications, as
+  determined by applying a `threshold` to the estimated attribute
+  probabilities (i.e., `what = "attribute_prob"`).
 
 ### Model fit
 

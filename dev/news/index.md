@@ -23,6 +23,71 @@
   [`loo_compare()`](https://mc-stan.org/loo/reference/loo_compare.html)
   returns a data frame with a `model` column instead of row names.
 
+- [`measr_extract()`](https://measr.r-dcm.org/dev/reference/measr_extract.md)
+  can now extract respondent classifications.
+
+  - `what = "profile_classification"` returns the most likely profile
+    for each respondent.
+
+  - `what = "attribute_classification"` returns a binary classification
+    for each respondent and attribute, determined by applying a
+    `threshold` to the attribute probabilities. The `threshold` can be a
+    single value for all attributes or a separate value for each
+    attribute.
+
+- `measr_extract(what = "classification_reliability")` gains two
+  arguments. `threshold` specifies the threshold for classifying
+  attributes, and `force = TRUE` calculates new reliability estimates
+  without altering any results stored in the model.
+
+- `measr_extract(what = "probability_reliability")` now returns the
+  point biserial reliability index by default, in addition to the
+  informational reliability index.
+
+- When extracting `"classification_reliability"` or
+  `"probability_reliability"` with
+  [`measr_extract()`](https://measr.r-dcm.org/dev/reference/measr_extract.md),
+  `agreement` now accepts the metrics that are always returned (i.e.,
+  `"acc"` and `"consist"`, or `"i"` and `"bs"`, respectively). These do
+  not change the output.
+
+- The `map_reliability` accuracy and consistency tables returned by
+  [`reliability()`](https://measr.r-dcm.org/dev/reference/reliability.md)
+  now include a `threshold` column with the threshold used to classify
+  each attribute.
+
+- [`reliability()`](https://measr.r-dcm.org/dev/reference/reliability.md),
+  [`add_reliability()`](https://measr.r-dcm.org/dev/reference/model_evaluation.md),
+  and `measr_extract(what = "classification_reliability")` now warn when
+  the stored reliability information was calculated with a different
+  `threshold` than the one requested (including the default of 0.5). The
+  stored results are still used, unless recalculation is requested with
+  `force = TRUE` (or `overwrite = TRUE` for
+  [`add_reliability()`](https://measr.r-dcm.org/dev/reference/model_evaluation.md)).
+  No warning is issued for reliability information stored by previous
+  versions of measr, which did not record the `threshold`.
+
+- Fixed errors in the `map_reliability` statistics returned by
+  [`reliability()`](https://measr.r-dcm.org/dev/reference/reliability.md).
+  These values will differ from previous versions. Reliability
+  information stored in a saved model is not updated automatically; use
+  `add_reliability(overwrite = TRUE)` to recalculate.
+
+  - `kappa_a` and `kappa_c` are now calculated as defined by Johnson &
+    Sinharay (2018, Eq. 30). Note that the kappa values reported for the
+    ECPE data in that article do not follow Eq. 30, and will not match
+    the values from measr.
+
+  - `tetra_a` is now the squared tetrachoric correlation, following
+    Johnson & Sinharay (2018).
+
+  - `pc_prime` now uses the attribute prevalence, and no longer depends
+    on the `threshold`.
+
+  - Accuracy and consistency statistics are now correct when `threshold`
+    is a named vector in a different order than the attributes in the
+    Q-matrix.
+
 - [`score()`](https://measr.r-dcm.org/dev/reference/score.md) now
   returns the correct respondent identifiers when `newdata` is supplied.
   Previously, respondents in `newdata` were labeled with identifiers
