@@ -179,15 +179,15 @@ tidyr::unnest(bf, "posterior_probs")
 #> # A tibble: 49 × 5
 #>    null_model alt_model    bf prior_prob_null posterior_prob_null
 #>    <chr>      <chr>     <dbl>           <dbl>               <dbl>
-#>  1 mdm_dina   mdm_dino  0.932            0.02              0.0215
-#>  2 mdm_dina   mdm_dino  0.932            0.04              0.0428
-#>  3 mdm_dina   mdm_dino  0.932            0.06              0.0642
-#>  4 mdm_dina   mdm_dino  0.932            0.08              0.0854
-#>  5 mdm_dina   mdm_dino  0.932            0.1               0.107 
-#>  6 mdm_dina   mdm_dino  0.932            0.12              0.128 
-#>  7 mdm_dina   mdm_dino  0.932            0.14              0.149 
-#>  8 mdm_dina   mdm_dino  0.932            0.16              0.170 
-#>  9 mdm_dina   mdm_dino  0.932            0.18              0.191 
-#> 10 mdm_dina   mdm_dino  0.932            0.2               0.212 
+#>  1 mdm_dina   mdm_dino  0.932            0.02              0.0187
+#>  2 mdm_dina   mdm_dino  0.932            0.04              0.0374
+#>  3 mdm_dina   mdm_dino  0.932            0.06              0.0562
+#>  4 mdm_dina   mdm_dino  0.932            0.08              0.0750
+#>  5 mdm_dina   mdm_dino  0.932            0.1               0.0939
+#>  6 mdm_dina   mdm_dino  0.932            0.12              0.113 
+#>  7 mdm_dina   mdm_dino  0.932            0.14              0.132 
+#>  8 mdm_dina   mdm_dino  0.932            0.16              0.151 
+#>  9 mdm_dina   mdm_dino  0.932            0.18              0.170 
+#> 10 mdm_dina   mdm_dino  0.932            0.2               0.189 
 #> # ℹ 39 more rows
 ```

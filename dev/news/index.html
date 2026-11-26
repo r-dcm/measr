@@ -54,6 +54,14 @@
 <li><p><code>write_measrfit()</code> (used by the <code>file</code> argument of <code><a href="../reference/dcm_estimate.html">dcm_estimate()</a></code>) now recognizes saved <em>Stan</em> output files from newer versions of cmdstanr, which zero-pad the chain number in file names.</p></li>
 <li><p>Tests and documentation are updated for loo 2.10.0, where <code><a href="https://mc-stan.org/loo/reference/loo_compare.html" class="external-link">loo_compare()</a></code> returns a data frame with a <code>model</code> column instead of row names.</p></li>
 <li>
+<p>Updates to <code><a href="../reference/log_mll.html">log_mll()</a></code> and <code><a href="../reference/bayes_factor.html">bayes_factor()</a></code> (<a href="https://github.com/r-dcm/measr/issues/77" class="external-link">#77</a>).</p>
+<ul><li><p>Log marginal likelihoods and Bayes factors are now available for models estimated with <code>backend = "cmdstanr"</code>, using <code>method = "mcmc"</code> or <code>method = "variational"</code>.</p></li>
+<li><p>Fixed an error when models were estimated with <code>method = "variational"</code> and a structural model with a simplex parameter (e.g., <code><a href="https://dcmstan.r-dcm.org/reference/structural-model.html" class="external-link">unconstrained()</a></code>), due to the limited precision of the draws that are written by <em>Stan</em>.</p></li>
+<li><p>Fixed an error when models estimated with <code>backend = "rstan"</code> were loaded from a file in a new <em>R</em> session.</p></li>
+<li><p><code><a href="../reference/bayes_factor.html">bayes_factor()</a></code> now estimates the log marginal likelihood once for each model, so that the Bayes factor and the posterior probabilities are based on the same estimates.</p></li>
+<li><p>Fixed posterior probabilities of <code>NaN</code> when there are large differences between the models, or when <code>prior_prob</code> is 1.</p></li>
+</ul></li>
+<li>
 <p><code><a href="../reference/measr_extract.html">measr_extract()</a></code> can now extract respondent classifications.</p>
 <ul><li><p><code>what = "profile_classification"</code> returns the most likely profile for each respondent.</p></li>
 <li><p><code>what = "attribute_classification"</code> returns a binary classification for each respondent and attribute, determined by applying a <code>threshold</code> to the attribute probabilities. The <code>threshold</code> can be a single value for all attributes or a separate value for each attribute.</p></li>

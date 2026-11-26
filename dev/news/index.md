@@ -23,6 +23,33 @@
   [`loo_compare()`](https://mc-stan.org/loo/reference/loo_compare.html)
   returns a data frame with a `model` column instead of row names.
 
+- Updates to
+  [`log_mll()`](https://measr.r-dcm.org/dev/reference/log_mll.md) and
+  [`bayes_factor()`](https://measr.r-dcm.org/dev/reference/bayes_factor.md)
+  ([\#77](https://github.com/r-dcm/measr/issues/77)).
+
+  - Log marginal likelihoods and Bayes factors are now available for
+    models estimated with `backend = "cmdstanr"`, using
+    `method = "mcmc"` or `method = "variational"`.
+
+  - Fixed an error when models were estimated with
+    `method = "variational"` and a structural model with a simplex
+    parameter (e.g.,
+    [`unconstrained()`](https://dcmstan.r-dcm.org/reference/structural-model.html)),
+    due to the limited precision of the draws that are written by
+    *Stan*.
+
+  - Fixed an error when models estimated with `backend = "rstan"` were
+    loaded from a file in a new *R* session.
+
+  - [`bayes_factor()`](https://measr.r-dcm.org/dev/reference/bayes_factor.md)
+    now estimates the log marginal likelihood once for each model, so
+    that the Bayes factor and the posterior probabilities are based on
+    the same estimates.
+
+  - Fixed posterior probabilities of `NaN` when there are large
+    differences between the models, or when `prior_prob` is 1.
+
 - [`measr_extract()`](https://measr.r-dcm.org/dev/reference/measr_extract.md)
   can now extract respondent classifications.
 

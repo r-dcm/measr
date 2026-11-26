@@ -199,6 +199,6 @@ fit_ppmc(mdm_dina, model_fit = "raw_score")
 #> # A tibble: 1 × 5
 #>   obs_chisq ppmc_mean `2.5%` `97.5%`   ppp
 #>       <dbl>     <dbl>  <dbl>   <dbl> <dbl>
-#> 1      6.04      6.10  0.797    17.3 0.408
+#> 1      5.92      6.13  0.704    18.4   0.4
 #> 
 ```

@@ -3,8 +3,9 @@
 Calculate the log marginal likelihood with bridge sampling (Meng & Wong,
 1996). This is a wrapper around
 [`bridgesampling::bridge_sampler()`](https://rdrr.io/pkg/bridgesampling/man/bridge_sampler.html).
-Therefore, log marginal likelihood calculation is currently only
-available for models estimated with `{rstan}` using MCMC.
+Log marginal likelihoods are available for models estimated with either
+backend (i.e., `{rstan}` or `{cmdstanr}`) using `method = "mcmc"` or
+`method = "variational"`.
 
 ## Usage
 
@@ -17,8 +18,7 @@ log_mll(x, ..., force = FALSE)
 - x:
 
   A [measrdcm](https://measr.r-dcm.org/dev/reference/dcm_estimate.md)
-  object estimated with `backend = "rstan"` and a method that results in
-  posterior distributions (e.g., `method = "mcmc"`).
+  object estimated with `method = "mcmc"` or `method = "variational"`.
 
 - ...:
 
@@ -33,6 +33,28 @@ log_mll(x, ..., force = FALSE)
 ## Value
 
 The estimate of the log marginal likelihood.
+
+## Details
+
+The bridge sampler evaluates the log density of the model using
+`{rstan}`. If a compiled `{rstan}` model is not available (i.e., the
+model was estimated with `backend = "cmdstanr"`), the model is compiled
+when `log_mll()` is called. A model estimated with `{rstan}` in a
+previous *R* session is restored from the saved model object.
+
+Bridge sampling assumes that the draws come from the posterior
+distribution. The draws from `method = "variational"` are from an
+approximation to the posterior, which can result in substantially biased
+log marginal likelihoods, particularly for models with many parameters.
+We recommend `method = "mcmc"` for calculating Bayes factors. For the
+same reason, log marginal likelihoods are not available for models
+estimated with `method = "pathfinder"`.
+
+In addition, *Stan* writes draws to file with limited precision, which
+can result in draws that are not valid parameter values (e.g.,
+probabilities that do not sum to exactly 1). Structural parameters are
+re-normalized to account for this rounding, and any draws that are still
+invalid are excluded with a warning.
 
 ## Methods
 
@@ -69,8 +91,8 @@ model <- dcm_estimate(
 #> Chain 1: 
 #> Chain 1: 
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.000128 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.28 seconds.
+#> Chain 1: Gradient evaluation took 0.000104 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.04 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -115,5 +137,5 @@ model <- dcm_estimate(
 #> Warning: Pareto k diagnostic value is 1.09. Resampling is disabled. Decreasing tol_rel_obj may help if variational algorithm has terminated prematurely. Otherwise consider using sampling instead.
 
 log_mll(model)
-#> [1] -349.4953
+#> [1] -349.525
 ```
