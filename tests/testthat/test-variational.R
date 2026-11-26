@@ -229,9 +229,10 @@ test_that("log_mll works", {
   expect_s3_class(err, "rlang_error")
   expect_match(err$message, "must be a model estimated with")
 
-  err <- rlang::catch_cnd(log_mll(cmds_mdm_dino))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "must be a model estimated with")
+  cmds_mll <- log_mll(cmds_mdm_dino)
+  expect_equal(typeof(cmds_mll), "double")
+  expect_equal(length(cmds_mll), 1)
+  expect_true(is.finite(cmds_mll))
 
   expect_equal(typeof(log_mll(rstn_mdm_dina)), "double")
   expect_equal(length(log_mll(rstn_mdm_dina)), 1)
@@ -247,6 +248,105 @@ test_that("log_mll works", {
   expect_false(identical(log_mll(store_mll), log_mll(store_mll, force = TRUE)))
 })
 
+test_that("log_mll works with rounded simplex draws", {
+  # more than two classes, so rounded draws of Vc don't sum to exactly 1
+  ecpe_spec <- dcm_specify(
+    qmatrix = dcmdata::ecpe_qmatrix,
+    identifier = "item_id",
+    measurement_model = dina(),
+    structural_model = unconstrained()
+  )
+  out <- capture.output(
+    suppressWarnings(suppressMessages(
+      rstn_ecpe_dina <- dcm_estimate(
+        ecpe_spec,
+        data = dcmdata::ecpe_data[1:300, ],
+        identifier = "resp_id",
+        method = "variational",
+        seed = 63277,
+        backend = "rstan"
+      )
+    ))
+  )
+
+  vc_draws <- posterior::as_draws_matrix(get_draws(rstn_ecpe_dina, "Vc"))
+  expect_true(any(abs(rowSums(vc_draws) - 1) > 1e-8))
+
+  mll <- log_mll(rstn_ecpe_dina)
+  expect_equal(typeof(mll), "double")
+  expect_true(is.finite(mll))
+
+  # draws that are not valid parameter values
+  bad_draws <- get_draws(rstn_ecpe_dina)
+  bad_draws[1:5, 1, "slip[1]"] <- 1
+  bad_draws[6, 1, "guess[1]"] <- -0.1
+  local_mocked_bindings(get_draws = function(...) bad_draws)
+  expect_warning(
+    good_draws <- unconstrain_draws(rstn_ecpe_dina, rstn_ecpe_dina@model),
+    "6 of 2000 posterior draws were excluded"
+  )
+  expect_equal(nrow(good_draws), 1994)
+  expect_true(all(is.finite(good_draws)))
+
+  bad_draws[1:1500, 1, "slip[1]"] <- 1
+  expect_error(
+    unconstrain_draws(rstn_ecpe_dina, rstn_ecpe_dina@model),
+    "marginal likelihood could not be calculated"
+  )
+
+  empty_draws <- posterior::subset_draws(bad_draws, iteration = integer())
+  local_mocked_bindings(get_draws = function(...) empty_draws)
+  expect_error(
+    unconstrain_draws(rstn_ecpe_dina, rstn_ecpe_dina@model),
+    "marginal likelihood could not be calculated"
+  )
+
+  # recreated data matches the data used for estimation
+  expect_identical(
+    estimation_data(rstn_ecpe_dina),
+    dcmstan::stan_data(
+      ecpe_spec,
+      data = dcmdata::ecpe_data[1:300, ],
+      identifier = "resp_id"
+    )
+  )
+})
+
+test_that("posterior model probabilities are numerically stable", {
+  probs <- calc_model_probabilities(-100, -2000, prior_prob = c(0, 0.5, 1))
+  expect_equal(probs$posterior_prob_null, c(0, 1, 1))
+
+  probs <- calc_model_probabilities(-2000, -100, prior_prob = c(0, 0.5, 1))
+  expect_equal(probs$posterior_prob_null, c(0, 0, 1))
+
+  probs <- calc_model_probabilities(log(3), 0, prior_prob = 0.5)
+  expect_equal(probs$posterior_prob_null, 0.75)
+})
+
+test_that("invalid log densities are treated as -Inf", {
+  local_mocked_bindings(log_prob = function(...) NA_real_, .package = "rstan")
+  expect_identical(eval_log_density(1, NULL), -Inf)
+
+  local_mocked_bindings(
+    log_prob = function(...) stop("bad"),
+    .package = "rstan"
+  )
+  expect_identical(eval_log_density(1, NULL), -Inf)
+
+  local_mocked_bindings(log_prob = function(...) -12.5, .package = "rstan")
+  expect_identical(eval_log_density(1, NULL), -12.5)
+})
+
+test_that("log_mll works for models loaded from a file", {
+  # reading a saved stanfit drops the pointer to the compiled model
+  file <- withr::local_tempfile(fileext = ".rds")
+  saveRDS(rstn_mdm_dina, file)
+  reloaded <- readRDS(file)
+
+  expect_false(valid_stanfit(reloaded@model))
+  expect_equal(log_mll(reloaded), log_mll(rstn_mdm_dina), tolerance = 0.01)
+})
+
 test_that("bayes_factor works", {
   err <- rlang::catch_cnd(
     bayes_factor(rstn_mdm_dina, rstn_mdm_dina, prior_prob = "a")
@@ -259,6 +359,10 @@ test_that("bayes_factor works", {
   )
   expect_s3_class(err, "rlang_error")
   expect_match(err$message, "must be a.*measrdcm.*object")
+
+  err <- rlang::catch_cnd(bayes_factor(rstn_mdm_dina, rstn_dina))
+  expect_s3_class(err, "rlang_error")
+  expect_match(err$message, "rstn_dina.*must be a model estimated with")
 
   err <- rlang::catch_cnd(
     bayes_factor(rstn_mdm_dina, "measrfit", "object")

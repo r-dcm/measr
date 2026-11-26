@@ -8,8 +8,7 @@ log_mll(x, ..., force = FALSE)
 }
 \arguments{
 \item{x}{A \link[=dcm_estimate]{measrdcm} object estimated with
-\code{backend = "rstan"} and a method that results in posterior distributions
-(e.g., \code{method = "mcmc"}).}
+\code{method = "mcmc"} or \code{method = "variational"}.}
 
 \item{...}{Unused.}
 
@@ -23,8 +22,29 @@ The estimate of the log marginal likelihood.
 \description{
 Calculate the log marginal likelihood with bridge sampling (Meng & Wong,
 1996). This is a wrapper around \code{\link[bridgesampling:bridge_sampler]{bridgesampling::bridge_sampler()}}.
-Therefore, log marginal likelihood calculation is currently only available
-for models estimated with \code{{rstan}} using MCMC.
+Log marginal likelihoods are available for models estimated with either
+backend (i.e., \code{{rstan}} or \code{{cmdstanr}}) using \code{method = "mcmc"} or
+\code{method = "variational"}.
+}
+\details{
+The bridge sampler evaluates the log density of the model using \code{{rstan}}. If
+a compiled \code{{rstan}} model is not available (i.e., the model was estimated
+with \code{backend = "cmdstanr"}), the model is compiled when \code{log_mll()} is
+called. A model estimated with \code{{rstan}} in a previous \emph{R} session is
+restored from the saved model object.
+
+Bridge sampling assumes that the draws come from the posterior distribution.
+The draws from \code{method = "variational"} are from an approximation to the
+posterior, which can result in substantially biased log marginal likelihoods,
+particularly for models with many parameters. We recommend \code{method = "mcmc"}
+for calculating Bayes factors. For the same reason, log marginal likelihoods
+are not available for models estimated with \code{method = "pathfinder"}.
+
+In addition, \emph{Stan} writes draws to file with limited precision, which can
+result in draws that are not valid parameter values (e.g., probabilities that
+do not sum to exactly 1). Structural parameters are re-normalized to account
+for this rounding, and any draws that are still invalid are excluded with a
+warning.
 }
 \section{Methods}{
 \code{log_mll()} is an S7 generic with methods available for the following
