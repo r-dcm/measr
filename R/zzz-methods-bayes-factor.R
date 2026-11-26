@@ -183,9 +183,8 @@ valid_stanfit <- function(x) {
   )
 }
 
-eval_log_density <- function(s.row, data) {
-  # nolint
-  out <- tryCatch(rstan::log_prob(data, s.row), error = function(e) -Inf)
+eval_log_density <- function(s_row, data) {
+  out <- tryCatch(rstan::log_prob(data, s_row), error = function(e) -Inf)
   if (is.na(out)) -Inf else out
 }
 
