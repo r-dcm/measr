@@ -72,7 +72,7 @@ if (!identical(Sys.getenv("NOT_CRAN"), "true")) {
     resp_id:E10
   )
   out <- capture.output(
-    suppressMessages(
+    suppressWarnings(suppressMessages(
       rstn_ecpe <- dcm_estimate(
         ecpe_dina_spec,
         data = test_data,
@@ -87,7 +87,7 @@ if (!identical(Sys.getenv("NOT_CRAN"), "true")) {
         control = list(max_treedepth = 15),
         refresh = 0
       )
-    )
+    ))
   )
 }
 
@@ -307,9 +307,11 @@ test_that("log_mll works", {
   expect_s3_class(err, "rlang_error")
   expect_match(err$message, "must be a model estimated with")
 
-  err <- rlang::catch_cnd(log_mll(cmds_mdm_lcdm))
-  expect_s3_class(err, "rlang_error")
-  expect_match(err$message, "must be a model estimated with")
+  # proposal draws outside the uniform prior bounds have infinite log density
+  cmds_mll <- suppressWarnings(log_mll(cmds_mdm_lcdm))
+  expect_equal(typeof(cmds_mll), "double")
+  expect_equal(length(cmds_mll), 1)
+  expect_true(is.finite(cmds_mll))
 
   expect_equal(typeof(log_mll(rstn_mdm_dina)), "double")
   expect_equal(length(log_mll(rstn_mdm_dina)), 1)
@@ -325,6 +327,16 @@ test_that("log_mll works", {
   expect_false(identical(log_mll(store_mll), log_mll(store_mll, force = TRUE)))
 })
 
+test_that("log_mll works for models loaded from a file", {
+  # reading a saved stanfit drops the pointer to the compiled model
+  file <- withr::local_tempfile(fileext = ".rds")
+  saveRDS(rstn_mdm_dina, file)
+  reloaded <- readRDS(file)
+
+  expect_false(valid_stanfit(reloaded@model))
+  expect_equal(log_mll(reloaded), log_mll(rstn_mdm_dina), tolerance = 0.01)
+})
+
 test_that("bayes_factor works", {
   err <- rlang::catch_cnd(
     bayes_factor(rstn_mdm_dina, rstn_mdm_dina, prior_prob = "a")
@@ -337,6 +349,10 @@ test_that("bayes_factor works", {
   )
   expect_s3_class(err, "rlang_error")
   expect_match(err$message, "must be a.*measrdcm.*object")
+
+  err <- rlang::catch_cnd(bayes_factor(rstn_mdm_dina, rstn_dina))
+  expect_s3_class(err, "rlang_error")
+  expect_match(err$message, "rstn_dina.*must be a model estimated with")
 
   err <- rlang::catch_cnd(
     bayes_factor(rstn_mdm_dina, "measrfit", "object")

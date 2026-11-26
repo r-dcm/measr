@@ -3,8 +3,9 @@
 #' @description
 #' Calculate the log marginal likelihood with bridge sampling (Meng & Wong,
 #' 1996). This is a wrapper around [bridgesampling::bridge_sampler()].
-#' Therefore, log marginal likelihood calculation is currently only available
-#' for models estimated with `{rstan}` using MCMC.
+#' Log marginal likelihoods are available for models estimated with either
+#' backend (i.e., `{rstan}` or `{cmdstanr}`) using `method = "mcmc"` or
+#' `method = "variational"`.
 #'
 #' # Methods
 #' `log_mll()` is an S7 generic with methods available for the following
@@ -13,12 +14,31 @@
 #' `r doclisting::methods_list("log_mll")`
 #'
 #' @param x A [measrdcm][dcm_estimate()] object estimated with
-#'   `backend = "rstan"` and a method that results in posterior distributions
-#'   (e.g., `method = "mcmc"`).
+#'   `method = "mcmc"` or `method = "variational"`.
 #' @param ... Unused.
 #' @param force If the criterion has already been added to the
 #'   model object with [add_criterion()], should it be recalculated. Default is
 #'   `FALSE`.
+#'
+#' @details
+#' The bridge sampler evaluates the log density of the model using `{rstan}`. If
+#' a compiled `{rstan}` model is not available (i.e., the model was estimated
+#' with `backend = "cmdstanr"`), the model is compiled when `log_mll()` is
+#' called. A model estimated with `{rstan}` in a previous *R* session is
+#' restored from the saved model object.
+#'
+#' Bridge sampling assumes that the draws come from the posterior distribution.
+#' The draws from `method = "variational"` are from an approximation to the
+#' posterior, which can result in substantially biased log marginal likelihoods,
+#' particularly for models with many parameters. We recommend `method = "mcmc"`
+#' for calculating Bayes factors. For the same reason, log marginal likelihoods
+#' are not available for models estimated with `method = "pathfinder"`.
+#'
+#' In addition, *Stan* writes draws to file with limited precision, which can
+#' result in draws that are not valid parameter values (e.g., probabilities that
+#' do not sum to exactly 1). Structural parameters are re-normalized to account
+#' for this rounding, and any draws that are still invalid are excluded with a
+#' warning.
 #'
 #' @return The estimate of the log marginal likelihood.
 #' @export
@@ -55,19 +75,205 @@ S7::method(log_mll, measrdcm) <- function(x, force = FALSE) {
     return(x@criteria$log_mll)
   }
 
-  if (!S7::S7_inherits(x@backend, rstan) || S7::S7_inherits(x@method, optim)) {
-    cli::cli_abort(
-      glue::glue(
-        "{{.arg {rlang::caller_arg(x)}}} must be a model estimated with a ",
-        "method that supports posterior distributions (e.g., \"mcmc\", ",
-        "\"variational\") using {{.code backend = \"rstan\"}} to calculate ",
-        "the marginal likelihood"
-      )
+  check_log_mll(x, arg = rlang::caller_arg(x))
+
+  log_density <- rstan_log_density(x)
+  log_marg_lik <- if (
+    S7::S7_inherits(x@backend, rstan) && S7::S7_inherits(x@method, mcmc)
+  ) {
+    bridgesampling::bridge_sampler(
+      x@model,
+      stanfit_model = log_density,
+      silent = TRUE
+    )
+  } else {
+    draws <- unconstrain_draws(x, log_density)
+    bounds <- rlang::set_names(rep(Inf, ncol(draws)), colnames(draws))
+    bridgesampling::bridge_sampler(
+      draws,
+      log_posterior = eval_log_density,
+      data = log_density,
+      lb = -bounds,
+      ub = bounds,
+      silent = TRUE
     )
   }
 
-  log_marg_lik <- bridgesampling::bridge_sampler(x@model, silent = TRUE)
   log_marg_lik$logml
+}
+
+check_log_mll <- function(x, arg, call = rlang::caller_env()) {
+  if (
+    S7::S7_inherits(x@method, mcmc) || S7::S7_inherits(x@method, variational)
+  ) {
+    return(invisible(x))
+  }
+
+  cli::cli_abort(
+    glue::glue(
+      "{{.arg {arg}}} must be a model estimated with ",
+      "{{.code method = \"mcmc\"}} or {{.code method = \"variational\"}} to ",
+      "calculate the marginal likelihood"
+    ),
+    call = call
+  )
+}
+
+# Get a stanfit object that can be used to evaluate the log density of a model.
+# The pointer to the compiled model is lost when a stanfit is saved, and
+# cmdstanr models never have one, so in those cases we create an empty stanfit.
+rstan_log_density <- function(x) {
+  is_rstan <- S7::S7_inherits(x@backend, rstan)
+  if (is_rstan && valid_stanfit(x@model)) {
+    return(x@model)
+  }
+
+  compiled_model <- if (is_rstan) {
+    x@model@stanmodel
+  } else {
+    stan_model(rstan(), code = x@stancode)
+  }
+
+  out <- utils::capture.output( # nolint
+    log_density <- suppressMessages(
+      rstan::sampling(
+        compiled_model,
+        data = estimation_data(x),
+        chains = 0,
+        refresh = 0
+      )
+    )
+  )
+  log_density
+}
+
+# Recreate the data list used to estimate the model. The `stan_data()` method
+# for measrdcm objects only includes the data needed for generated quantities,
+# not the model-specific elements (e.g., `Xi` for the DINA and DINO models).
+estimation_data <- function(x) {
+  item_names <- names(x@data$item_names)
+  resp_names <- names(x@data$respondent_names)
+
+  wide_data <- matrix(
+    NA_integer_,
+    nrow = length(resp_names),
+    ncol = length(item_names),
+    dimnames = list(NULL, item_names)
+  )
+  clean_data <- x@data$clean_data
+  wide_data[cbind(
+    as.integer(clean_data$resp_id),
+    as.integer(clean_data$item_id)
+  )] <- clean_data$score
+
+  dcmstan::stan_data(
+    x@model_spec,
+    data = tibble::as_tibble(wide_data),
+    missing = NA
+  )
+}
+
+valid_stanfit <- function(x) {
+  tryCatch(
+    {
+      rstan::get_num_upars(x)
+      TRUE
+    },
+    error = function(e) FALSE
+  )
+}
+
+eval_log_density <- function(s.row, data) {
+  # nolint
+  out <- tryCatch(rstan::log_prob(data, s.row), error = function(e) -Inf)
+  if (is.na(out)) -Inf else out
+}
+
+# Transform posterior draws to the unconstrained parameter space. Draws that are
+# read from csv files (i.e., everything except MCMC with rstan) are rounded, so
+# they may not satisfy the parameter constraints that are verified by Stan.
+unconstrain_draws <- function(x, log_density) {
+  pars <- setdiff(log_density@model_pars, c("log_Vc", "pi", "lp__"))
+  dims <- log_density@par_dims[pars]
+
+  draws <- get_draws(x, vars = pars)
+  if (posterior::ndraws(draws) == 0) {
+    cli::cli_abort(
+      c(
+        "The marginal likelihood could not be calculated.",
+        x = "The estimated model does not contain any posterior draws.",
+        i = paste(
+          "Check the estimation of the model, or consider using",
+          "{.code method = \"mcmc\"}."
+        )
+      ),
+      call = rlang::caller_env()
+    )
+  }
+
+  draws <- draws |>
+    posterior::merge_chains() |>
+    posterior::as_draws_rvars() |>
+    lapply(\(par) {
+      par <- posterior::draws_of(par)
+      matrix(par, nrow = nrow(par))
+    })
+  draws <- draws[pars]
+
+  if ("Vc" %in% pars) {
+    draws$Vc <- draws$Vc / rowSums(draws$Vc)
+  }
+
+  num_draws <- nrow(draws[[1]])
+  num_upars <- rstan::get_num_upars(log_density)
+  upars <- vapply(
+    seq_len(num_draws),
+    \(i) {
+      theta <- mapply(
+        \(par, dim) if (length(dim)) array(par[i, ], dim = dim) else par[i, ],
+        draws,
+        dims,
+        SIMPLIFY = FALSE
+      )
+      tryCatch(
+        rstan::unconstrain_pars(log_density, theta),
+        error = function(e) rep(NA_real_, num_upars)
+      )
+    },
+    numeric(num_upars)
+  )
+  upars <- matrix(upars, ncol = num_upars, byrow = TRUE)
+  colnames(upars) <- paste0("x", seq_len(num_upars))
+
+  keep <- apply(is.finite(upars), 1, all)
+  num_drop <- sum(!keep)
+  if (num_drop > num_draws / 2) {
+    cli::cli_abort(
+      c(
+        "The marginal likelihood could not be calculated.",
+        x = paste(
+          "{num_drop} of {num_draws} posterior draws {?is/are} not {?a/} valid",
+          "{cli::qty(num_drop)} set{?s} of parameter values."
+        ),
+        i = paste(
+          "Check the estimation of the model, or consider using",
+          "{.code method = \"mcmc\"}."
+        )
+      ),
+      call = rlang::caller_env()
+    )
+  } else if (num_drop > 0) {
+    cli::cli_warn(
+      paste(
+        "{num_drop} of {num_draws} posterior draws {cli::qty(num_drop)}",
+        "{?was/were} excluded from the marginal likelihood calculation because",
+        "of invalid parameter values."
+      ),
+      call = rlang::caller_env()
+    )
+  }
+
+  upars[keep, , drop = FALSE]
 }
 
 #' Bayes factor for model comparisons
@@ -231,57 +437,40 @@ S7::method(bayes_factor, measrdcm) <- function(
     )
   }
 
-  all_models <- rlang::set_names(all_models, model_names)
-  bf <- combn(model_names, m = 2) |>
-    t() |>
-    as.data.frame() |>
-    tibble::as_tibble() |>
-    dplyr::rowwise() |>
-    dplyr::mutate(
-      mod1 = all_models[.data$V1],
-      mod2 = all_models[.data$V2],
-      bf = calc_bf(.data$mod1, .data$mod2)
-    ) |>
-    dplyr::ungroup() |>
-    dplyr::select(null_model = "V1", alt_model = "V2", "bf")
+  for (i in seq_along(all_models)) {
+    check_log_mll(all_models[[i]], arg = model_names[i])
+  }
+  mll <- vapply(all_models, log_mll, double(1), USE.NAMES = FALSE)
+
+  pairs <- combn(seq_along(all_models), m = 2)
+  null_mll <- mll[pairs[1, ]]
+  alt_mll <- mll[pairs[2, ]]
+
+  bf <- tibble::tibble(
+    null_model = model_names[pairs[1, ]],
+    alt_model = model_names[pairs[2, ]],
+    bf = exp(null_mll - alt_mll)
+  )
 
   if (!is.null(prior_prob)) {
-    bf <- dplyr::mutate(
-      bf,
-      posterior_probs = mapply(
-        calc_model_probabilities,
-        all_models[.data$null_model],
-        all_models[.data$alt_model],
-        MoreArgs = list(prior_prob = prior_prob),
-        SIMPLIFY = FALSE,
-        USE.NAMES = FALSE
-      )
+    bf$posterior_probs <- mapply(
+      calc_model_probabilities,
+      null_mll,
+      alt_mll,
+      MoreArgs = list(prior_prob = prior_prob),
+      SIMPLIFY = FALSE,
+      USE.NAMES = FALSE
     )
   }
 
   bf
 }
 
-calc_bf <- function(x, y) {
-  log_marg_lik1 <- log_mll(x)
-  log_marg_lik2 <- log_mll(y)
-
-  exp(log_marg_lik1 - log_marg_lik2)
-}
-
-calc_model_probabilities <- function(x, y, prior_prob) {
+calc_model_probabilities <- function(null_mll, alt_mll, prior_prob) {
   tibble::tibble(
-    model_1 = log_mll(x),
-    model_2 = log_mll(y),
-    prior_prob = prior_prob
-  ) |>
-    dplyr::mutate(
-      log_diff = (.data$model_1 + log(.data$prior_prob)) -
-        (.data$model_2 + log(1 - .data$prior_prob)),
-      posterior_prob = exp(.data$log_diff) / (1 + exp(.data$log_diff))
-    ) |>
-    dplyr::select(
-      prior_prob_null = "prior_prob",
-      posterior_prob_null = "posterior_prob"
+    prior_prob_null = prior_prob,
+    posterior_prob_null = stats::plogis(
+      null_mll - alt_mll + stats::qlogis(prior_prob)
     )
+  )
 }

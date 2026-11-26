@@ -16,6 +16,26 @@
 * Tests and documentation are updated for loo 2.10.0, where `loo_compare()`
   returns a data frame with a `model` column instead of row names.
 
+* Updates to `log_mll()` and `bayes_factor()` (#77).
+
+  * Log marginal likelihoods and Bayes factors are now available for models
+    estimated with `backend = "cmdstanr"`, using `method = "mcmc"` or
+    `method = "variational"`.
+
+  * Fixed an error when models were estimated with `method = "variational"` and
+    a structural model with a simplex parameter (e.g., `unconstrained()`), due
+    to the limited precision of the draws that are written by *Stan*.
+
+  * Fixed an error when models estimated with `backend = "rstan"` were loaded
+    from a file in a new *R* session.
+
+  * `bayes_factor()` now estimates the log marginal likelihood once for each
+    model, so that the Bayes factor and the posterior probabilities are based on
+    the same estimates.
+
+  * Fixed posterior probabilities of `NaN` when there are large differences
+    between the models, or when `prior_prob` is 1.
+
 * `measr_extract()` can now extract respondent classifications.
 
   * `what = "profile_classification"` returns the most likely profile for each
