@@ -323,6 +323,20 @@ test_that("posterior model probabilities are numerically stable", {
   expect_equal(probs$posterior_prob_null, 0.75)
 })
 
+test_that("invalid log densities are treated as -Inf", {
+  local_mocked_bindings(log_prob = function(...) NA_real_, .package = "rstan")
+  expect_identical(eval_log_density(1, NULL), -Inf)
+
+  local_mocked_bindings(
+    log_prob = function(...) stop("bad"),
+    .package = "rstan"
+  )
+  expect_identical(eval_log_density(1, NULL), -Inf)
+
+  local_mocked_bindings(log_prob = function(...) -12.5, .package = "rstan")
+  expect_identical(eval_log_density(1, NULL), -12.5)
+})
+
 test_that("log_mll works for models loaded from a file", {
   # reading a saved stanfit drops the pointer to the compiled model
   file <- withr::local_tempfile(fileext = ".rds")
