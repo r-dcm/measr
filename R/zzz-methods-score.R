@@ -89,7 +89,12 @@ S7::method(score, measrdcm) <-
     # check for existing scores ------------------------------------------------
     check_bool(force)
     check_bool(summary)
-    if (!rlang::is_empty(x@respondent_estimates) && !force && summary) {
+    if (
+      !rlang::is_empty(x@respondent_estimates) &&
+        is.null(newdata) &&
+        !force &&
+        summary
+    ) {
       return(x@respondent_estimates)
     }
 
