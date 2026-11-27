@@ -200,3 +200,44 @@ test_that("score 1 row", {
     as.character(newdata_1$person)
   )
 })
+
+test_that("score new data ignores cached respondent estimates", {
+  mod <- add_respondent_estimates(rstn_dina)
+
+  newdata_10 <- dplyr::slice_sample(dina_data, n = 10) |>
+    dplyr::mutate(id = paste0("nd_", seq_len(dplyr::n()))) |>
+    dplyr::select("id", dplyr::starts_with("item_"))
+
+  mod_preds <- score(
+    mod,
+    newdata = newdata_10,
+    identifier = "id",
+    summary = TRUE
+  )
+
+  num_att <- length(mod@model_spec@qmatrix_meta$attribute_names)
+  expect_equal(
+    colnames(mod_preds$class_probabilities),
+    c("id", "class", "probability")
+  )
+  expect_equal(
+    colnames(mod_preds$attribute_probabilities),
+    c("id", "attribute", "probability")
+  )
+  expect_equal(
+    nrow(mod_preds$class_probabilities),
+    nrow(newdata_10) * 2^num_att
+  )
+  expect_equal(
+    nrow(mod_preds$attribute_probabilities),
+    nrow(newdata_10) * num_att
+  )
+  expect_equal(
+    mod_preds$class_probabilities$id,
+    rep(newdata_10$id, each = 2^num_att)
+  )
+  expect_equal(
+    mod_preds$attribute_probabilities$id,
+    rep(newdata_10$id, each = num_att)
+  )
+})
